@@ -1,0 +1,58 @@
+<!--
+
+    Copyright (C) 2009-2017 SAP SE or an SAP affiliate company. All rights reserved.
+
+-->
+<mvc:View xmlns:mvc="sap.ui.core.mvc"
+          xmlns:smartForm="sap.ui.comp.smartform"
+          xmlns:smartField="sap.ui.comp.smartfield"
+          xmlns="sap.m" width="100%">
+    <FlexBox
+            width="100%"
+            height="36px"
+            alignItems="Start"
+            justifyContent="Start">
+        <Label text="{i18n>Partner.Label.MainPartnerTitle}" class="" design="Bold" />
+    </FlexBox>
+    <smartForm:SmartForm
+            id="mainPartnerBlock"
+            editTogglable="false"
+            width="100%"
+            editable="false"
+            useHorizontalLayout="true"
+            layout="ResponsiveLayout">
+        <smartForm:Group label="">
+            <smartForm:GroupElement >
+                <smartField:SmartField value="{Xname}"/>
+            </smartForm:GroupElement>
+            <smartForm:GroupElement>
+                <smartField:SmartField value="{Street}"/>
+            </smartForm:GroupElement>
+            <smartForm:GroupElement>
+                <smartField:SmartField value="{TelNumberLong}"/>
+            </smartForm:GroupElement>
+        </smartForm:Group>
+        <smartForm:Group label="">
+            <smartForm:GroupElement>
+                <smartField:SmartField value="{Rltxt}"/>
+            </smartForm:GroupElement>
+            <smartForm:GroupElement>
+                <smartField:SmartField value="{City}"/>
+            </smartForm:GroupElement>
+            <smartForm:GroupElement>
+                <smartField:SmartField value="{Country}"/>
+            </smartForm:GroupElement>
+        </smartForm:Group>
+        <smartForm:Group label="" >
+            <smartForm:GroupElement>
+                <smartField:SmartField showLabel="false"/>
+            </smartForm:GroupElement>
+            <smartForm:GroupElement>
+                <smartField:SmartField value="{MobNumber}"/>
+            </smartForm:GroupElement>
+            <smartForm:GroupElement>
+                <smartField:SmartField value="{SmtpAddr}"/>
+            </smartForm:GroupElement>
+        </smartForm:Group>
+    </smartForm:SmartForm>
+</mvc:View>

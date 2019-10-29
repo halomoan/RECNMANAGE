@@ -1,0 +1,29 @@
+<!--
+
+    Copyright (C) 2009-2017 SAP SE or an SAP affiliate company. All rights reserved.
+
+-->
+<l:VerticalLayout
+        xmlns:smartTable="sap.ui.comp.smarttable"
+        xmlns:l="sap.ui.layout"
+        width="100%"
+        xmlns="sap.m">
+    <smartTable:SmartTable
+            id="valuationList"
+            useTablePersonalisation="true"
+            tableType="ResponsiveTable"
+            tableBindingPath="Valuation"
+            editable="false"
+            showRowCount="true"
+            header="{i18n>Valuation.TableHeader}"
+            entitySet="ContractValuationDataSet"
+            class=""
+            useExportToExcel="false"
+            enableAutoBinding="true">
+        <smartTable:customToolbar>
+            <OverflowToolbar design="Auto">
+                <ToolbarSpacer/>
+            </OverflowToolbar>
+        </smartTable:customToolbar>
+    </smartTable:SmartTable>
+</l:VerticalLayout>

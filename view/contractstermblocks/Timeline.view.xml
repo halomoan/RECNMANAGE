@@ -1,0 +1,19 @@
+<!--
+
+    Copyright (C) 2009-2017 SAP SE or an SAP affiliate company. All rights reserved.
+
+-->
+<mvc:View xmlns:mvc="sap.ui.core.mvc"
+          busy="{tiemlineview>/busy}"
+          xmlns:timeline = "fin.re.conmgmts1.controls.timeline">
+	<timeline:TimeLine id = "timeline" next = "true" currentTimeline="{currentTimeline>/currentTimeline}" press="onReminderPopoverButtonPressed" from="{timelineRange>/from}" to="{timelineRange>/to}" items="{timeline>/events}">
+		<timeline:TimeLineItem
+				dateFrom="{timeline>dateFrom}"
+				dateTo="{timeline>dateTo}"
+				eventType="{timeline>type}"
+				eventLevel="{timeline>eventLevel}"
+				eventInfo="{timeline>eventInfo}"
+				notifDateTo="{timeline>notifDateTo}"
+		/>
+	</timeline:TimeLine>
+</mvc:View>

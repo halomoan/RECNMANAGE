@@ -1,0 +1,133 @@
+<!--
+
+    Copyright (C) 2009-2017 SAP SE or an SAP affiliate company. All rights reserved.
+
+-->
+<core:View xmlns:core="sap.ui.core"
+           xmlns="sap.uxap"
+           xmlns:m="sap.m"
+           xmlns:mvc="sap.ui.core.mvc"
+           xmlns:semantic="sap.m.semantic"
+           xmlns:layout="sap.ui.layout"
+           xmlns:contractsblock="fin.re.conmgmts1.view.contractstermblocks"
+           xmlns:contractsobjectblock="fin.re.conmgmts1.view.contractsobjectblocks"
+           xmlns:conditionblock="fin.re.conmgmts1.view.conditionblocks"
+           xmlns:documentblock="fin.re.conmgmts1.view.documentblocks"
+           xmlns:partnerblock="fin.re.conmgmts1.view.partnerblocks"
+           xmlns:valuationblock="fin.re.conmgmts1.view.valuationblocks"
+           controllerName="fin.re.conmgmts1.controller.Contract"
+           height="100%">
+    <m:Page
+            id="floorPage"
+            navButtonPress="onNavBack"
+            showNavButton="true"
+            title="{i18n>ObjectView.Title.Contract}"
+            showHeader="false"
+            busy="{view>/busy}"
+            busyIndicatorDelay="{view>/delay}"
+            backgroundDesign="Transparent">
+        <m:content>
+    <ObjectPageLayout enableLazyLoading="false" useIconTabBar="false" showTitleInHeaderContent="false">
+        <headerTitle>
+            <ObjectPageHeader objectTitle="{Recntxt}" objectSubtitle="{Identkey}" id="headerTitle">
+                <actions>
+                    <m:Button id="reminderPopoverButton" text="{i18n>Reminder.Label.Reminders}" press="onReminderPopoverButtonPressed"
+                              type="Emphasized"/>
+                    <m:Button tooltip="{i18n>Common.Button.JumpOffWebGUIf.Tooltip}" id="jumpOffWebGUI" press="onJumpOffWebGUIPressed" enabled="false"/>
+                </actions>
+            </ObjectPageHeader>
+        </headerTitle>
+
+        <headerContent>
+                <layout:VerticalLayout>
+                    <m:ObjectStatus id="companyCode" title="{i18n>Contract.CompanyCodeLabel}" text="{Bukrs}"/>
+                    <m:ObjectStatus id="contractType" title="{i18n>Contract.ContractTypeLabel}"
+                                    text="{parts: ['i18n>Contract.ContractTypeValue', 'Xrecntype', 'Recntype'], formatter: 'jQuery.sap.formatMessage'}"/>
+                    <m:ObjectStatus
+                            id="status"
+                            title="{i18n>Contract.StatusLabel}"
+                            text="{Xstatus}"/>
+                </layout:VerticalLayout>
+            </headerContent>
+        <sections>
+            <ObjectPageSection id="termSection" title="{i18n>Contract.TermsTab}">
+                <subSections>
+                    <ObjectPageSubSection id="termSubSection" title="" mode="Collapsed">
+                        <blocks>
+                            <contractsblock:Terms columnLayout="4" id="termBlock"/>
+                            <m:SegmentedButton id="timelineFilter" selectedKey="next" width="150px" select="onTimelineFilterSelection">
+                                <m:items>
+                                    <m:SegmentedButtonItem id="timelineFilter-next" text="{i18n>Common.Button.Next}" key="next"/>
+                                    <m:SegmentedButtonItem id="timelineFilter-all" text="{i18n>Common.Button.All}" key="all"/>
+                                </m:items>
+                            </m:SegmentedButton>
+                            <contractsblock:Timeline columnLayout="4" id="timelineBlock"/>
+                            <contractsblock:Renewal columnLayout="4" id="renewalBlock"/>
+                            <contractsblock:BreakOption columnLayout="4" id="breakOptionBlock"/>
+                        </blocks>
+                    </ObjectPageSubSection>
+                </subSections>
+            </ObjectPageSection>
+
+            <ObjectPageSection title="{i18n>Contract.PartnersTab}">
+                <!-- TODO Is there any way to have content in a section *without* a subsection? -->
+                <subSections>
+                    <ObjectPageSubSection title="" id="partnersSubSection">
+                        <blocks>
+                            <m:SegmentedButton id="partnerFilter" selectedKey="main" width="350px" select="onPartnerFilterSelection">
+                                <m:items>
+                                    <m:SegmentedButtonItem id="partnerFilter-main" text="{i18n>Contract.MainPartnerButton}" key="main"/>
+                                    <m:SegmentedButtonItem id="partnerFilter-all" text="{i18n>Contract.AllPartnersButton}" key="all"/>
+                                </m:items>
+                            </m:SegmentedButton>
+                            <partnerblock:MainPartner columnLayout="4" id="mainPartnerBlock"/>
+                            <partnerblock:MorePartner id="morePartnerBlock" columnLayout="4" visible="false"/>
+                        </blocks>
+                    </ObjectPageSubSection>
+                </subSections>
+            </ObjectPageSection>
+
+            <ObjectPageSection title="{i18n>Contract.ObjectsTab}">
+                <subSections>
+                    <ObjectPageSubSection title="">
+                        <blocks>
+                            <contractsobjectblock:ObjectList columnLayout="4" id="objectListBlock"/>
+                        </blocks>
+                    </ObjectPageSubSection>
+                </subSections>
+            </ObjectPageSection>
+
+            <ObjectPageSection title="{i18n>Contract.ConditionsTab}">
+                <subSections>
+                    <ObjectPageSubSection title="">
+                        <blocks>
+                            <conditionblock:ConditionList columnLayout="4" id="conditionListBlock"/>
+                        </blocks>
+                    </ObjectPageSubSection>
+                </subSections>
+            </ObjectPageSection>
+
+            <ObjectPageSection title="{i18n>Contract.ValuationTab}">
+                <subSections>
+                    <ObjectPageSubSection title="">
+                        <blocks>
+                            <valuationblock:ValuationList columnLayout="4" id="valuationListBlock"/>
+                        </blocks>
+                    </ObjectPageSubSection>
+                </subSections>
+            </ObjectPageSection>
+
+            <ObjectPageSection title="{i18n>Contract.DocumentsTab}" id = "documentSection">
+                <subSections>
+                    <ObjectPageSubSection title="">
+                        <blocks>
+                            <documentblock:DocumentList columnLayout="4" id="documentListBlock"/>
+                        </blocks>
+                    </ObjectPageSubSection>
+                </subSections>
+            </ObjectPageSection>
+        </sections>
+    </ObjectPageLayout>
+    </m:content>
+</m:Page>
+</core:View>

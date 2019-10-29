@@ -1,0 +1,31 @@
+<!--
+
+    Copyright (C) 2009-2017 SAP SE or an SAP affiliate company. All rights reserved.
+
+-->
+<l:VerticalLayout
+        xmlns:smartTable="sap.ui.comp.smarttable"
+        xmlns:l="sap.ui.layout"
+        width="100%"
+        xmlns="sap.m"
+        controllerName="fin.re.conmgmts1.controller.reminderblocks.ReminderList">
+    <smartTable:SmartTable
+            id="reminderList"
+            useTablePersonalisation="true"
+            tableType="ResponsiveTable"
+            tableBindingPath="Reminder"
+            header="{i18n>Reminder.Label.Reminders}"
+            editable="false"
+            showRowCount="true"
+            entitySet="ContractReminderDataSet"
+            class=""
+            useExportToExcel="false"
+            enableAutoBinding="true">
+        <smartTable:customToolbar>
+            <OverflowToolbar design="Transparent">
+                <ToolbarSpacer/>
+                <ToggleButton text="{i18n>Reminder.Button.ToggleText}" pressed="false" id ="reminderToggle"/>
+            </OverflowToolbar>
+        </smartTable:customToolbar>
+    </smartTable:SmartTable>
+</l:VerticalLayout>

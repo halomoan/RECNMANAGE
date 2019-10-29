@@ -1,0 +1,22 @@
+<!--
+
+    Copyright (C) 2009-2017 SAP SE or an SAP affiliate company. All rights reserved.
+
+-->
+<mvc:View
+	controllerName="fin.re.conmgmts1.controller.NotFound"
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns="sap.m">
+
+	<MessagePage
+		title="{i18n>ObjectView.Title.Contract}"
+		text="{i18n>NotFoundView.NoObjectFoundText}"
+		icon="{sap-icon://product}"
+		description=""
+		id="page">
+		<customDescription>
+			<Link id="link" text="{i18n>WorklistView.Link.BackToWorklist}" press="onLinkPressed" />
+		</customDescription>
+	</MessagePage>
+
+</mvc:View>

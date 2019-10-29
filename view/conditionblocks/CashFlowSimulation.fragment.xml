@@ -1,0 +1,25 @@
+<!--
+
+    Copyright (C) 2009-2017 SAP SE or an SAP affiliate company. All rights reserved.
+
+-->
+<core:FragmentDefinition
+        xmlns="sap.m"
+        xmlns:core="sap.ui.core"
+        xmlns:smartTable="sap.ui.comp.smarttable">
+    <Dialog title="{i18n>Condition.CashFlowSimulation.Heading}" contentWidth="100%">
+        <smartTable:SmartTable
+                id="simulated-cash-flow"
+                useTablePersonalisation="true"
+                tableType="ResponsiveTable"
+                tableBindingPath="Cashflow"
+                editable="false"
+                entitySet="ContractCashflowDataSet"
+                useExportToExcel="false"
+                enableAutoBinding="true">
+        </smartTable:SmartTable>
+        <buttons>
+            <Button id="close-cash-flow-simulation" text="{i18n>Common.Dialog.Close}" press="close"/>
+        </buttons>
+    </Dialog>
+</core:FragmentDefinition>

@@ -1,0 +1,75 @@
+<!--
+
+    Copyright (C) 2009-2017 SAP SE or an SAP affiliate company. All rights reserved.
+
+-->
+<l:VerticalLayout
+        xmlns:smartTable="sap.ui.comp.smarttable"
+        xmlns:l="sap.ui.layout"
+        width="100%"
+        xmlns="sap.m"
+        controllerName="fin.re.conmgmts1.controller.reminderblocks.ReminderPopoverList">
+    <List id="reminderListPopover" items="{Reminder}" width="100%" >
+        <headerToolbar>
+            <Toolbar>
+                <ToolbarSpacer />
+                <SegmentedButton id="reminderFilter" selectedKey="open" select="onReminderFilterSelection">
+                    <items>
+                        <SegmentedButtonItem text="{i18n>Common.Button.Open}" key="open"/>
+                        <SegmentedButtonItem text="{i18n>Common.Button.All}" key="all"/>
+                    </items>
+                </SegmentedButton>
+                <ToolbarSpacer />
+            </Toolbar>
+        </headerToolbar>
+        <CustomListItem>
+            <FlexBox
+                    alignItems="Start"
+                    justifyContent="SpaceBetween">
+                <FlexBox
+                        class ="sapUiSmallMargin"
+                        direction="Column"
+                        alignItems="Start">
+                    <Title level="H1" text="{Xrsreason}" />
+                    <Label text="{path:'Rsdate', formatter: '.formatter.reminderDate'}" />
+                </FlexBox>
+                <FlexBox
+                        class ="sapUiSmallMargin"
+                        direction="Column"
+                        alignItems="End">
+                    <ObjectNumber
+                            number="{path: 'Rsdaysleft', formatter: '.formatter.reminderLeftDay'}"
+                            state="{path: 'Rsdaysleft', formatter: '.formatter.reminderLeftDayState'}"
+                    />
+                    <Label text="{parts: ['Rsdone','Rsdaysleft'], formatter: '.formatterForTranslatedReminderTitle'}"/>
+                </FlexBox>
+            </FlexBox>
+            <VBox id ="commentDisplayArea">
+                <FlexBox class = "sapUiSmallMarginBegin"
+                        alignItems="Start">
+                    <Text text ="{Rsmemo}" maxLines="3" width="260px"/>
+                </FlexBox>
+                <FlexBox
+                        direction="Column"
+                        alignItems="End">
+                     <Button  visible ="{path: 'Rsdone', formatter: '.enableDoneButton'}" id = "doneButton" text="{i18n>Common.Button.Done}" type="Emphasized" press="onDoneButtonPressed"/>
+                </FlexBox>
+            </VBox>
+
+            <FlexBox
+                    id = "editArea"
+                    visible="false"
+                    class ="sapUiSmallMargin"
+                    alignItems="End"
+                    direction="Column"
+                    justifyContent="SpaceBetween">
+                <TextArea   cols="35" rows="3"  value="{Rsmemo}" placeholder="{i18n>Common.Reminder.Comment.PlaceHolder}"/>
+                <FlexBox
+                    justifyContent="Start">
+                    <Button class="sapUiSmallMarginBegin" id = "saveButton" text="{i18n>Common.Button.Save}" type="Emphasized" press="onSaveButtonPressed"/>
+                    <Button class="sapUiSmallMarginBegin" id = "cancelButton" text="{i18n>Common.Button.Cancel}" type="Emphasized" press="onCancelButtonPressed"/>
+                </FlexBox>
+            </FlexBox>
+        </CustomListItem>
+    </List>
+</l:VerticalLayout>

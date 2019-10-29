@@ -1,0 +1,38 @@
+<!--
+
+    Copyright (C) 2009-2017 SAP SE or an SAP affiliate company. All rights reserved.
+
+-->
+<l:VerticalLayout
+        xmlns:smartTable="sap.ui.comp.smarttable"
+        xmlns:l="sap.ui.layout"
+        width="100%"
+        xmlns="sap.m"
+        controllerName="fin.re.conmgmts1.controller.contractstermblocks.BreakOption">
+    <smartTable:SmartTable
+            id="breakOptionList"
+            useTablePersonalisation="true"
+            tableType="ResponsiveTable"
+            tableBindingPath="Notice"
+            header="{i18n>Terms.Table.BreakOptionTitle}"
+            editable="false"
+            showRowCount="true"
+            entitySet="ContractNoticeDataSet"
+            class=""
+            useExportToExcel="false"
+            enableAutoBinding="true">
+        <smartTable:customToolbar>
+            <OverflowToolbar>
+                <SegmentedButton id="breakOptionFilter" selectedKey="next" width="150px">
+                    <items>
+                        <SegmentedButtonItem id="breakOptionFilter-next" text="{i18n>Common.Button.Next}" key="next"/>
+                        <SegmentedButtonItem id="breakOptionFilter-all" text="{i18n>Common.Button.All}" key="all"/>
+                    </items>
+                </SegmentedButton>
+                <ToolbarSpacer/>
+                <Link id="simulate-break-options" text="{i18n>Link.SimulateBreakOptionLink}" press="simulate"/>
+            </OverflowToolbar>
+        </smartTable:customToolbar>
+    </smartTable:SmartTable>
+</l:VerticalLayout>
+

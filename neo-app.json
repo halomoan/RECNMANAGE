@@ -1,0 +1,51 @@
+{
+  "routes": [
+    {
+      "path": "/api",
+      "target": {
+        "type": "destination",
+        "name": "lease-contract-api"
+      },
+      "description": "Lease Contract OData Service"
+    },
+    {
+      "path": "/sap/opu/odata",
+      "target": {
+        "type": "destination",
+        "name": "f30",
+        "entryPath": "/sap/opu/odata"
+      },
+      "description": "f30"
+    },
+    {
+      "path": "/sap/bc/ui5_ui5",
+      "target": {
+        "type": "destination",
+        "name": "f30",
+        "entryPath": "/sap/bc/ui5_ui5"
+      },
+      "description": "f30"
+    },
+    {
+      "path": "/resources",
+      "target": {
+        "type": "service",
+        "name": "sapui5",
+        "entryPath": "/resources"
+      },
+      "description": "SAPUI5 Resources"
+    },
+    {
+      "path": "/test-resources",
+      "target": {
+        "type": "service",
+        "name": "sapui5",
+        "entryPath": "/test-resources"
+      },
+      "description": "SAPUI5 Test Resources"
+    }
+  ],
+  "headerWhiteList": [
+    "slug"
+  ]
+}

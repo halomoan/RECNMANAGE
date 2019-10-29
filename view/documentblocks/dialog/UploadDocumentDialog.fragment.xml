@@ -1,0 +1,32 @@
+<!--
+
+    Copyright (C) 2009-2017 SAP SE or an SAP affiliate company. All rights reserved.
+
+-->
+<core:FragmentDefinition
+        xmlns:l="sap.ui.layout"
+        xmlns:u="sap.ui.unified"
+        xmlns="sap.m"
+        xmlns:core="sap.ui.core">
+    <Dialog  title="{i18n>Document.Upload.DialogTitle}" contentWidth="auto" contentHeight="auto" verticalScrolling="true">
+        <l:VerticalLayout>
+            <u:FileUploader
+                    id="fileUploader"
+                    name="myFileUpload"
+                    useMultipart="true"
+                    multiple="false"
+                    width="400px"
+                    uploadComplete="handleUploadComplete"/>
+
+        </l:VerticalLayout>
+        <buttons>
+            <Button
+                    id = "uploadButton"
+                    text="{i18n>Document.Upload.UploadButton}"
+                    press="handleUploadPress"/>
+            <Button id="closeButton"
+                    text="{i18n>Common.Button.Close}"
+                    press="closeUploadFileDialog"/>
+        </buttons>
+    </Dialog>
+</core:FragmentDefinition>

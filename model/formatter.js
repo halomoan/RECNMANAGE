@@ -1,0 +1,4 @@
+/*
+ * Copyright (C) 2009-2017 SAP SE or an SAP affiliate company. All rights reserved.
+ */
+sap.ui.define([],function(){"use strict";return{numberUnit:function(v){if(!v){return"";}return parseFloat(v).toFixed(2);},reminderIcon:function(d,a){if(d){return"sap-icon://status-completed";}else if(a>=0){return"sap-icon://status-critical";}else{return"sap-icon://status-error";}},reminderState:function(d,a){if(d){return sap.ui.core.ValueState.Success;}else if(a>=0){return sap.ui.core.ValueState.Warning;}else{return sap.ui.core.ValueState.Error;}},reminderLeftDayState:function(d){if(d<0){return sap.ui.core.ValueState.Error;}else{return sap.ui.core.ValueState.Success;}},reminderLeftDay:function(d){if(d<0){return d-2*d;}else{return d;}},reminderTitle:function(d,a){if(d){return"Reminder.StatusDone";}else if(a>=0){return"Reminder.DaysLeft";}else{return"Reminder.StatusOverdue";}},reminderDate:function(d){return sap.ui.core.format.DateFormat.getDateInstance().format(d);}};});

@@ -1,0 +1,13 @@
+<!--
+
+    Copyright (C) 2009-2017 SAP SE or an SAP affiliate company. All rights reserved.
+
+-->
+<mvc:View xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m">
+    <FlexBox
+            width="100%"
+            alignItems="Center"
+            justifyContent="Start">
+        <Label text="{i18n>Partner.Label.AllPartnerTitle }" class="" design="Bold" />
+    </FlexBox>
+</mvc:View>

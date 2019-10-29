@@ -1,0 +1,29 @@
+<!--
+
+    Copyright (C) 2009-2017 SAP SE or an SAP affiliate company. All rights reserved.
+
+-->
+<l:VerticalLayout
+        xmlns:smartTable="sap.ui.comp.smarttable"
+        xmlns:l="sap.ui.layout"
+        width="100%"
+        xmlns="sap.m">
+    <smartTable:SmartTable
+            id="objectList"
+            header="{i18n>Object.TableHeader}"
+            useTablePersonalisation="true"
+            tableType="ResponsiveTable"
+            editable="false"
+            showRowCount="true"
+            entitySet="ContractObjectDataSet"
+            class=""
+            useExportToExcel="false"
+            enableAutoBinding="true">
+        <smartTable:customToolbar>
+            <OverflowToolbar>
+                <Select id="objectSlice" change="onObjectSliceChange" class=""/>
+                <ToolbarSpacer/>
+            </OverflowToolbar>
+        </smartTable:customToolbar>
+    </smartTable:SmartTable>
+</l:VerticalLayout>

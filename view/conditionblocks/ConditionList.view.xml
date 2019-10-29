@@ -1,0 +1,33 @@
+<!--
+
+    Copyright (C) 2009-2017 SAP SE or an SAP affiliate company. All rights reserved.
+
+-->
+<l:VerticalLayout
+        xmlns:smartTable="sap.ui.comp.smarttable"
+        xmlns:l="sap.ui.layout"
+        width="100%"
+        xmlns="sap.m"
+        controllerName="fin.re.conmgmts1.controller.conditionblocks.ConditionList">
+
+    <smartTable:SmartTable
+            id="conditionList"
+            class=""
+            useTablePersonalisation="true"
+            tableType="ResponsiveTable"
+            tableBindingPath="Conditions"
+            header="{i18n>Condition.TableHeader}"
+            editable="false"
+            showRowCount="true"
+            entitySet="ContractConditionDataSet"
+            useExportToExcel="false"
+            enableAutoBinding="true">
+        <smartTable:customToolbar>
+            <OverflowToolbar>
+                <Select id="conditionSlice" class="" />
+                <ToolbarSpacer/>
+                <Link id="simulate-cash-flow" text="{i18n>Condition.SimulateCashFlow}" press="simulateCashFlow"/>
+            </OverflowToolbar>
+        </smartTable:customToolbar>
+    </smartTable:SmartTable>
+</l:VerticalLayout>

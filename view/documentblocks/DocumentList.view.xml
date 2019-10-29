@@ -1,0 +1,33 @@
+<!--
+
+    Copyright (C) 2009-2017 SAP SE or an SAP affiliate company. All rights reserved.
+
+-->
+<l:VerticalLayout
+        xmlns:smartTable="sap.ui.comp.smarttable"
+        xmlns:l="sap.ui.layout"
+        width="100%"
+        xmlns="sap.m">
+    <smartTable:SmartTable
+            id="documentList"
+            useTablePersonalisation="true"
+            tableType="ResponsiveTable"
+            tableBindingPath="Documents"
+            editable="false"
+            showRowCount="true"
+            entitySet="ContractDocumentDataSet"
+            class=""
+            useExportToExcel="false"
+            enableAutoBinding="true">
+        <Table fixedLayout="false" growing="true" growingThreshold="100" >
+            <ColumnListItem id="documentListItem"
+                    type="Navigation"/>
+        </Table>
+        <smartTable:customToolbar>
+            <OverflowToolbar>
+                <ToolbarSpacer/>
+                <OverflowToolbarButton type="Transparent" id="openUploadDialogButton"  icon = "sap-icon://add" />
+            </OverflowToolbar>
+        </smartTable:customToolbar>
+    </smartTable:SmartTable>
+</l:VerticalLayout>

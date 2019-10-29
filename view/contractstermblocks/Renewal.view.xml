@@ -1,0 +1,37 @@
+<!--
+
+    Copyright (C) 2009-2017 SAP SE or an SAP affiliate company. All rights reserved.
+
+-->
+<l:VerticalLayout
+        xmlns:smartTable="sap.ui.comp.smarttable"
+        xmlns:l="sap.ui.layout"
+        width="100%"
+        xmlns="sap.m"
+        controllerName="fin.re.conmgmts1.controller.contractstermblocks.Renewal">
+    <smartTable:SmartTable
+            id="renewalList"
+            useTablePersonalisation="true"
+            tableType="ResponsiveTable"
+            tableBindingPath="Renewal"
+            header="{i18n>Terms.Renewal.Title}"
+            editable="false"
+            showRowCount="true"
+            entitySet="ContractRenewalDataSet"
+            class=""
+            useExportToExcel="false"
+            enableAutoBinding="true">
+        <smartTable:customToolbar>
+            <OverflowToolbar>
+                <SegmentedButton id="renewalFilter" selectedKey="next" width="150px">
+                    <items>
+                        <SegmentedButtonItem id="renewalFilter-next" text="{i18n>Common.Button.Next}" key="next"/>
+                        <SegmentedButtonItem id="renewalFilter-all" text="{i18n>Common.Button.All}" key="all"/>
+                    </items>
+                </SegmentedButton>
+                <ToolbarSpacer/>
+                <Link id="simulate-renewals" text="{i18n>Terms.simulateRenewalLink}" press="simulate"/>
+            </OverflowToolbar>
+        </smartTable:customToolbar>
+    </smartTable:SmartTable>
+</l:VerticalLayout>

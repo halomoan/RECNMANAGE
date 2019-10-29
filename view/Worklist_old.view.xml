@@ -1,0 +1,96 @@
+<!--
+
+    Copyright (C) 2009-2017 SAP SE or an SAP affiliate company. All rights reserved.
+
+-->
+<mvc:View
+        controllerName="fin.re.conmgmts1.controller.Worklist"
+        xmlns="sap.m"
+        xmlns:mvc="sap.ui.core.mvc"
+        xmlns:semantic="sap.m.semantic"
+        xmlns:smartTable="sap.ui.comp.smarttable"
+        xmlns:smartFilterBar="sap.ui.comp.smartfilterbar"
+        xmlns:core="sap.ui.core">
+
+    <Page
+            id="page"
+            navButtonPress="onNavBack"
+            showNavButton="true"
+            showHeader="false"
+            title="{i18n>WorklistView.Table.Title.LeaseContracts}">
+
+        <content>
+            <smartFilterBar:SmartFilterBar id="smartFilterBarWithBasicSearch"
+                                           enableBasicSearch="true"
+                                           entityType="ContractData" persistencyKey=""
+                                           visible="false">
+                <smartFilterBar:controlConfiguration>
+                    <smartFilterBar:ControlConfiguration key="Bukrs" visibleInAdvancedArea="true"/>
+                    <smartFilterBar:ControlConfiguration key="Recnnr" visibleInAdvancedArea="true"/>
+                    <smartFilterBar:ControlConfiguration key="Recntype" visibleInAdvancedArea="true"/>
+                </smartFilterBar:controlConfiguration>
+                <smartFilterBar:customData>
+                    <core:CustomData key="dateFormatSettings" value='\{"UTC":true\}'/>
+                </smartFilterBar:customData>
+            </smartFilterBar:SmartFilterBar>
+
+            <smartFilterBar:SmartFilterBar id="smartFilterBarWithoutBasicSearch"
+                                           enableBasicSearch="false"
+                                           entityType="ContractData" persistencyKey=""
+                                           visible="true">
+                <smartFilterBar:controlConfiguration>
+                    <smartFilterBar:ControlConfiguration key="Bukrs" visibleInAdvancedArea="true"/>
+                    <smartFilterBar:ControlConfiguration key="Recnnr" visibleInAdvancedArea="true"/>
+                    <smartFilterBar:ControlConfiguration key="Recntype" visibleInAdvancedArea="true"/>
+                </smartFilterBar:controlConfiguration>
+                <smartFilterBar:customData>
+                    <core:CustomData key="dateFormatSettings" value='\{"UTC":true\}'/>
+                </smartFilterBar:customData>
+            </smartFilterBar:SmartFilterBar>
+
+            <smartTable:SmartTable
+                    id="contractsWithBasicSearch"
+                    smartFilterId="smartFilterBarWithBasicSearch"
+                    tableType="ResponsiveTable"
+                    editable="false"
+                    entitySet="ContractDataSet"
+                    persistencyKey=""
+                    useVariantManagement="true"
+                    useTablePersonalisation="true"
+                    header="{i18n>WorklistView.Table.Title.Contracts}"
+                    showRowCount="true"
+                    useExportToExcel="true"
+                    enableAutoBinding="true"
+                    visible="false">
+                <Table fixedLayout="false" growing="true" growingThreshold="100" >
+                    <ColumnListItem
+                            type="Navigation"
+                            press="onPress" />
+                </Table>
+            </smartTable:SmartTable>
+
+            <smartTable:SmartTable
+                    id="contractsWithoutBasicSearch"
+                    smartFilterId="smartFilterBarWithoutBasicSearch"
+                    tableType="ResponsiveTable"
+                    editable="false"
+                    entitySet="ContractDataSet"
+                    persistencyKey=""
+                    useVariantManagement="true"
+                    useTablePersonalisation="true"
+                    header="{i18n>WorklistView.Table.Title.Contracts}"
+                    showRowCount="true"
+                    useExportToExcel="true"
+                    enableAutoBinding="true"
+                    visible="true">
+                <Table fixedLayout="false" growing="true" growingThreshold="100" >
+                    <ColumnListItem
+                            type="Navigation"
+                            press="onPress" />
+                </Table>
+            </smartTable:SmartTable>
+        </content>
+
+    </Page>
+
+</mvc:View>

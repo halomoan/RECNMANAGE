@@ -1,0 +1,31 @@
+<!--
+
+    Copyright (C) 2009-2017 SAP SE or an SAP affiliate company. All rights reserved.
+
+-->
+<mvc:View
+        xmlns:smartTable="sap.ui.comp.smarttable"
+        xmlns:mvc="sap.ui.core.mvc"
+        controllerName="fin.re.conmgmts1.controller.partnerblocks.MorePartner"
+        xmlns:l="sap.ui.layout"
+        xmlns="sap.m">
+
+    <smartTable:SmartTable
+            id="partnerList"
+            useTablePersonalisation="true"
+            tableType="ResponsiveTable"
+            editable="false"
+            showRowCount="true"
+            header="{i18n>Partner.TableHeader}"
+            entitySet="ContractPartnerDataSet"
+            class=""
+            useExportToExcel="false"
+            enableAutoBinding="true">
+        <smartTable:customToolbar>
+            <OverflowToolbar>
+                <Select id="partnerListSlice" class=""/>
+                <ToolbarSpacer/>
+            </OverflowToolbar>
+        </smartTable:customToolbar>
+    </smartTable:SmartTable>
+</mvc:View>

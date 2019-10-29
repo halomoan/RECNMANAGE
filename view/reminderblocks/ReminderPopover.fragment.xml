@@ -1,0 +1,22 @@
+<!--
+
+    Copyright (C) 2009-2017 SAP SE or an SAP affiliate company. All rights reserved.
+
+-->
+<core:FragmentDefinition
+        xmlns="sap.m"
+        xmlns:core="sap.ui.core"
+        xmlns:mvc="sap.ui.core.mvc">
+    <Popover title="{i18n>ObjectView.Label.Reminders}" modal="true">
+        <mvc:XMLView viewName="fin.re.conmgmts1.view.reminderblocks.ReminderPopoverList"></mvc:XMLView>
+        <footer>
+            <Toolbar>
+                <ToolbarSpacer/>
+                <Button id="close-reminder-popover" text="{i18n>Common.Dialog.Close}" press="onReminderPopoverClose"/>
+            </Toolbar>
+        </footer>
+    </Popover>
+</core:FragmentDefinition>
+
+
+
