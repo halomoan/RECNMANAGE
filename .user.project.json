@@ -10,8 +10,8 @@
       "isDefaultVersion": 0,
       "urlParameters": [
         {
-          "paramName": "",
-          "paramValue": ""
+          "paramName": "sap-ui-debug",
+          "paramValue": "true"
         }
       ],
       "hashParameter": "",
@@ -20,7 +20,7 @@
         "id": 8493388,
         "runnerId": "fiorirunner",
         "displayName": "Configuration",
-        "lastRunTimeStamp": 1572361338374
+        "lastRunTimeStamp": 1572587662656
       }
     }
   ]

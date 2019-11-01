@@ -1,0 +1,31 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:smartFilterBar="sap.ui.comp.smartfilterbar"
+	xmlns:smartTable="sap.ui.comp.smarttable" xmlns:html="http://www.w3.org/1999/xhtml"
+	xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1">
+	<Dialog title="{i18n>Dialog.Selection.REUnit}" contentWidth="100%" contentHeight="100%">
+		<content>
+			<smartTable:SmartTable
+                        id="contractsWithoutBasicSearch"
+                        smartFilterId="smartFilterBarWithoutBasicSearch"
+                        tableType="ResponsiveTable"
+                        editable="false"
+                        entitySet="CostCenterSearchSet"
+                        persistencyKey=""
+                        useVariantManagement="true"
+                        useTablePersonalisation="true"
+                        header="{i18n>WorklistView.Table.Title.Contracts}"
+                        showRowCount="true"
+                        useExportToExcel="true"
+                        enableAutoBinding="true"
+                        visible="true">
+                    <Table fixedLayout="false" growing="true" growingThreshold="100" >
+                        <ColumnListItem
+                                type="Navigation"
+                                press="onPress" />
+                    </Table>
+            </smartTable:SmartTable>
+		</content>
+		<endButton>
+			<Button text="{i18n>Common.Dialog.Close}" press="onCloseDialog"/>
+		</endButton>
+	</Dialog>
+</core:FragmentDefinition>

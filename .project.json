@@ -1,7 +1,7 @@
 {
   "mockpreview": {
-    "mockUri": "",
-    "metadataFilePath": "",
+    "mockUri": "/sap/opu/odata/sap/RE_CN_CONTRACT_ODATA_SRV/",
+    "metadataFilePath": "localService/metadata.xml",
     "loadJSONFiles": false,
     "loadCustomRequests": false,
     "mockRequestsFilePath": ""
@@ -16,5 +16,24 @@
   ],
   "build": {
     "buildRequired": true
-  }
+  },
+  "translation": {
+    "translationDomain": "",
+    "supportedLanguages": "",
+    "defaultLanguage": "",
+    "defaultI18NPropertyFile": "",
+    "resourceModelName": ""
+  },
+  "generation": [
+    {
+      "templateId": "ui5template.basicSAPUI5ApplicationComponent",
+      "templateVersion": "1.4.0",
+      "dateTimeStamp": "Fri, 01 Nov 2019 00:20:40 GMT"
+    },
+    {
+      "templateId": "servicecatalog.connectivityComponent",
+      "templateVersion": "0.0.0",
+      "dateTimeStamp": "Fri, 01 Nov 2019 05:25:18 GMT"
+    }
+  ]
 }

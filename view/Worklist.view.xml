@@ -27,7 +27,7 @@
         <f:header>
             <f:DynamicPageHeader>
                 <f:content>
-                    <smartFilterBar:SmartFilterBar id="smartFilterBarWithBasicSearch"
+            		<smartFilterBar:SmartFilterBar id="smartFilterBarWithBasicSearch"
                                                    enableBasicSearch="true"
                                                    entityType="ContractData" persistencyKey=""
                                                    visible="false" useToolbar="false">
@@ -40,6 +40,7 @@
                             <core:CustomData key="dateFormatSettings" value='\{"UTC":true\}'/>
                         </smartFilterBar:customData>
                     </smartFilterBar:SmartFilterBar>
+                   
 
                     <smartFilterBar:SmartFilterBar id="smartFilterBarWithoutBasicSearch"
                                                    enableBasicSearch="false"

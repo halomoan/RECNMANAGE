@@ -19,13 +19,16 @@ sap.ui.define([
 		 * Called when the worklist controller is instantiated.
 		 * @public
 		 */
-		onInit: function() {},
+		onInit: function() {
+		},
 
 		onAfterRendering: function() {
 			var view = this.getView();
 			var model = view.getModel();
 			model.attachRequestCompleted(function() {
 				var metaModel = model.getMetaModel();
+				
+				
 				var entity = metaModel.getODataEntitySet("ContractDataSet");
 				if (entity.hasOwnProperty("sap:searchable") && entity["sap:searchable"] === "true") {
 					view.byId("smartFilterBarWithBasicSearch").setVisible(true);

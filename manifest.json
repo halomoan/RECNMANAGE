@@ -1,184 +1,191 @@
 {
-    "_version": "1.2.0",
-    "sap.app": {
-        "_version": "1.2.0",
-        "id": "fin.re.conmgmts1",
-        "type": "application",
-        "resources": "resources.json",
-        "i18n": "i18n/i18n.properties",
-        "title": "{{appTitle}}",
-        "description": "{{appDescription}}",
-        "applicationVersion": {
-            "version": "5.100.3"
-        },
-        "ach": "RE-FX-FIO",
-        "dataSources": {
-            "mainService": {
-                "uri": "/sap/opu/odata/sap/RE_CN_CONTRACT_ODATA_SRV/",
-                "type": "OData",
-                "settings": {
-                    "odataVersion": "2.0",
-                    "localUri": "localService/metadata.xml"
-                }
-            }
-        },
-        "sourceTemplate": {
-            "id": "sap.ui.ui5-template-plugin.1worklist",
-            "version": "1.32.5"
-        }
-    },
-    "sap.fiori": {
-        "_version": "1.1.0",
-        "registrationIds": ["F2283"],
-        "archeType": "transactional"
-    },
-    "sap.ui": {
-        "_version": "1.2.0",
-        "technology": "UI5",
-        "icons": {
-            "icon": "sap-icon://task",
-            "favIcon": "",
-            "phone": "",
-            "phone@2": "",
-            "tablet": "",
-            "tablet@2": ""
-        },
-        "deviceTypes": {
-            "desktop": true,
-            "tablet": true,
-            "phone": true
-        },
-        "supportedThemes": [
-            "sap_hcb",
-            "sap_bluecrystal"
-        ]
-    },
-    "sap.ui5": {
-        "_version": "1.1.0",
-        "rootView": {
-            "viewName": "fin.re.conmgmts1.view.App",
-            "type": "XML",
-            "id": "app"
-        },
-        "dependencies": {
-            "minUI5Version": "1.52.2",
-            "libs": {
-                "sap.f": {
-                    "lazy": false
-                },
-                "sap.ui.core": {
-                    "lazy": false
-                },
-                "sap.m": {
-                    "lazy": false
-                },
-                "sap.ui.commons": {
-                    "lazy": false
-                },
-                "sap.ui.table": {
-                    "lazy": false
-                },
-                "sap.ui.fl": {
-                    "lazy": false
-                },
-                "sap.ui.comp": {
-                    "lazy": false
-                },
-                "sap.ui.layout": {
-                    "lazy": false
-                },
-                "sap.ui.unified": {
-                    "lazy": false
-                },
-                "sap.uxap": {
-                    "lazy": false
-                }
-            }
-        },
-        "contentDensities": {
-            "compact": true,
-            "cozy": true
-        },
-        "models": {
-            "i18n": {
-                "type": "sap.ui.model.resource.ResourceModel",
-                "settings": {
-                    "bundleName": "fin.re.conmgmts1.i18n.i18n"
-                }
-            },
-            "": {
-                "dataSource": "mainService",
-                "settings": {
-                    "metadataUrlParams": {
-                        "sap-documentation": "heading",
-                        "defaultBindingMode": "TwoWay",
-                        "defaultCountMode": "Inline",
-                        "refreshAfterChange": false
-                    },
-                    "useBatch": true
-                },
-                "preload": true
-            }
-        },
-        "config": {
-            "fullWidth": true
-        },
-        "routing": {
-            "config": {
-                "routerClass": "sap.m.routing.Router",
-                "viewType": "XML",
-                "viewPath": "fin.re.conmgmts1.view",
-                "controlId": "app",
-                "controlAggregation": "pages",
-                "bypassed": {
-                    "target": "notFound"
-                },
-                "async": true
-            },
-            "routes": [
-                {
-                    "pattern": "",
-                    "name": "worklist",
-                    "target": "worklist"
-                },
-                {
-                    "pattern": "contract/{companyCode}/{contractId}",
-                    "name": "contract",
-                    "target": "contract"
-                },
-                {
-                    "pattern": "system/{systemId}/contract/{companyCode}/{contractId}",
-                    "name": "systemContract",
-                    "target": "contract"
-                }
-            ],
-            "targets": {
-                "worklist": {
-                    "viewName": "Worklist",
-                    "viewId": "worklist",
-                    "viewLevel": 1
-                },
-                "contract": {
-                    "viewName": "Contract",
-                    "viewId": "contract",
-                    "viewLevel": 2
-                },
-                "contractNotFound": {
-                    "viewName": "ContractNotFound",
-                    "viewId": "contractNotFound"
-                },
-                "notFound": {
-                    "viewName": "NotFound",
-                    "viewId": "notFound"
-                }
-            }
-        },
-        "resources": {
-            "css": [
-                {
-                    "uri": "css/style.css"
-                }
-            ]
-        }
-    }
+	"_version": "1.2.0",
+	"sap.app": {
+		"_version": "1.2.0",
+		"id": "fin.re.conmgmts1",
+		"type": "application",
+		"resources": "resources.json",
+		"i18n": "i18n/i18n.properties",
+		"title": "{{appTitle}}",
+		"description": "{{appDescription}}",
+		"applicationVersion": {
+			"version": "5.100.3"
+		},
+		"ach": "RE-FX-FIO",
+		"dataSources": {
+			"mainService": {
+				"uri": "/sap/opu/odata/sap/RE_CN_CONTRACT_ODATA_SRV/",
+				"type": "OData",
+				"settings": {
+					"odataVersion": "2.0",
+					"localUri": "localService/metadata.xml"
+				}
+			}
+		},
+		"sourceTemplate": {
+			"id": "servicecatalog.connectivityComponent",
+			"version": "0.0.0"
+		}
+	},
+	"sap.fiori": {
+		"_version": "1.1.0",
+		"registrationIds": [
+			"F2283"
+		],
+		"archeType": "transactional"
+	},
+	"sap.ui": {
+		"_version": "1.2.0",
+		"technology": "UI5",
+		"icons": {
+			"icon": "sap-icon://task",
+			"favIcon": "",
+			"phone": "",
+			"phone@2": "",
+			"tablet": "",
+			"tablet@2": ""
+		},
+		"deviceTypes": {
+			"desktop": true,
+			"tablet": true,
+			"phone": true
+		},
+		"supportedThemes": [
+			"sap_hcb",
+			"sap_bluecrystal"
+		]
+	},
+	"sap.ui5": {
+		"_version": "1.1.0",
+		"rootView": {
+			"viewName": "fin.re.conmgmts1.view.App",
+			"type": "XML",
+			"id": "app"
+		},
+		"dependencies": {
+			"minUI5Version": "1.52.2",
+			"libs": {
+				"sap.f": {
+					"lazy": false
+				},
+				"sap.ui.core": {
+					"lazy": false
+				},
+				"sap.m": {
+					"lazy": false
+				},
+				"sap.ui.commons": {
+					"lazy": false
+				},
+				"sap.ui.table": {
+					"lazy": false
+				},
+				"sap.ui.fl": {
+					"lazy": false
+				},
+				"sap.ui.comp": {
+					"lazy": false
+				},
+				"sap.ui.layout": {
+					"lazy": false
+				},
+				"sap.ui.unified": {
+					"lazy": false
+				},
+				"sap.uxap": {
+					"lazy": false
+				}
+			}
+		},
+		"contentDensities": {
+			"compact": true,
+			"cozy": true
+		},
+		"models": {
+			"i18n": {
+				"type": "sap.ui.model.resource.ResourceModel",
+				"settings": {
+					"bundleName": "fin.re.conmgmts1.i18n.i18n"
+				}
+			},
+			"": {
+				"dataSource": "mainService",
+				"settings": {
+					"metadataUrlParams": {
+						"sap-documentation": "heading",
+						"defaultBindingMode": "TwoWay",
+						"defaultCountMode": "Inline",
+						"refreshAfterChange": false
+					},
+					"useBatch": true
+				},
+				"preload": true
+			}
+		},
+		"config": {
+			"fullWidth": true
+		},
+		"routing": {
+			"config": {
+				"routerClass": "sap.m.routing.Router",
+				"viewType": "XML",
+				"viewPath": "fin.re.conmgmts1.view",
+				"controlId": "app",
+				"controlAggregation": "pages",
+				"bypassed": {
+					"target": "notFound"
+				},
+				"async": true
+			},
+			"routes": [
+				{
+					"pattern": "",
+					"name": "createcntable",
+					"target": "createcntable"
+				},
+				{
+					"pattern": "contract/{companyCode}/{contractId}",
+					"name": "contract",
+					"target": "contract"
+				},
+				{
+					"pattern": "system/{systemId}/contract/{companyCode}/{contractId}",
+					"name": "systemContract",
+					"target": "contract"
+				}
+			],
+			"targets": {
+				"createcntable": {
+					"viewName": "CreateCNTable",
+					"viewId": "createcntable",
+					"viewLevel": 1
+				},
+				"worklist": {
+					"viewName": "Worklist",
+					"viewId": "worklist",
+					"viewLevel": 1
+				},
+				"contract": {
+					"viewName": "Contract",
+					"viewId": "contract",
+					"viewLevel": 2
+				},
+				"contractNotFound": {
+					"viewName": "ContractNotFound",
+					"viewId": "contractNotFound"
+				},
+				"notFound": {
+					"viewName": "NotFound",
+					"viewId": "notFound"
+				}
+			}
+		},
+		"resources": {
+			"css": [
+				{
+					"uri": "css/style.css"
+				}
+			]
+		}
+	}
 }
