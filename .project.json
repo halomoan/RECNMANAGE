@@ -1,6 +1,6 @@
 {
   "mockpreview": {
-    "mockUri": "/sap/opu/odata/sap/RE_CN_CONTRACT_ODATA_SRV/",
+    "mockUri": "/sap/opu/odata/sap/RE_CN_CONTRACT_ODATA_SRV",
     "metadataFilePath": "localService/metadata.xml",
     "loadJSONFiles": false,
     "loadCustomRequests": false,
@@ -33,7 +33,7 @@
     {
       "templateId": "servicecatalog.connectivityComponent",
       "templateVersion": "0.0.0",
-      "dateTimeStamp": "Fri, 01 Nov 2019 05:25:18 GMT"
+      "dateTimeStamp": "Sat, 02 Nov 2019 07:29:30 GMT"
     }
   ]
 }
