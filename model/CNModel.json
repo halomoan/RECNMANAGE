@@ -5,41 +5,23 @@
 			{	"isParent": true,
 				"reobjnr" : "PT001",
 				"reunit"  : "REC 1001/11000468",
-				"unitsize" : "1,700.00 SF",
+				"unitsize" : "0.00",
+				"uom"		: "SF",
 				"partnerid" : "1122",
 				"partner": "Extra Excellence (S) Pte Ltd / 101 Thomson Road / Singapore 307591",
 				"rows" : [
-					{	"isParent": false,
-						"reobjnr" : "1",
-						"reunit"  : "#07-03 to 04A",
-						"unitsize": "1,200.00 SF"
-						
-					},
-					{	"isParent": false,
-						"reobjnr" : "2",
-						"reunit"  : "#07-05 to 07",
-						"unitsize": "500.00 SF"
-					}
+				
 				]
 			},
 			{	"isParent": true,
 				"reobjnr" : "PT002",
 				"reunit"  : "REC 1001/11000469",
-				"unitsize" : "1,700.00 SF",
+				"unitsize" : "0.00",
+				"uom"		: "SF",
 				"partnerid" : "1122",
 				"partner": "Extra Excellence (S) Pte Ltd / 101 Thomson Road / Singapore 307591",
 				"rows" : [
-					{	"isParent": false,
-						"reobjnr" : "1",
-						"reunit"  : "#07-03 to 04A",
-						"unitsize": "1,200.00 SF"
-						
-					},
-					{	"isParent": false,
-						"reobjnr" : "2",
-						"reunit"  : "#07-05 to 07",
-						"unitsize": "500.00 SF"
-					}
+				
 				]
 			}
 		]

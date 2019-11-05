@@ -16,7 +16,8 @@ sap.ui.define([], function() {
 			if (!sValue) {
 				return "";
 			}
-			return parseFloat(sValue).toFixed(2);
+			var sNumber = "" + parseFloat(sValue).toFixed(2);
+			return sNumber.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 		},
 
 		reminderIcon: function(done, daysLeft) {

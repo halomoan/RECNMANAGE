@@ -2,21 +2,21 @@
 	xmlns="sap.m"
 	xmlns:core="sap.ui.core">
 	<TableSelectDialog
+		growingThreshold="20"
 		noDataText="No Products Found"
 		title="Select Product"
 		search="onUnitSearch"
-		confirm="handleClose"
-		cancel="handleClose"
+		confirm="onUnitSelect"
+		cancel="onUnitCancel"
 		items="{
 			path : '/RentalObjectSearchSet',
-			sorter : {
-				path : 'Xmetxt',
-				descending : false
-			},
 			filters: [
             	{path: 'Bukrs',operator: 'EQ',value1: '1001'},
-            	{path: 'Swenr',operator: 'EQ',value1: '1001'}
-        	]
+            	{path: 'Swenr',operator: 'EQ',value1: '1001'},
+            	{path: 'Rotype',operator: 'EQ',value1: 'RU'}
+        	],
+        	startIndex : 0, 
+    		top : 3000      
 		}">
 		<ColumnListItem>
 			<cells>
@@ -26,10 +26,16 @@
 				<ObjectIdentifier
 					title="{Xmetxt}"
 					 />
+				<ObjectNumber
+					number="{
+						path: 'ROSize',
+						formatter: '.formatter.numberUnit'
+					}"
+					unit="{ROUnit}"
+					state="Success" />
 				<ObjectIdentifier
 					title="{Rotype}"
-					 />
-			</cells>
+					 /></cells>
 		</ColumnListItem>
 		<columns>
 			<Column>
@@ -41,6 +47,12 @@
 				demandPopin="true" >
 				<header>
 					<Text text="Unit" />
+				</header>
+			</Column>
+			<Column hAlign="End"
+				demandPopin="true" >
+				<header>
+					<Text text="Size" />
 				</header>
 			</Column>
 			<Column

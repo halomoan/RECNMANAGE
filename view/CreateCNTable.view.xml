@@ -36,7 +36,7 @@
 		                <OverflowToolbar>
 								
 		                        <ToolbarSpacer/>
-		                        <Button text="Delete" press="onDelete"/>
+		                        <Button text="{i18n>Common.Button.Delete}" press="onDelete"/>
 		                        <Button text="Collapse" press="onCollapseAll"/>
 		                    	<Button text="Expand" press="onExpandFirstLevel"/>
 		                </OverflowToolbar>
@@ -60,7 +60,12 @@
 		                    <t:Column width="8rem" hAlign="End">
 		                        <Label text="Total Size"/>
 		                        <t:template>
-		                            <Text text="{CNModel>unitsize}"/>
+		                            <Text text="{
+												path: 'CNModel>unitsize',
+												formatter: '.formatter.numberUnit'
+												} {CNModel>uom}"
+					
+									/>
 		                        </t:template>
 		                    </t:Column>
 		                    <t:Column width="20rem" autoResizable="true" filterProperty="partner">
