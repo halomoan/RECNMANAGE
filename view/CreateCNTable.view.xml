@@ -68,10 +68,12 @@
 									/>
 		                        </t:template>
 		                    </t:Column>
-		                    <t:Column width="20rem" autoResizable="true" filterProperty="partner">
+		                    <t:Column width="auto" autoResizable="true">
 		                        <Label text="Customer"/>
 		                        <t:template>
-		                        	 <Label text="{CNModel>partner}" tooltip="{CNModel>partnerid}" wrapping="false"/>
+		                        	<HBox class="sapUiNoMargin" alignItems="Center" visible="{CNModel>isParent}">
+		                        	 <Link text="{= !${CNModel>partner} ? '&lt;Add BP&gt;' : ${CNModel>partner}}" tooltip="{= ${CNModel>partnerid} ? ${CNModel>partnerid} : ''}" press="onBusinessPartner" />
+		                        	</HBox>
 		                        </t:template>
 		                    </t:Column>
 		                </t:columns>

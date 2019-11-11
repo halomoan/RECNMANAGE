@@ -219,7 +219,11 @@ sap.ui.define([
 			//oEvent.getSource().getBinding("items").filter([]);
 		},
 		
-	
+		onBusinessPartner: function(oEvent){
+			//this._selectedIdx = oEvent.getSource().getParent().getIndex();
+			console.log(oEvent.oSource.getParent().getIndex());
+			
+		},
 		
 		_calcUnitSize: function(){
 			var oTreeTable = this.getView().byId("createCNTable");
