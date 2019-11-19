@@ -67,10 +67,21 @@
 									/>
 		                        </t:template>
 		                    </t:Column>
+<<<<<<< HEAD
 		                    <t:Column width="20rem" autoResizable="true" filterProperty="partner">
 		                        <Label text="{i18n>TreeTable.Column.Customer}"/>
+=======
+		                    <t:Column width="auto" autoResizable="true">
+		                        <Label text="Customer"/>
+>>>>>>> branch 'master' of https://github.com/halomoan/RECNMANAGE.git
 		                        <t:template>
+<<<<<<< HEAD
 		                        	 <Link text="{= ${CNModel>partner} ? ${CNModel>partner} : ${i18n>BP.New} }" href="" press="onBPManage" tooltip="{CNModel>partnerid}" target="_blank" visible="{CNModel>isParent}" />
+=======
+		                        	<HBox class="sapUiNoMargin" alignItems="Center" visible="{CNModel>isParent}">
+		                        	 <Link text="{= !${CNModel>partner} ? '&lt;Add BP&gt;' : ${CNModel>partner}}" tooltip="{= ${CNModel>partnerid} ? ${CNModel>partnerid} : ''}" press="onBusinessPartner" />
+		                        	</HBox>
+>>>>>>> branch 'master' of https://github.com/halomoan/RECNMANAGE.git
 		                        </t:template>
 		                    </t:Column>
 		                </t:columns>
