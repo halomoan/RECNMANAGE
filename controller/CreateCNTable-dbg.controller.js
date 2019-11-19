@@ -4,8 +4,9 @@ sap.ui.define([
 	"sap/ui/model/json/JSONModel",
 	'sap/ui/core/Fragment',
 	'sap/ui/model/Filter',
+	'sap/ui/model/FilterOperator',
 	"fin/re/conmgmts1/model/formatter"
-], function(BaseController,MessageBox,JSONModel,Fragment,Filter,formatter) {
+], function(BaseController,MessageBox,JSONModel,Fragment,Filter,FilterOperator,formatter) {
 	"use strict";
 
 	return BaseController.extend("fin.re.conmgmts1.controller.CreateCNTable", {
@@ -16,6 +17,12 @@ sap.ui.define([
 		 * @memberOf fin.re.conmgmts1.view.CreateCNTable
 		 */
 		onInit: function() {
+			
+			var oViewModel = new JSONModel({
+				addMainBP : true
+			});
+			this.setModel(oViewModel, "viewModel");
+			
 			var oModel = new JSONModel("/model/CNModel.json");
 			this.getView().setModel(oModel,"CNModel");
 			
@@ -219,7 +226,113 @@ sap.ui.define([
 			//oEvent.getSource().getBinding("items").filter([]);
 		},
 		
-	
+		onBPManage: function(oEvent){
+			
+			this._selectedIdx = oEvent.getSource().getParent().getIndex();
+			
+			var oView = this.getView();
+			var oViewModel = oView.getModel("viewModel");
+			var oTreeTable = oView.byId("createCNTable");
+			var oTableCtx = oTreeTable.getContextByIndex(this._selectedIdx);
+			var oData = oTableCtx.getProperty();
+			var sPath = oTableCtx.getPath();
+			
+			oViewModel.addMainBP = true;
+			for(var item in oData.bp){
+				if(oData.bp[item].bprole && oData.bp[item].bprole === this.getMainBPRole()){
+					oViewModel.addMainBP = false;
+				}
+			}
+			
+			oView.setModel(oViewModel,"viewModel");
+			
+				
+			if (!this._oManageBP) {
+				
+				this._oManageBP = sap.ui.xmlfragment("manageBP","fin.re.conmgmts1.fragment.manageBP", this);
+				this.getView().addDependent(this._oManageBP);
+			}
+
+			var oList = Fragment.byId("manageBP", "listBP");
+			var oItemTemplate = new sap.m.StandardListItem({
+				title:"{CNModel>bpname}",
+				description : "{CNModel>customerid}",
+				info : "{= ${CNModel>bprole} === 'BPR101' ? 'Main Customer' : 'Contact' }",
+				infoState: "{= ${CNModel>bprole} === 'BPR101' ? 'Success' : 'Warning' }"
+			});
+			oList.bindItems("CNModel>" + sPath + "/bp",oItemTemplate);
+			this._oEventSource = oEvent.getSource();
+			this._oManageBP.openBy(this._oEventSource);
+		},
+		
+		onBPMainAdd: function(){
+			
+			if (!this._oSelectMainBP) {
+				this._oSelectMainBP = sap.ui.xmlfragment("selectBP","fin.re.conmgmts1.fragment.selectBP", this);
+			}
+			
+			var aFilter = [];
+			
+			aFilter.push(new Filter("CompanyCode", FilterOperator.EQ, "1001"));
+			aFilter.push(new Filter("BusinessPartnerRole", FilterOperator.EQ, this.getMainBPRole()));
+			
+			
+			
+			//var oList = Fragment.byId("selectBP", "selectBP");
+			var oList = this._oSelectMainBP._oTable.getBinding("items");
+		    console.log(this._oSelectMainBP,oList);
+			
+			// var oBinding = oList.getModel();
+			// console.log(oList,oBinding);
+			// oBinding.filter(aFilter);
+			
+			this.getView().addDependent(this._oSelectMainBP);
+			jQuery.sap.syncStyleClass("sapUiSizeCompact", this.getView(), this._oSelectMainBP);
+			this._oSelectMainBP.open();
+		},
+		onBPAdd: function(oEvent){
+			var oItem = oEvent.getParameter("item");
+			
+			//console.log(oItem);
+			
+			this.onBPMainAdd();
+			
+			/*if (!this._oSelectBP) {
+				
+				this._oSelectBP = sap.ui.xmlfragment("selectBP","fin.re.conmgmts1.fragment.selectBP", this);
+				
+			}
+			
+			this.getView().addDependent(this._oSelectBP);
+			jQuery.sap.syncStyleClass("sapUiSizeCompact", this.getView(), this._oSelectBP);
+			this._oSelectBP.open();*/
+		},
+		onBPClose: function(){
+			this._oEventSource = null;
+			this._oManageBP.close();
+		},
+		
+		onBPSearch: function(oEvent) {
+			var sQuery = oEvent.getParameter("newValue");
+			console.log(sQuery);
+		},
+		
+		onBPSearchClose: function(oEvent){
+			this._oManageBP.openBy(this._oEventSource);
+		},
+		onBPNavBack: function(){
+			var oNavCon = Fragment.byId("manageBP", "navCon");
+			oNavCon.back();	
+		},
+
+	/*	onNavTomanageBP : function (oEvent) {
+			var oCtx = oEvent.getSource().getBindingContext();
+			var oNavCon = Fragment.byId("manageBP", "navCon");
+			var omanageBP = Fragment.byId("manageBP", "selectListBP");
+			oNavCon.to(omanageBP);
+			omanageBP.bindElement(oCtx.getPath());
+		},
+*/
 		
 		_calcUnitSize: function(){
 			var oTreeTable = this.getView().byId("createCNTable");

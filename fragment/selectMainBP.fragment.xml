@@ -1,0 +1,40 @@
+<core:FragmentDefinition
+	xmlns="sap.m"
+	xmlns:core="sap.ui.core">
+		<TableSelectDialog
+			search="onBPSearch"
+			confirm="onBPSearchClose"
+			cancel="onBPSearchClose"
+			items="{
+				path : '/MainPartnerSearchSet',
+				sorter : {
+					path : 'BusinessPartnerFullName',
+					descending : false
+				},
+				filters: [
+		        	{path: 'CompanyCode',operator: 'EQ',value1: '1001'},
+		        	{path: 'BusinessPartnerRole',operator: 'EQ',value1: 'BPR101'}
+		    	]
+			}">
+			<ColumnListItem>
+				<cells>
+				<ObjectIdentifier
+					title="{BusinessPartnerFullName}"
+					text="{BusinessPartner}" />
+				<Text text="{FormattedAddress}" />
+				</cells>	
+			</ColumnListItem>	
+			<columns>
+				<Column width="12em">
+					<header>
+						<Text text="Customer" />
+					</header>
+				</Column>
+				<Column width="12em">
+					<header>
+						<Text text="Address" />
+					</header>
+				</Column>
+			</columns>
+		</TableSelectDialog>
+</core:FragmentDefinition>

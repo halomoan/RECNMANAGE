@@ -44,7 +44,7 @@
 		               
 		                <t:columns>
 		                    <t:Column width="13rem">
-		                        <Label text="Unit"/>
+		                        <Label text="{i18n>TreeTable.Column.Unit}"/>
 		                        <t:template>
 		                        
 		                            <Text text="{CNModel>reunit}" wrapping="false"/>
@@ -58,20 +58,19 @@
 		                        </t:template>
 		                    </t:Column>
 		                    <t:Column width="8rem" hAlign="End">
-		                        <Label text="Total Size"/>
+		                        <Label text="{i18n>TreeTable.Column.TotalSize}"/>
 		                        <t:template>
 		                            <Text text="{
 												path: 'CNModel>unitsize',
 												formatter: '.formatter.numberUnit'
 												} {CNModel>uom}"
-					
 									/>
 		                        </t:template>
 		                    </t:Column>
 		                    <t:Column width="20rem" autoResizable="true" filterProperty="partner">
-		                        <Label text="Customer"/>
+		                        <Label text="{i18n>TreeTable.Column.Customer}"/>
 		                        <t:template>
-		                        	 <Label text="{CNModel>partner}" tooltip="{CNModel>partnerid}" wrapping="false"/>
+		                        	 <Link text="{= ${CNModel>partner} ? ${CNModel>partner} : ${i18n>BP.New} }" href="" press="onBPManage" tooltip="{CNModel>partnerid}" target="_blank" visible="{CNModel>isParent}" />
 		                        </t:template>
 		                    </t:Column>
 		                </t:columns>
