@@ -70,7 +70,7 @@
 		                    <t:Column width="20rem" autoResizable="true" filterProperty="partner">
 		                        <Label text="{i18n>TreeTable.Column.Customer}"/>
 		                        <t:template>
-		                        	 <Link text="{= ${CNModel>partner} ? ${CNModel>partner} : ${i18n>BP.New} }" href="" press="onBPManage" tooltip="{CNModel>partnerid}" target="_blank" visible="{CNModel>isParent}" />
+		                        	 <Link text="{= ${CNModel>bp/0/bpname} ? ${CNModel>bp/0/bpname} : ${i18n>BP.New} }" href="" press="onBPManage" tooltip="{CNModel>bp/0/bpid}" target="_blank" visible="{CNModel>isParent}" />
 		                        </t:template>
 		                    </t:Column>
 		                </t:columns>

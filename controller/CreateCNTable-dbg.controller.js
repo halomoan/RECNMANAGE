@@ -237,16 +237,19 @@ sap.ui.define([
 			var oData = oTableCtx.getProperty();
 			var sPath = oTableCtx.getPath();
 			
-			oViewModel.addMainBP = true;
+		
+			this._selectedODATA = oData;
+			
+			oViewModel.setProperty("/addMainBP",true);
+			
+		
 			for(var item in oData.bp){
-				if(oData.bp[item].bprole && oData.bp[item].bprole === this.getMainBPRole()){
-					oViewModel.addMainBP = false;
+				if(oData.bp[item].bprole === this.getMainBPRole()){
+					oViewModel.setProperty("/addMainBP",false);
 				}
 			}
 			
-			oView.setModel(oViewModel,"viewModel");
 			
-				
 			if (!this._oManageBP) {
 				
 				this._oManageBP = sap.ui.xmlfragment("manageBP","fin.re.conmgmts1.fragment.manageBP", this);
@@ -256,20 +259,13 @@ sap.ui.define([
 			var oList = Fragment.byId("manageBP", "listBP");
 			var oItemTemplate = new sap.m.StandardListItem({
 				title:"{CNModel>bpname}",
-				description : "{CNModel>customerid}",
-				info : "{= ${CNModel>bprole} === 'BPR101' ? 'Main Customer' : 'Contact' }",
-				infoState: "{= ${CNModel>bprole} === 'BPR101' ? 'Success' : 'Warning' }"
+				description : "{CNModel>bpid}",
+				info : "{= ${CNModel>bprole} === '" + this.getMainBPRole() + "' ? 'Main Customer' : 'Contact' }",
+				infoState: "{= ${CNModel>bprole} === '" + this.getMainBPRole() + "' ? 'Success' : 'Warning' }"
 			});
 			oList.bindItems("CNModel>" + sPath + "/bp",oItemTemplate);
 			this._oEventSource = oEvent.getSource();
 			this._oManageBP.openBy(this._oEventSource);
-		},
-		
-		onBPMainAdd: function(){
-			
-		
-			
-		
 		},
 		onBPAdd: function(oEvent){
 			
@@ -321,8 +317,9 @@ sap.ui.define([
 			
 			var sQuery = oEvent.getParameter("value");
 			
-			var aFilter = [];
 			if (sQuery) {
+				var aFilter = [];
+				sQuery = sQuery.toUpperCase();
 				aFilter.push(new Filter("BusinessPartnerFullName", FilterOperator.Contains, sQuery));
 				aFilter.push(new Filter("BusinessPartner", FilterOperator.Contains, sQuery));
 				
@@ -331,13 +328,54 @@ sap.ui.define([
 			
 			}
 			
-			
-			
-			
 		},
 		
 		onBPSearchClose: function(oEvent){
 			
+			var aContexts = oEvent.getParameter("selectedContexts");
+			var oData = this._selectedODATA;
+			var oThis = this;
+			if (aContexts && aContexts.length) {
+			
+				aContexts.map(function(oContext) {	
+					var bp = { "bpid" : oContext.getObject().BusinessPartner,
+					  "bprole": oContext.getObject().BusinessPartnerRole,
+					  "customerid" : oContext.getObject().Customer,
+					  "bpname" : oContext.getObject().BusinessPartnerFullName
+					};
+					
+					if (oContext.getObject().BusinessPartnerRole === oThis.getMainBPRole()){
+						
+						if (oData.bp.length > 0) {
+							if (oData.bp[0].bprole === oThis.getMainBPRole()){
+								oData.splice(0,1,bp);
+							} else {
+								oData.splice(0,0,bp);
+							}
+						} else {
+							oData.push(bp);
+						}
+						// var bHasMainBPRole = false;
+						// for(var idx in oData.bp) {
+						// 	if (oData.bp[idx].bprole === oThis.getMainBPRole()){
+						// 		bHasMainBPRole = true;
+						// 	}
+						// }
+						// if (!bHasMainBPRole) {
+						// 	oThis._selectedODATA.bp.splice(0,0,bp);
+						// } else {
+						// 	console.log("Failed");
+						// }
+					} else {
+						oThis._selectedODATA.bp.push(bp);
+					}
+				});
+				//var oList = Fragment.byId("manageBP", "listBP");
+				//oList.getBinding("items").refresh();
+				var oModel = this.getView().getModel("CNModel");
+				oModel.refresh();
+			}
+			oEvent.getSource().getBinding("items").filter([]);
 			
 			this._oManageBP.openBy(this._oEventSource);
 		},

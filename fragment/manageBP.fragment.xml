@@ -15,7 +15,7 @@
 				</List>
 				<footer>
 					<Toolbar>
-						<MenuButton text="{= ${viewModel>\addMainBP} ? 'Add Main Customer' : 'Add Other Contact'}" buttonMode="Split" type="Accept" defaultAction="onBPAdd" useDefaultActionOnly="true">
+						<MenuButton text="{= ${viewModel>/addMainBP} ? 'Add Main Customer' : 'Add Other Contact'}" buttonMode="Split" type="Default" defaultAction="onBPAdd" useDefaultActionOnly="true">
 						<menu>
 							<Menu itemSelected="onBPAdd">
 								<items>

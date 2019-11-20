@@ -19,17 +19,29 @@
 					title="{BusinessPartnerFullName}"
 					text="{BusinessPartner}" />
 				<Text text="{FormattedAddress}" />
+				<Text text="{Country}" />
+				<Text text="{EmailAddress}" />
 				</cells>	
 			</ColumnListItem>	
 			<columns>
-				<Column width="12em">
+				<Column width="auto">
 					<header>
 						<Text text="Customer" />
 					</header>
 				</Column>
-				<Column width="12em">
+				<Column width="auto">
 					<header>
 						<Text text="Address" />
+					</header>
+				</Column>
+				<Column width="auto">
+					<header>
+						<Text text="Country" />
+					</header>
+				</Column>
+				<Column width="auto">
+					<header>
+						<Text text="Email" />
 					</header>
 				</Column>
 			</columns>

@@ -9,23 +9,7 @@
 				"uom"		: "SF",
 				"partnerid" : "1122",
 				"partner" : "",
-				"bp": [
-					{ "bpid" : "1234",
-					  "bprole": "BPR101",
-					  "customerid" : "CUST001",
-					  "bpname" : "Extra Exceleence"
-					},
-					{ "bpid" : "112233",
-					  "bprole": "LP101",
-					  "customerid" : "CUST002",
-					  "bpname" : "Andy"
-					},
-					{ "bpid" : "2122",
-					  "bprole": "LP101",
-					  "customerid" : "CUST003",
-					  "bpname" : "My Friend"
-					}
-				],
+				"bp": [],
 				"rows" : [
 				
 				]
