@@ -48,6 +48,9 @@ sap.ui.define([
 		
 		getMainBPRole : function() {
 			return "BPR101";
+		},
+		getOtherBPRole : function(){
+			return "BPL002";
 		}
 
 	});

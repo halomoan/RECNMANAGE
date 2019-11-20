@@ -26,7 +26,7 @@ sap.ui.define([
 			var oModel = new JSONModel("/model/CNModel.json");
 			this.getView().setModel(oModel,"CNModel");
 			
-			this._oText = this.getOwnerComponent().getModel("i18n").getResourceBundle();
+			
 			
 		/*	var oBindingModel = new sap.ui.model.Binding(oModel,"/",oModel.getContext("/"));
 			oBindingModel.attachChange(function() {
@@ -267,45 +267,50 @@ sap.ui.define([
 		
 		onBPMainAdd: function(){
 			
-			if (!this._oSelectMainBP) {
-				this._oSelectMainBP = sap.ui.xmlfragment("selectBP","fin.re.conmgmts1.fragment.selectBP", this);
-			}
+		
 			
-			var aFilter = [];
-			
-			aFilter.push(new Filter("CompanyCode", FilterOperator.EQ, "1001"));
-			aFilter.push(new Filter("BusinessPartnerRole", FilterOperator.EQ, this.getMainBPRole()));
-			
-			
-			
-			//var oList = Fragment.byId("selectBP", "selectBP");
-			var oList = this._oSelectMainBP._oTable.getBinding("items");
-		    console.log(this._oSelectMainBP,oList);
-			
-			// var oBinding = oList.getModel();
-			// console.log(oList,oBinding);
-			// oBinding.filter(aFilter);
-			
-			this.getView().addDependent(this._oSelectMainBP);
-			jQuery.sap.syncStyleClass("sapUiSizeCompact", this.getView(), this._oSelectMainBP);
-			this._oSelectMainBP.open();
+		
 		},
 		onBPAdd: function(oEvent){
-			var oItem = oEvent.getParameter("item");
 			
-			//console.log(oItem);
-			
-			this.onBPMainAdd();
-			
-			/*if (!this._oSelectBP) {
-				
+			if (!this._oSelectBP) {
 				this._oSelectBP = sap.ui.xmlfragment("selectBP","fin.re.conmgmts1.fragment.selectBP", this);
-				
 			}
+			
+			var oItem = oEvent.getParameter("item");
+			var aFilters = [];
+			aFilters.push(new Filter("CompanyCode", FilterOperator.EQ, "1001"));
+			if (oItem) {
+				if (oItem.getText() === "Add Main Customer") {
+					aFilters.push(new Filter("BusinessPartnerRole", FilterOperator.EQ, this.getMainBPRole()));
+				} else {
+					aFilters.push(new Filter("BusinessPartnerRole", FilterOperator.EQ, this.getOtherBPRole()));
+				}
+			} else {
+				if (oEvent.getSource().getText() === "Add Main Customer") {
+					aFilters.push(new Filter("BusinessPartnerRole", FilterOperator.EQ, this.getMainBPRole()));
+				} else {
+					aFilters.push(new Filter("BusinessPartnerRole", FilterOperator.EQ, this.getOtherBPRole()));
+				}
+			}
+			
+
+			var oTable = Fragment.byId("selectBP", "selectBP-table");
+			var oTemplate = oTable.getBindingInfo("items").template;
+			
+			var oBindingInfo = {
+				path: "/MainPartnerSearchSet",
+				template: oTemplate,
+				filters: aFilters
+			};
+			
+			oTable.bindAggregation("items", oBindingInfo);
 			
 			this.getView().addDependent(this._oSelectBP);
 			jQuery.sap.syncStyleClass("sapUiSizeCompact", this.getView(), this._oSelectBP);
-			this._oSelectBP.open();*/
+			this._oSelectBP.open();
+			
+		
 		},
 		onBPClose: function(){
 			this._oEventSource = null;
@@ -313,11 +318,27 @@ sap.ui.define([
 		},
 		
 		onBPSearch: function(oEvent) {
-			var sQuery = oEvent.getParameter("newValue");
-			console.log(sQuery);
+			
+			var sQuery = oEvent.getParameter("value");
+			
+			var aFilter = [];
+			if (sQuery) {
+				aFilter.push(new Filter("BusinessPartnerFullName", FilterOperator.Contains, sQuery));
+				aFilter.push(new Filter("BusinessPartner", FilterOperator.Contains, sQuery));
+				
+				var oBinding = oEvent.getSource().getBinding("items");
+				oBinding.filter(new Filter(aFilter,false));
+			
+			}
+			
+			
+			
+			
 		},
 		
 		onBPSearchClose: function(oEvent){
+			
+			
 			this._oManageBP.openBy(this._oEventSource);
 		},
 		onBPNavBack: function(){

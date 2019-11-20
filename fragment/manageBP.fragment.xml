@@ -19,8 +19,8 @@
 						<menu>
 							<Menu itemSelected="onBPAdd">
 								<items>
-									<MenuItem text="Add Main Customer " icon="sap-icon://edit"/>
-									<MenuItem text="Add Other Contact " icon="sap-icon://edit"/>
+									<MenuItem text="Add Main Customer" icon="sap-icon://edit"/>
+									<MenuItem text="Add Other Contact" icon="sap-icon://edit"/>
 								</items>
 							</Menu>
 						</menu>
