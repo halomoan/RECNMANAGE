@@ -9,7 +9,7 @@
 		<NavContainer
 			id="navCon">
 			<Page
-				id="overview"
+				id="master"
 				title="{i18n>Dialog.Selection.BP}">
 				<List id="listBP" mode="Delete" delete="onBPDelete">
 				</List>
@@ -19,8 +19,8 @@
 						<menu>
 							<Menu itemSelected="onBPAdd">
 								<items>
-									<MenuItem text="Add Main Customer" icon="sap-icon://edit"/>
-									<MenuItem text="Add Other Contact" icon="sap-icon://edit"/>
+									<MenuItem text="Add Main Customer" icon="sap-icon://customer"/>
+									<MenuItem text="Add Other Contact" icon="sap-icon://add-contact"/>
 								</items>
 							</Menu>
 						</menu>
@@ -36,13 +36,17 @@
 				id="detail"
 				showNavButton="true"
 				navButtonPress="onBPNavBack"
-				title="Product">
+				title="{BusinessPartnerRoleText}">
 				<ObjectHeader
-					title="{Name}" >
+					title="{BusinessPartnerFullName}" >
 					<attributes>
-						<ObjectAttribute text="{WeightMeasure} {WeightUnit}" />
-						<ObjectAttribute text="{Width} x {Depth} x {Height} {DimUnit}" />
-						<ObjectAttribute text="{Description}" />
+						<ObjectAttribute title="BP Number" text="{BusinessPartner}" />
+						<ObjectAttribute title="Address" text="{FormattedAddress}" />
+						<ObjectAttribute title="Country" text="{Country}" />
+						<ObjectAttribute title="House Number" text="{HouseNumber}" />
+						<ObjectAttribute title="Phone Number" text="{PhoneNumber} - {PhoneNumberExtension}" />
+						<ObjectAttribute title="Email" text="{EmailAddress}" />
+						
 					</attributes>
 				</ObjectHeader>
 			</Page>

@@ -12,7 +12,12 @@
 				sorter : {
 					path : 'BusinessPartnerFullName',
 					descending : false
-				}
+				},
+				filters: [
+					{path: 'BusinessPartner', operator: 'EQ', value1: '0'},
+					{path: 'BusinessPartnerRole', operator: 'EQ', value1: '0'}
+				]
+				
 			}">
 			<ColumnListItem>
 				<cells>

@@ -229,7 +229,7 @@ sap.ui.define([
 		onBPManage: function(oEvent){
 			
 			this._selectedIdx = oEvent.getSource().getParent().getIndex();
-			
+			var oThis = this;
 			var oView = this.getView();
 			var oViewModel = oView.getModel("viewModel");
 			var oTreeTable = oView.byId("createCNTable");
@@ -261,7 +261,15 @@ sap.ui.define([
 				title:"{CNModel>bpname}",
 				description : "{CNModel>bpid}",
 				info : "{= ${CNModel>bprole} === '" + this.getMainBPRole() + "' ? 'Main Customer' : 'Contact' }",
-				infoState: "{= ${CNModel>bprole} === '" + this.getMainBPRole() + "' ? 'Success' : 'Warning' }"
+				infoState: "{= ${CNModel>bprole} === '" + this.getMainBPRole() + "' ? 'Success' : 'Warning' }",
+				type: "Active",
+				press: [oThis.onNavToBP ,oThis],
+				customData: [
+				new sap.ui.core.CustomData({
+					key : "bpid",
+					value: "{CNModel>bpid}"
+					})
+				]
 			});
 			oList.bindItems("CNModel>" + sPath + "/bp",oItemTemplate);
 			this._oEventSource = oEvent.getSource();
@@ -395,14 +403,17 @@ sap.ui.define([
 			oNavCon.back();	
 		},
 
-	/*	onNavTomanageBP : function (oEvent) {
-			var oCtx = oEvent.getSource().getBindingContext();
+		onNavToBP : function (oEvent) {
+			//var oCtx = oEvent.getSource().getBindingContext();
+			var oItem = oEvent.getSource();
+			var sBPId = oItem.data("bpid");
+			
 			var oNavCon = Fragment.byId("manageBP", "navCon");
-			var omanageBP = Fragment.byId("manageBP", "selectListBP");
+			var omanageBP = Fragment.byId("manageBP", "detail");
 			oNavCon.to(omanageBP);
-			omanageBP.bindElement(oCtx.getPath());
+			omanageBP.bindElement("/MainPartnerSearchSet('" + sBPId + "')");
 		},
-*/
+
 		
 		_calcUnitSize: function(){
 			var oTreeTable = this.getView().byId("createCNTable");
@@ -411,14 +422,20 @@ sap.ui.define([
 			for(var i = 0; i < 	oData.catalog.createCNTable.rows.length; i++){
 				var oRow1 = oData.catalog.createCNTable.rows[i];
 				
-				var iTotalSize = 0.00;
+				var fTotalSize = 0.00;
 				var sUOM = "";
+				var fUnitSize = 0.00;
+				
 				for(var j = 0; j < oRow1.rows.length; j++ ) {
-					//console.log(oRow1.rows[j]);
-					iTotalSize = iTotalSize + parseFloat(oRow1.rows[j].unitsize);
-					sUOM = oRow1.rows[j].uom;
+				
+					fUnitSize = parseFloat(oRow1.rows[j].unitsize);
+					if (fUnitSize > 0 ) {
+						fTotalSize = fTotalSize + parseFloat(oRow1.rows[j].unitsize);
+						sUOM = oRow1.rows[j].uom;
+					} 
+					
 				}
-				oRow1.unitsize = iTotalSize;
+				oRow1.unitsize = fTotalSize;
 				oRow1.uom = sUOM;
 			}
 		}
