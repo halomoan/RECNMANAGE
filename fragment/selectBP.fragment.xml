@@ -3,6 +3,7 @@
 	xmlns:core="sap.ui.core">
 		<TableSelectDialog
 			id = "selectBP"
+			title="{= ${viewModel>/addMainBP} ? ${i18n>Dialog.Selection.BP} : ${i18n>Dialog.Selection.BPContact}}"
 			search="onBPSearch"
 			confirm="onBPSearchClose"
 			cancel="onBPSearchClose"

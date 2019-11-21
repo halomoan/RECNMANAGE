@@ -348,12 +348,12 @@ sap.ui.define([
 						
 						if (oData.bp.length > 0) {
 							if (oData.bp[0].bprole === oThis.getMainBPRole()){
-								oData.splice(0,1,bp);
+								oData.bp.splice(0,1,bp);
 							} else {
-								oData.splice(0,0,bp);
+								oData.bp.splice(0,0,bp);
 							}
 						} else {
-							oData.push(bp);
+							oData.bp.push(bp);
 						}
 						// var bHasMainBPRole = false;
 						// for(var idx in oData.bp) {
@@ -378,6 +378,17 @@ sap.ui.define([
 			oEvent.getSource().getBinding("items").filter([]);
 			
 			this._oManageBP.openBy(this._oEventSource);
+		},
+		onBPDelete: function(oEvent){
+			var oItem = oEvent.getParameter("listItem");
+			var idx = oItem.getParent().indexOfItem(oItem);	
+			var oModel = this.getView().getModel("CNModel");
+			var oData = this._selectedODATA;
+			
+			oData.bp.splice(idx,1);
+			oModel.refresh();
+			
+
 		},
 		onBPNavBack: function(){
 			var oNavCon = Fragment.byId("manageBP", "navCon");
