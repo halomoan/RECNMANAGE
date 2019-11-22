@@ -98,7 +98,20 @@
 		                           <DatePicker value="{CNModel>enddate}" valueFormat="yyyy-MM-dd" visible="{CNModel>isParent}"/>
 		                        </t:template>
 		                    </t:Column>
-		                    
+		                     <t:Column width="10rem" resizable="false">
+		                        <Label text="{i18n>TreeTable.Column.BaseRent}"/>
+		                        <t:template>
+		                           <Input
+										id="productInput"
+										type="Text"
+										
+										showSuggestion="true"
+										showValueHelp="true"
+										valueHelpRequest="onVHBaseRent"
+										value="{CNModel>baserent/unitprice}" >
+									</Input>
+		                        </t:template>
+		                    </t:Column>
 		                </t:columns>
                 	 </t:TreeTable>	
                 </f:content>

@@ -11,10 +11,14 @@
 				"enddate" : "2020-12-20",
 				"indsector": "",
 				"industry" : "",
+				"baserent": {
+					"unitprice" : 0.00,
+					"formula": "B",
+					"validfrom": "2019-01-20",
+					"validto" : "2020-12-20"
+				},
 				"bp": [],
-				"rows" : [
-				
-				]
+				"rows" : []
 			},
 			{	"isParent": true,
 				"reobjnr" : "PT002",
@@ -26,12 +30,9 @@
 				"indsector": "",
 				"industry" : "",
 				"bp" : [],
-				"rows" : [
-				
-				]
+				"rows" : []
 			}
 		]
-		
 	}
   	
   }

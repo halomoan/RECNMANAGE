@@ -26,6 +26,9 @@ sap.ui.define([
 			var oModel = new JSONModel("/model/CNModel.json");
 			this.getView().setModel(oModel,"CNModel");
 			
+			var oCondFormModel = new JSONModel("/model/CondFModel.json");
+			this.getView().setModel(oCondFormModel,"CondFModel");
+			
 			
 			
 		/*	var oBindingModel = new sap.ui.model.Binding(oModel,"/",oModel.getContext("/"));
@@ -496,7 +499,36 @@ sap.ui.define([
 			omanageBP.bindElement("/PartnerSearchSet('" + sBPId + "')");
 		},
 
+		onVHBaseRent: function(oEvent){
+			if (!this._oManageBaseRent) {
+				
+				this._oManageBaseRent = sap.ui.xmlfragment("manageBaseRent","fin.re.conmgmts1.fragment.manageBaseRent", this);
+				this.getView().addDependent(this._oManageBaseRent);
+			}
+			
+			this._selectedIdx = oEvent.getSource().getParent().getIndex();
+			
+			var oView = this.getView();
+			var oViewModel = oView.getModel("viewModel");
+			var oTreeTable = oView.byId("createCNTable");
+			var oTableCtx = oTreeTable.getContextByIndex(this._selectedIdx);
+			var oData = oTableCtx.getProperty();
+			this._selectedODATA = oData;
+			
+			
+			
+			oViewModel.setProperty("/baserent",oData.baserent);
+			
+			console.log(oData,oViewModel);
 		
+
+			this._oEventSource = oEvent.getSource();
+			this._oManageBaseRent.openBy(this._oEventSource);
+		},
+		onBaseRentClose: function(){
+			this._oEventSource = null;
+			this._oManageBaseRent.close();
+		},
 		_calcUnitSize: function(){
 			var oTreeTable = this.getView().byId("createCNTable");
 			var oData = oTreeTable.getBinding("rows").getModel().getData();

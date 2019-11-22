@@ -1,0 +1,103 @@
+<core:FragmentDefinition
+	xmlns="sap.m"
+	xmlns:f="sap.ui.layout.form"
+	xmlns:l="sap.ui.layout"
+	xmlns:core="sap.ui.core">
+	<Popover
+		showHeader="false"
+		contentWidth="500px"
+		contentHeight="420px"
+		placement="Bottom" >
+		<NavContainer
+			id="navCon">
+			<Page
+				id="master"
+				title="{i18n>Dialog.Manage.BaseRent}">
+				<VBox class="sapUiSmallMargin">
+					<f:SimpleForm id="SimpleFormToolbar"
+						editable="true"
+						layout="ResponsiveGridLayout"
+						labelSpanXL="4"
+						labelSpanL="3"
+						labelSpanM="4"
+						labelSpanS="12"
+						adjustLabelSpan="false"
+						emptySpanXL="0"
+						emptySpanL="4"
+						emptySpanM="0"
+						emptySpanS="0"
+						columnsXL="2"
+						columnsL="1"
+						columnsM="1"
+						singleContainerFullSize="false"
+						ariaLabelledBy="Title1" >
+						<f:toolbar>
+							<Toolbar>
+								<Title id="BaseRentTitle" text="Condition" level="H4" titleStyle="H4"/>
+								<ToolbarSpacer />
+								<Button icon="sap-icon://settings" text="Terms"/>
+								<Button icon="sap-icon://drop-down-list" />
+							</Toolbar>
+						</f:toolbar>
+						<f:content>
+							
+							<Label text="Unit Price" />
+							<Input type="Number" value="{viewModel>/baserent/unitprice}">
+								 <layoutData>
+								<l:GridData span="XL8 L1 M3 S4" />
+								</layoutData>
+							</Input>
+							<Label text="Valid From/To"/>
+							 <DatePicker value="{viewModel>/baserent/validfrom}" valueFormat="yyyy-MM-dd">
+							 <layoutData>
+								<l:GridData span="XL8 L1 M3 S4" />
+							</layoutData>
+							 </DatePicker>
+							 <DatePicker value="{viewModel>/baserent/validto}" valueFormat="yyyy-MM-dd">
+							 <layoutData>
+								<l:GridData span="XL8 L1 M3 S4" />
+							</layoutData>
+							 </DatePicker>
+							 <Label text="Formula"/>
+							 <ComboBox
+								showSecondaryValues= "true"
+								items="{
+									path: 'CondFModel>/formulas',
+									sorter: { path: 'key' }
+								}">
+								<core:ListItem key="{CondFModel>key}" text="{CondFModel>text}" additionalText = "{CondFModel>key}"/>
+							</ComboBox>
+		                        
+						</f:content>
+					</f:SimpleForm>	
+				</VBox>		
+				<footer>
+					<Toolbar>
+						<ToolbarSpacer/>
+						<Button
+							text="{i18n>Common.Dialog.Close}"
+							press="onBaseRentClose" />
+					</Toolbar>
+				</footer>
+			</Page>
+			<Page
+				id="detail"
+				showNavButton="true"
+				navButtonPress="onBPNavBack"
+				title="{BusinessPartnerRoleText}">
+				<ObjectHeader
+					title="{BusinessPartnerFullName}" >
+					<attributes>
+						<ObjectAttribute title="BP Number" text="{BusinessPartner}" />
+						<ObjectAttribute title="Address" text="{FormattedAddress}" />
+						<ObjectAttribute title="Country" text="{Country}" />
+						<ObjectAttribute title="House Number" text="{HouseNumber}" />
+						<ObjectAttribute title="Phone Number" text="{PhoneNumber} - {PhoneNumberExtension}" />
+						<ObjectAttribute title="Email" text="{EmailAddress}" />
+						
+					</attributes>
+				</ObjectHeader>
+			</Page>
+		</NavContainer>
+	</Popover>
+</core:FragmentDefinition>
