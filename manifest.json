@@ -14,7 +14,7 @@
 		"ach": "RE-FX-FIO",
 		"dataSources": {
 			"mainService": {
-				"uri": "/sap/opu/odata/sap/RE_CN_CONTRACT_ODATA_SRV/",
+				"uri": "/sap/opu/odata/sap/ZRE_CN_ODATA_SRV/",
 				"type": "OData",
 				"settings": {
 					"odataVersion": "2.0",

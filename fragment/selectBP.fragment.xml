@@ -4,11 +4,12 @@
 		<TableSelectDialog
 			id = "selectBP"
 			title="{= ${viewModel>/addMainBP} ? ${i18n>Dialog.Selection.BP} : ${i18n>Dialog.Selection.BPContact}}"
+			noDataText="{i18n>Error.NoData}"
 			search="onBPSearch"
 			confirm="onBPSearchClose"
 			cancel="onBPSearchClose"
 			items="{
-				path : '/MainPartnerSearchSet',
+				path : '/PartnerSearchSet',
 				sorter : {
 					path : 'BusinessPartnerFullName',
 					descending : false
@@ -16,8 +17,9 @@
 				filters: [
 					{path: 'BusinessPartner', operator: 'EQ', value1: '0'},
 					{path: 'BusinessPartnerRole', operator: 'EQ', value1: '0'}
-				]
-				
+				],
+				startIndex : 0, 
+    			top : 30      
 			}">
 			<ColumnListItem>
 				<cells>

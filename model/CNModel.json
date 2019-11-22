@@ -4,11 +4,13 @@
 		"rows" : [
 			{	"isParent": true,
 				"reobjnr" : "PT001",
-				"reunit"  : "REC 1001/11000468",
+				"reunit"  : "#02-26 to 27 Bambu (Singapore) Pte Ltd",
 				"unitsize" : "0.00",
 				"uom"		: "SF",
-				"partnerid" : "1122",
-				"partner" : "",
+				"startdate" : "2019-01-20",
+				"enddate" : "2020-12-20",
+				"indsector": "",
+				"industry" : "",
 				"bp": [],
 				"rows" : [
 				
@@ -16,11 +18,13 @@
 			},
 			{	"isParent": true,
 				"reobjnr" : "PT002",
-				"reunit"  : "REC 1001/11000469",
+				"reunit"  : "",
 				"unitsize" : "0.00",
 				"uom"		: "SF",
-				"partnerid" : "1122",
-				"partner": "Extra Excellence (S) Pte Ltd / 101 Thomson Road / Singapore 307591",
+				"startdate" : "2019-02-21",
+				"enddate" : "2020-12-21",
+				"indsector": "",
+				"industry" : "",
 				"bp" : [],
 				"rows" : [
 				

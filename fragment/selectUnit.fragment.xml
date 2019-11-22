@@ -2,21 +2,22 @@
 	xmlns="sap.m"
 	xmlns:core="sap.ui.core">
 	<TableSelectDialog
+		id = "selectRO"
 		growingThreshold="20"
-		noDataText="No Products Found"
-		title="Select Product"
+		noDataText="{i18n>Error.NoData}"
+		title="{i18n>Dialog.Selection.REUnit}"
 		search="onUnitSearch"
 		confirm="onUnitSelect"
 		cancel="onUnitCancel"
 		items="{
 			path : '/RentalObjectSearchSet',
 			filters: [
-            	{path: 'Bukrs',operator: 'EQ',value1: '1001'},
-            	{path: 'Swenr',operator: 'EQ',value1: '1001'},
+            	{path: 'Bukrs',operator: 'EQ',value1: '0'},
+            	{path: 'Swenr',operator: 'EQ',value1: '0'},
             	{path: 'Rotype',operator: 'EQ',value1: 'RU'}
         	],
         	startIndex : 0, 
-    		top : 3000      
+    		top : 30      
 		}">
 		<ColumnListItem>
 			<cells>

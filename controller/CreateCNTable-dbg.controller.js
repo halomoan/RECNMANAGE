@@ -104,6 +104,7 @@ sap.ui.define([
 								oRow = oData.catalog.createCNTable.rows[i];
 								if (oRow.reobjnr === oDeleteItem.reobjnr ){
 									oData.catalog.createCNTable.rows.splice(i,1);
+									this._genREText(oRow);
 									bDeleted = true;
 								}
 							}
@@ -115,6 +116,7 @@ sap.ui.define([
 									if (oRow.rows[j].reobjnr === oDeleteItem.reobjnr ){
 										oRow.rows.splice(j,1);
 										bDeleted = true;
+										this._genREText(oRow);
 									}
 								
 								}
@@ -126,6 +128,7 @@ sap.ui.define([
 			
 			}
 			if (bDeleted) {
+				this._calcUnitSize();
 				oModel.refresh();
 				oTreeTable.clearSelection();
 			}
@@ -133,6 +136,7 @@ sap.ui.define([
 			
 		},
 		
+	
 		onCollapseAll: function() {
 			var oTreeTable = this.byId("createCNTable");
 			oTreeTable.collapseAll();
@@ -150,10 +154,25 @@ sap.ui.define([
 			this._selectedIdx = oEvent.getSource().getParent().getIndex();
 			
 			if (!this._oSelectUnit) {
-				this._oSelectUnit = sap.ui.xmlfragment("fin.re.conmgmts1.fragment.selectUnit", this);
+				this._oSelectUnit = sap.ui.xmlfragment("selectRO","fin.re.conmgmts1.fragment.selectUnit", this);
 				this._oSelectUnit.setModel(this.getView().getModel());
 			}
 			
+			var aFilters = [];
+			aFilters.push(new Filter("Bukrs", FilterOperator.EQ, "1001"));
+			aFilters.push(new Filter("Swenr", FilterOperator.EQ, "00001001"));
+			aFilters.push(new Filter("Rotype", FilterOperator.EQ, "RU"));
+			
+			var oTable = Fragment.byId("selectRO", "selectRO-table");
+			var oTemplate = oTable.getBindingInfo("items").template;
+			
+			var oBindingInfo = {
+				path: "/RentalObjectSearchSet",
+				template: oTemplate,
+				filters: aFilters
+			};
+			
+			oTable.bindAggregation("items", oBindingInfo);
 			this.getView().addDependent(this._oSelectUnit);
 			jQuery.sap.syncStyleClass("sapUiSizeCompact", this.getView(), this._oSelectUnit);
 			this._oSelectUnit.open();
@@ -184,7 +203,6 @@ sap.ui.define([
 		},
 		onUnitSearch: function(oEvent){
 			var sValue = oEvent.getParameter("value");
-			
 		
 			var oFilter1 = new Filter("Xmetxt", sap.ui.model.FilterOperator.Contains, sValue);
 			var oFilter2 = new Filter("Smenr", sap.ui.model.FilterOperator.Contains, sValue);
@@ -215,6 +233,23 @@ sap.ui.define([
 					oData.rows.push(oRow);
 				});
 				
+			/*	var retext = "";
+				for(var i in oData.rows) {
+					if (retext.length > 0) {
+						retext = retext + ", " + oData.rows[i].reunit;
+					}else{
+						retext = oData.rows[i].reunit;
+					}
+				}
+				
+				if (oData.bp.length > 0) {
+					oData.reunit = retext + " " + oData.bp[0].bpname;
+				} else {
+					oData.reunit = retext;
+				}*/
+				
+				oThis._genREText(oData);
+				
 				oThis._calcUnitSize();
 				oModel.refresh();
 				oTreeTable.expand(oThis._selectedIdx);
@@ -224,6 +259,54 @@ sap.ui.define([
 		
 		onUnitCancel: function(oEvent){
 			//oEvent.getSource().getBinding("items").filter([]);
+		},
+		
+		onSelectInd: function(oEvent){
+			this._selectedIdx = oEvent.getSource().getParent().getIndex();
+			
+			if (!this._oSelectInd) {
+				this._oSelectInd = sap.ui.xmlfragment("selectInd","fin.re.conmgmts1.fragment.selectIndustry", this);
+				this._oSelectInd.setModel(this.getView().getModel());
+			}
+			this.getView().addDependent(this._oSelectInd);
+			jQuery.sap.syncStyleClass("sapUiSizeCompact", this.getView(), this._oSelectInd);
+			this._oSelectInd.open();
+		},
+		
+		onIndSearch: function(oEvent){
+			var sValue = oEvent.getParameter("value");
+			var oFilter1;
+			var oBinding = oEvent.getSource().getBinding("items");
+			
+			if (parseInt(sValue)){
+				 oFilter1 = new Filter("Ind_Sector", sap.ui.model.FilterOperator.Contains, sValue);
+			} else {
+				oFilter1 = new Filter("Text", sap.ui.model.FilterOperator.Contains, sValue);
+				
+			}
+			oBinding.filter(new Filter([oFilter1]));
+			
+			
+		},
+		onIndSelect: function(oEvent){
+			
+			var aContexts = oEvent.getParameter("selectedContexts");
+			
+			if (aContexts && aContexts.length) { 
+				
+				var oTreeTable = this.getView().byId("createCNTable");
+				var oModel = oTreeTable.getBinding("rows").getModel();
+				var oTableCtx = oTreeTable.getContextByIndex(this._selectedIdx);
+				var oData = oTableCtx.getProperty();
+				
+				aContexts.map(function(oContext) { 
+					oData.indsector = oContext.getObject().IndSector;
+					oData.industry = oContext.getObject().Text;
+				});
+				
+				oModel.refresh();
+				
+			}
 		},
 		
 		onBPManage: function(oEvent){
@@ -303,7 +386,7 @@ sap.ui.define([
 			var oTemplate = oTable.getBindingInfo("items").template;
 			
 			var oBindingInfo = {
-				path: "/MainPartnerSearchSet",
+				path: "/PartnerSearchSet",
 				template: oTemplate,
 				filters: aFilters
 			};
@@ -378,8 +461,7 @@ sap.ui.define([
 						oThis._selectedODATA.bp.push(bp);
 					}
 				});
-				//var oList = Fragment.byId("manageBP", "listBP");
-				//oList.getBinding("items").refresh();
+				this._genREText(oData);
 				var oModel = this.getView().getModel("CNModel");
 				oModel.refresh();
 			}
@@ -411,7 +493,7 @@ sap.ui.define([
 			var oNavCon = Fragment.byId("manageBP", "navCon");
 			var omanageBP = Fragment.byId("manageBP", "detail");
 			oNavCon.to(omanageBP);
-			omanageBP.bindElement("/MainPartnerSearchSet('" + sBPId + "')");
+			omanageBP.bindElement("/PartnerSearchSet('" + sBPId + "')");
 		},
 
 		
@@ -438,7 +520,24 @@ sap.ui.define([
 				oRow1.unitsize = fTotalSize;
 				oRow1.uom = sUOM;
 			}
+		},
+		
+		_genREText: function(oData){
+			var retext = "";
+			for(var i in oData.rows) {
+				if (retext.length > 0) {
+					retext = retext + ", " + oData.rows[i].reunit;
+				}else{
+					retext = oData.rows[i].reunit;
+				}
+			}
+			
+			if (oData.bp.length > 0) {
+				retext = retext + " " + oData.bp[0].bpname;
+			}
+			oData.reunit = retext.trim();
 		}
+		
 
 	});
 

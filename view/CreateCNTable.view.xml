@@ -4,8 +4,7 @@
 	xmlns="sap.m"
 	xmlns:f="sap.f"
 	xmlns:t="sap.ui.table"
-	xmlns:u="sap.ui.unified"
-	xmlns:dnd="sap.ui.core.dnd"
+	xmlns:template="http://schemas.sap.com/sapui5/extension/sap.ui.core.template/1"
 	xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1"
 	controllerName="fin.re.conmgmts1.controller.CreateCNTable"
 	xmlns:html="http://www.w3.org/1999/xhtml">
@@ -43,13 +42,18 @@
 		                </t:extension>
 		               
 		                <t:columns>
-		                    <t:Column width="13rem">
+		                    <t:Column width="20rem">
 		                        <Label text="{i18n>TreeTable.Column.Unit}"/>
-		                        <t:template>
+		                          <t:template>
+			                    	<Input value="{CNModel>reunit}" editable="{CNModel>isParent}"/>
+								  </t:template>
+		                        <!--<t:template>-->
 		                        
-		                            <Text text="{CNModel>reunit}" wrapping="false"/>
+		                        
+		                           <!-- <Text text="{CNModel>reunit}" wrapping="false"/>-->
+		                            <!--<Input value="{CNModel>reunit}"/>-->
 		                            	<!--<Button icon="sap-icon://add" press="handleButtonPress" class="sapUiSmallMarginEnd" visible="{CNModel>isParent}" />-->
-		                        </t:template>
+		                        <!--</t:template>-->
 		                    </t:Column>
 		                    <t:Column width="3rem" hAlign="End" resizable="false">
 		                        <Label text=""/>
@@ -73,6 +77,28 @@
 		                        	 <Link text="{= ${CNModel>bp/0/bpname} ? ${CNModel>bp/0/bpname} : ${i18n>BP.New} }" href="" press="onBPManage" tooltip="{CNModel>bp/0/bpid}" target="_blank" visible="{CNModel>isParent}" />
 		                        </t:template>
 		                    </t:Column>
+		                    
+		                    <t:Column width="9rem">
+							<Label text="{i18n>TreeTable.Column.Industry}" />
+							<t:template>
+								<Button text="{= ${CNModel>industry} ? ${CNModel>industry} : ${i18n>TreeTable.Button.ChooseIndustry} }" press="onSelectInd" visible="{CNModel>isParent}"/>
+							</t:template>
+							</t:Column>
+		                    
+		                    <t:Column width="10rem" resizable="false">
+		                        <Label text="{i18n>TreeTable.Column.StartDate}"/>
+		                        <t:template>
+		                           	<DatePicker value="{CNModel>startdate}" valueFormat="yyyy-MM-dd" visible="{CNModel>isParent}"/>
+		                        </t:template>
+		                    </t:Column>
+		                    
+		                    <t:Column width="10rem" resizable="false">
+		                        <Label text="{i18n>TreeTable.Column.EndDate}"/>
+		                        <t:template>
+		                           <DatePicker value="{CNModel>enddate}" valueFormat="yyyy-MM-dd" visible="{CNModel>isParent}"/>
+		                        </t:template>
+		                    </t:Column>
+		                    
 		                </t:columns>
                 	 </t:TreeTable>	
                 </f:content>
