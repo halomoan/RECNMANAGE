@@ -31,9 +31,8 @@
                 
 						<t:extension>
 		                <OverflowToolbar>
-								
+								<Button text="{i18n>Common.Button.Delete}" press="onDelete"/>
 		                        <ToolbarSpacer/>
-		                        <Button text="{i18n>Common.Button.Delete}" press="onDelete"/>
 		                        <Button text="Collapse" press="onCollapseAll"/>
 		                    	<Button text="Expand" press="onExpandFirstLevel"/>
 		                </OverflowToolbar>
@@ -43,7 +42,7 @@
 		                    <t:Column width="20rem">
 		                        <Label text="{i18n>TreeTable.Column.Unit}"/>
 		                          <t:template>
-			                    	<Input value="{CNModel>reunit}" editable="{CNModel>isParent}"/>
+			                    	<Input value="{CNModel>reunit}" editable="{CNModel>isParent}" valueState="{= ${CNModel>error/reunit} ? 'Error': 'None'}"/>
 								  </t:template>
 		                        <!--<t:template>-->
 		                        
@@ -88,14 +87,19 @@
 		                    <t:Column width="10rem" resizable="false">
 		                        <Label text="{i18n>TreeTable.Column.StartDate}"/>
 		                        <t:template>
-		                           	<DatePicker value="{CNModel>startdate}" valueFormat="yyyy-MM-dd" visible="{CNModel>isParent}"/>
+		                           	<DatePicker value="{CNModel>startdate}" valueFormat="yyyy-MM-dd" 
+		                           		valueState="{= ${CNModel>error/startdate} ? 'Error': 'None'}"
+		                           		visible="{CNModel>isParent}" 
+		                           		change="onSDateChange"/>
 		                        </t:template>
 		                    </t:Column>
 		                    
 		                    <t:Column width="10rem" resizable="false">
 		                        <Label text="{i18n>TreeTable.Column.EndDate}"/>
 		                        <t:template>
-		                           <DatePicker value="{CNModel>enddate}" valueFormat="yyyy-MM-dd" visible="{CNModel>isParent}"/>
+		                           <DatePicker value="{CNModel>enddate}" valueFormat="yyyy-MM-dd" 
+		                           valueState="{= ${CNModel>error/enddate} ? 'Error': 'None'}"
+		                           visible="{CNModel>isParent}" change="onEDateChange"/>
 		                        </t:template>
 		                    </t:Column>
 		                     <t:Column width="10rem" resizable="false" hAlign="End">

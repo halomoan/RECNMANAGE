@@ -11,6 +11,7 @@
 				"enddate" : "2020-12-20",
 				"indsector": "",
 				"industry" : "",
+				"error" : {},
 				"baserent": {
 					"type": "L101",
 					"unitprice" : "0.00",
@@ -44,6 +45,7 @@
 				"enddate" : "2020-12-21",
 				"indsector": "",
 				"industry" : "",
+				"error" : {},
 				"baserent": {
 					"type": "L101",
 					"unitprice" : "0.00",

@@ -68,10 +68,10 @@ sap.ui.define([
 		onDelete: function() {
 			var bCompact = !!this.getView().$().closest(".sapUiSizeCompact").length;
 			MessageBox.confirm(
-				"Are you sure to delete ?",
+				this.getResourceBundle().getText("Dialog.Confirm.Delete"),
 				{
 					icon: MessageBox.Icon.WARNING,
-					title: "Focus on a Button",
+					title: "Warning",
 					actions: [sap.m.MessageBox.Action.OK, sap.m.MessageBox.Action.CANCEL],
 					styleClass: bCompact ? "sapUiSizeCompact" : "",
 					initialFocus: MessageBox.Action.CANCEL,
@@ -225,14 +225,31 @@ sap.ui.define([
 				aContexts.map(function(oContext) { 
 					
 					var oObject = oContext.getObject();
+					var bFound = false;
 					
-					var oRow = {"isParent": false,
-						"reobjnr" : oObject.ROKey,
-						"reunit"  : oObject.Xmetxt,
-						"unitsize": oObject.ROSize,       
-						"uom" : oObject.ROUnit 
-					};
-					oData.rows.push(oRow);
+					for(var idx in oData.rows){
+						if (oData.rows[idx].reobjnr === oObject.ROKey){
+							bFound = true; 
+							break;
+						}
+					}
+					if (bFound) {
+							var bCompact = !!oThis.getView().$().closest(".sapUiSizeCompact").length;
+							MessageBox.error(
+								oThis.getResourceBundle().getText("Error.SameUnitSelected"),
+								{
+									styleClass: bCompact ? "sapUiSizeCompact" : ""
+								}
+							);
+					} else{
+						var oRow = {"isParent": false,
+							"reobjnr" : oObject.ROKey,
+							"reunit"  : oObject.Xmetxt,
+							"unitsize": oObject.ROSize,       
+							"uom" : oObject.ROUnit 
+						};
+						oData.rows.push(oRow);
+					}
 				});
 				
 			/*	var retext = "";
@@ -657,6 +674,45 @@ sap.ui.define([
 		    	oViewModel.setProperty("/"+sId+ "/error",false); 
 		    }
 			
+		},
+		
+		onSDateChange: function(oEvent){
+			var oBinding = oEvent.oSource.getBindingContext("CNModel");
+			var sPath = oBinding.getPath();
+			var oData = oBinding.getModel().getProperty(sPath);
+			var sValue = oEvent.getParameter("value");
+			var bValid = oEvent.getParameter("valid");
+			if (bValid){
+				if (Date.parse(oData.enddate) < Date.parse(sValue)){
+					var sMsg = this.getResourceBundle().getText("Error.StartDateIsHigherThanEndDate");
+					sap.m.MessageBox.error(sMsg, {
+				            title: "Error",                                      
+				            initialFocus: null                                   
+				    });
+				    oData.error.startdate = true;          
+				} else{
+					oData.error.startdate = false;       
+				}
+			}
+		},
+		onEDateChange: function(oEvent){
+			var oBinding = oEvent.oSource.getBindingContext("CNModel");
+			var sPath = oBinding.getPath();
+			var oData = oBinding.getModel().getProperty(sPath);
+			var sValue = oEvent.getParameter("value");
+			var bValid = oEvent.getParameter("valid");
+			if (bValid){
+				if (Date.parse(oData.startdate) > Date.parse(sValue)){
+					var sMsg = this.getResourceBundle().getText("Error.EndDateIsLowerThanStartDate");
+					sap.m.MessageBox.error(sMsg, {
+				            title: "Error",                                      
+				            initialFocus: null                                   
+				    });
+				    oData.error.enddate = true; 
+				}else{
+					oData.error.enddate = false; 
+				}
+			}
 		},
 		_calcUnitSize: function(){
 			var oTreeTable = this.getView().byId("createCNTable");
