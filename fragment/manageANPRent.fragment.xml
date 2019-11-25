@@ -9,10 +9,10 @@
 		contentHeight="420px"
 		placement="Bottom" >
 		<NavContainer
-			id="bsNavCon">
+			id="anpNavCon">
 			<Page
-				id="bsmaster"
-				title="{i18n>Dialog.Manage.BaseRent}">
+				id="anpmaster"
+				title="{i18n>Dialog.Manage.ANPRent}">
 				<VBox class="sapUiSmallMargin">
 					<f:SimpleForm
 						editable="true"
@@ -33,7 +33,7 @@
 						ariaLabelledBy="Title1" >
 						<f:toolbar>
 							<Toolbar>
-								<Title id="BaseRentTitle" text="Condition" level="H4" titleStyle="H4"/>
+								<Title id="anprentTitle" text="Condition" level="H4" titleStyle="H4"/>
 								<ToolbarSpacer />
 								<Button icon="sap-icon://settings" text="Terms"/>
 								<Button icon="sap-icon://drop-down-list" />
@@ -43,24 +43,24 @@
 							
 							<Label text="Unit Price" />
 							<Input type="Text" 
-								value="{path : 'viewModel>/baserent/unitprice' , type:'sap.ui.model.type.Float',formatOptions: {minFractionDigits: 2,maxFractionDigits: 2} }" 
-								valueState="{= ${viewModel>/baserent/error} ? 'Error': 'None'}"
+								value="{path : 'viewModel>/anprent/unitprice' , type:'sap.ui.model.type.Float',formatOptions: {minFractionDigits: 2,maxFractionDigits: 2} }" 
+								valueState="{= ${viewModel>/anprent/error} ? 'Error': 'None'}"
 								textAlign="Right"
 								change="onManageBSAChange">
 								 <layoutData>
 								<l:GridData span="XL8 L1 M3 S12" />
 								</layoutData>
 								<customData>
-    								<core:CustomData key="myId" value="baserent" writeToDom="false"/>
+    								<core:CustomData key="myId" value="anprent" writeToDom="false"/>
     							</customData>
 							</Input>
 							<Label text="Valid From/To"/>
-							 <DatePicker value="{viewModel>/baserent/validfrom}" valueFormat="yyyy-MM-dd">
+							 <DatePicker value="{viewModel>/anprent/validfrom}" valueFormat="yyyy-MM-dd">
 							 <layoutData>
 								<l:GridData span="XL8 L1 M3 S6" />
 							</layoutData>
 							 </DatePicker>
-							 <DatePicker value="{viewModel>/baserent/validto}" valueFormat="yyyy-MM-dd">
+							 <DatePicker value="{viewModel>/anprent/validto}" valueFormat="yyyy-MM-dd">
 							 <layoutData>
 								<l:GridData span="XL8 L1 M3 S6" />
 							</layoutData>
@@ -83,27 +83,16 @@
 						<ToolbarSpacer/>
 						<Button
 							text="{i18n>Common.Dialog.Close}"
-							press="onBaseRentClose" />
+							press="onANPRentClose" />
 					</Toolbar>
 				</footer>
 			</Page>
 			<Page
-				id="bsdetail"
+				id="anpdetail"
 				showNavButton="true"
-				navButtonPress="onBPNavBack"
+				navButtonPress="onANPNavBack"
 				title="{BusinessPartnerRoleText}">
-				<ObjectHeader
-					title="{BusinessPartnerFullName}" >
-					<attributes>
-						<ObjectAttribute title="BP Number" text="{BusinessPartner}" />
-						<ObjectAttribute title="Address" text="{FormattedAddress}" />
-						<ObjectAttribute title="Country" text="{Country}" />
-						<ObjectAttribute title="House Number" text="{HouseNumber}" />
-						<ObjectAttribute title="Phone Number" text="{PhoneNumber} - {PhoneNumberExtension}" />
-						<ObjectAttribute title="Email" text="{EmailAddress}" />
-						
-					</attributes>
-				</ObjectHeader>
+				
 			</Page>
 		</NavContainer>
 	</Popover>

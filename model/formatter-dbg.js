@@ -1,7 +1,8 @@
 /*
  * Copyright (C) 2009-2017 SAP SE or an SAP affiliate company. All rights reserved.
  */
-sap.ui.define([], function() {
+sap.ui.define([
+	"sap/ui/core/format/NumberFormat"], function(NumberFormat) {
 	"use strict";
 
 	return {
@@ -12,14 +13,23 @@ sap.ui.define([], function() {
 		 * @param {string} sValue the number string to be rounded
 		 * @returns {string} sValue with 2 digits rounded
 		 */
-		numberUnit: function(sValue) {
-			if (!sValue) {
-				return "";
-			}
-			var sNumber = "" + parseFloat(sValue).toFixed(2);
-			return sNumber.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+		// numberUnit: function(sValue) {
+		// 	console.log(sValue);
+		// 	if (!sValue) {
+		// 		return "";
+		// 	}
+		// 	var sNumber = "" + parseFloat(sValue).toFixed(2);
+		// 	return sNumber.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+		// },
+		
+		floatFormat: function(value){
+			var oFormat = NumberFormat.getFloatInstance({
+                    maxFractionDigits: 2,
+                    minFractionDigits : 2,
+                    groupingEnabled: true
+                } , sap.ui.getCore().getConfiguration().getLocale());
+        	return oFormat.format(value);
 		},
-
 		reminderIcon: function(done, daysLeft) {
 			if (done) {
 				return "sap-icon://status-completed";

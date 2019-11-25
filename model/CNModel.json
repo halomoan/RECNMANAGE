@@ -12,7 +12,22 @@
 				"indsector": "",
 				"industry" : "",
 				"baserent": {
-					"unitprice" : 0.00,
+					"type": "L101",
+					"unitprice" : "0.00",
+					"formula": "B",
+					"validfrom": "",
+					"validto" : ""
+				},
+				"svcrent": {
+					"type": "L102",
+					"unitprice" : "0.00",
+					"formula": "B",
+					"validfrom": "2019-01-20",
+					"validto" : "2020-12-20"
+				},
+				"anprent": {
+					"type": "L103",
+					"unitprice" : "0.00",
 					"formula": "B",
 					"validfrom": "2019-01-20",
 					"validto" : "2020-12-20"
@@ -29,6 +44,27 @@
 				"enddate" : "2020-12-21",
 				"indsector": "",
 				"industry" : "",
+				"baserent": {
+					"type": "L101",
+					"unitprice" : "0.00",
+					"formula": "B",
+					"validfrom": "2019-01-20",
+					"validto" : "2020-12-20"
+				},
+				"svcrent": {
+					"type": "L102",
+					"unitprice" : "0.00",
+					"formula": "B",
+					"validfrom": "2019-01-20",
+					"validto" : "2020-12-20"
+				},
+				"anprent": {
+					"type": "L103",
+					"unitprice" : "0.00",
+					"formula": "B",
+					"validfrom": "2019-01-20",
+					"validto" : "2020-12-20"
+				},
 				"bp" : [],
 				"rows" : []
 			}

@@ -31,11 +31,10 @@ sap.ui.define([
 			
 			
 			
-		/*	var oBindingModel = new sap.ui.model.Binding(oModel,"/",oModel.getContext("/"));
-			oBindingModel.attachChange(function() {
-					oThis._calcUnitSize();
-					
-			});*/
+			// var oBindingModel = new sap.ui.model.Binding(oModel,"/catalog/createCNTable/rows",oModel.getContext("/CNModel"));
+			//  oBindingModel.attachChange(function() {
+			//  	console.log("refresh");
+			//  });
 			
 		},
 
@@ -519,15 +518,145 @@ sap.ui.define([
 			
 			oViewModel.setProperty("/baserent",oData.baserent);
 			
-			console.log(oData,oViewModel);
-		
-
+			
+			
 			this._oEventSource = oEvent.getSource();
 			this._oManageBaseRent.openBy(this._oEventSource);
 		},
 		onBaseRentClose: function(){
+			//var oData = this._selectedODATA;
+			//var oView = this.getView();
+			var oViewModel = this.getView().getModel("viewModel");
+			var oTreeTable = this.getView().byId("createCNTable");
+			var oModel = oTreeTable.getBinding("rows").getModel();
+			
+			//oData.baserent = oViewModel.getProperty("/baserent");
+			if (oViewModel.getProperty("/baserent/error")) {
+				oViewModel.setProperty("/baserent/unitprice",0.00) ;
+			}
+			oModel.refresh();
+			
 			this._oEventSource = null;
 			this._oManageBaseRent.close();
+		},
+		onVHSVCRent : function(oEvent){
+			if (!this._oManageSVCRent) {
+				
+				this._oManageSVCRent = sap.ui.xmlfragment("manageSVCRent","fin.re.conmgmts1.fragment.manageSVCRent", this);
+				this.getView().addDependent(this._oManageSVCRent);
+			}
+			
+			this._selectedIdx = oEvent.getSource().getParent().getIndex();
+			
+			var oView = this.getView();
+			var oViewModel = oView.getModel("viewModel");
+			var oTreeTable = oView.byId("createCNTable");
+			var oTableCtx = oTreeTable.getContextByIndex(this._selectedIdx);
+			var oData = oTableCtx.getProperty();
+			this._selectedODATA = oData;
+			
+			oViewModel.setProperty("/svcrent",oData.svcrent);
+			
+			this._oEventSource = oEvent.getSource();
+			this._oManageSVCRent.openBy(this._oEventSource);
+		},
+		onSVCRentClose: function(){
+			
+			//var oData = this._selectedODATA;
+			//var oView = this.getView();
+			var oViewModel = this.getView().getModel("viewModel");
+			var oTreeTable = this.getView().byId("createCNTable");
+			var oModel = oTreeTable.getBinding("rows").getModel();
+			
+			if (oViewModel.getProperty("/svcrent/error")) {
+				oViewModel.setProperty("/svcrent/unitprice",0.00) ;
+			}
+			oModel.refresh();
+			
+			this._oEventSource = null;
+			this._oManageSVCRent.close();
+		},
+		
+		onVHANPRent : function(oEvent){
+			if (!this._oManageANPRent) {
+				
+				this._oManageANPRent = sap.ui.xmlfragment("manageANPRent","fin.re.conmgmts1.fragment.manageANPRent", this);
+				this.getView().addDependent(this._oManageANPRent);
+			}
+			
+			this._selectedIdx = oEvent.getSource().getParent().getIndex();
+			
+			var oView = this.getView();
+			var oViewModel = oView.getModel("viewModel");
+			var oTreeTable = oView.byId("createCNTable");
+			var oTableCtx = oTreeTable.getContextByIndex(this._selectedIdx);
+			var oData = oTableCtx.getProperty();
+			this._selectedODATA = oData;
+			
+			oViewModel.setProperty("/anprent",oData.anprent);
+			
+			this._oEventSource = oEvent.getSource();
+			this._oManageANPRent.openBy(this._oEventSource);
+		},
+		onANPRentClose: function(){
+			
+			var oViewModel = this.getView().getModel("viewModel");
+			var oTreeTable = this.getView().byId("createCNTable");
+			var oModel = oTreeTable.getBinding("rows").getModel();
+			
+			if (oViewModel.getProperty("/anprent/error")) {
+				oViewModel.setProperty("/anprent/unitprice",0.00) ;
+			}
+			oModel.refresh();
+			
+			this._oEventSource = null;
+			this._oManageANPRent.close();
+		},
+		
+		onBSAChange: function(oEvent) {
+			var sId = oEvent.getSource().data("myId");
+				
+			
+			var sPath = oEvent.getSource().getBindingContext("CNModel").getPath();
+			var oModel = this.getView().getModel("CNModel");
+			var oBSARent = oModel.getProperty(sPath);
+			
+			var amount = oEvent.getParameters().value;
+			var sMsg = "";
+			
+			var regex = /^\d+([,|\.]\d{3})*([,|\.]\d{2})?$/;
+				
+			if (!regex.test(amount)) {
+					sMsg = this.getResourceBundle().getText("Error.NotNumber");
+					sap.m.MessageBox.error(sMsg, {
+				            title: "Error",                                      
+				            initialFocus: null                                   
+				        });
+				    oBSARent[sId].error = true;
+				    
+			} else {
+				oBSARent[sId].error = false;
+			}
+			
+			oModel.refresh();
+			
+		},
+		
+		onManageBSAChange: function(oEvent){
+			var sId = oEvent.getSource().data("myId");
+			
+			
+		    var oViewModel = oEvent.getSource().getModel("viewModel");
+		    var amount = oEvent.getParameters().value;
+		  
+		    var regex = /^\d+([,|\.]\d{3})*([,|\.]\d{2})?$/;
+		    if (!regex.test(amount)) {
+		    	oViewModel.setProperty("/"+sId+"/error",true); 
+		    	
+		    } else{
+		    	oViewModel.setProperty("/"+sId+ "/error",false); 
+		    }
+			
 		},
 		_calcUnitSize: function(){
 			var oTreeTable = this.getView().byId("createCNTable");

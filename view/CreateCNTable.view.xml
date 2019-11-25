@@ -4,8 +4,6 @@
 	xmlns="sap.m"
 	xmlns:f="sap.f"
 	xmlns:t="sap.ui.table"
-	xmlns:template="http://schemas.sap.com/sapui5/extension/sap.ui.core.template/1"
-	xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1"
 	controllerName="fin.re.conmgmts1.controller.CreateCNTable"
 	xmlns:html="http://www.w3.org/1999/xhtml">
 	<f:DynamicPage id="page">
@@ -66,7 +64,7 @@
 		                        <t:template>
 		                            <Text text="{
 												path: 'CNModel>unitsize',
-												formatter: '.formatter.numberUnit'
+												formatter: '.formatter.floatFormat'
 												} {CNModel>uom}"
 									/>
 		                        </t:template>
@@ -81,7 +79,9 @@
 		                    <t:Column width="9rem">
 							<Label text="{i18n>TreeTable.Column.Industry}" />
 							<t:template>
-								<Button text="{= ${CNModel>industry} ? ${CNModel>industry} : ${i18n>TreeTable.Button.ChooseIndustry} }" press="onSelectInd" visible="{CNModel>isParent}"/>
+								<Button text="{= ${CNModel>industry} ? ${CNModel>industry} : ${i18n>TreeTable.Button.ChooseIndustry} }" 
+									type="{= ${CNModel>industry} ? 'Accept' : 'Default' }" 
+									press="onSelectInd" visible="{CNModel>isParent}"/>
 							</t:template>
 							</t:Column>
 		                    
@@ -98,17 +98,63 @@
 		                           <DatePicker value="{CNModel>enddate}" valueFormat="yyyy-MM-dd" visible="{CNModel>isParent}"/>
 		                        </t:template>
 		                    </t:Column>
-		                     <t:Column width="10rem" resizable="false">
-		                        <Label text="{i18n>TreeTable.Column.BaseRent}"/>
+		                     <t:Column width="10rem" resizable="false" hAlign="End">
+		                        <Label text="{i18n>TreeTable.Column.BaseRent}" />
 		                        <t:template>
 		                           <Input
-										id="productInput"
-										type="Text"
-										
+		                        		type="Text"
+										textAlign="Right"
 										showSuggestion="true"
 										showValueHelp="true"
 										valueHelpRequest="onVHBaseRent"
-										value="{CNModel>baserent/unitprice}" >
+										change="onBSAChange"
+										visible="{CNModel>isParent}"
+										valueState="{= ${CNModel>baserent/error} ? 'Error': 'None'}"
+										value="{ path: 'CNModel>baserent/unitprice', type:'sap.ui.model.type.Float',formatOptions: {minFractionDigits: 2,maxFractionDigits: 2}}"
+										>
+		                           		<customData>
+    											<core:CustomData key="myId" value="baserent" writeToDom="false"/>
+    									</customData>		
+									</Input>
+		                        </t:template>
+		                    </t:Column>
+		                    <t:Column width="10rem" resizable="false" hAlign="End">
+		                        <Label text="{i18n>TreeTable.Column.SVCRent}"/>
+		                        <t:template>
+		                           <Input
+										type="Text"
+										textAlign="Right"
+										showSuggestion="true"
+										showValueHelp="true"
+										valueHelpRequest="onVHSVCRent"
+										change="onBSAChange"
+										visible="{CNModel>isParent}"
+										valueState="{= ${CNModel>svcrent/error} ? 'Error': 'None'}"
+										value="{ path: 'CNModel>svcrent/unitprice', type:'sap.ui.model.type.Float',formatOptions: {minFractionDigits: 2,maxFractionDigits: 2}}"
+										>
+		                           		<customData>
+    											<core:CustomData key="myId" value="svcrent" writeToDom="false"/>
+    									</customData>	
+									</Input>
+		                        </t:template>
+		                    </t:Column>
+		                     <t:Column width="10rem" resizable="false" hAlign="End">
+		                        <Label text="{i18n>TreeTable.Column.ANPRent}"/>
+		                        <t:template>
+		                           <Input
+										type="Text"
+										textAlign="Right"
+										showSuggestion="true"
+										showValueHelp="true"
+										valueHelpRequest="onVHANPRent"
+										change="onBSAChange"
+										visible="{CNModel>isParent}"
+										valueState="{= ${CNModel>anprent/error} ? 'Error': 'None'}"
+										value="{ path: 'CNModel>anprent/unitprice', type:'sap.ui.model.type.Float',formatOptions: {minFractionDigits: 2,maxFractionDigits: 2}}"
+										>
+		                           		<customData>
+    											<core:CustomData key="myId" value="anprent" writeToDom="false"/>
+    									</customData>	
 									</Input>
 		                        </t:template>
 		                    </t:Column>
