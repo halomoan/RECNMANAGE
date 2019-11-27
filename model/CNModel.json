@@ -1,77 +1,9 @@
 {
-  "catalog": {
+
 	"createCNTable" : {
 		"rows" : [
-			{	"isParent": true,
-				"reobjnr" : "PT001",
-				"reunit"  : "#02-26 to 27 Bambu (Singapore) Pte Ltd",
-				"unitsize" : "0.00",
-				"uom"		: "SF",
-				"startdate" : "2019-01-20",
-				"enddate" : "2020-12-20",
-				"indsector": "",
-				"industry" : "",
-				"error" : {},
-				"baserent": {
-					"type": "L101",
-					"unitprice" : "0.00",
-					"formula": "B",
-					"validfrom": "",
-					"validto" : ""
-				},
-				"svcrent": {
-					"type": "L102",
-					"unitprice" : "0.00",
-					"formula": "B",
-					"validfrom": "2019-01-20",
-					"validto" : "2020-12-20"
-				},
-				"anprent": {
-					"type": "L103",
-					"unitprice" : "0.00",
-					"formula": "B",
-					"validfrom": "2019-01-20",
-					"validto" : "2020-12-20"
-				},
-				"bp": [],
-				"rows" : []
-			},
-			{	"isParent": true,
-				"reobjnr" : "PT002",
-				"reunit"  : "",
-				"unitsize" : "0.00",
-				"uom"		: "SF",
-				"startdate" : "2019-02-21",
-				"enddate" : "2020-12-21",
-				"indsector": "",
-				"industry" : "",
-				"error" : {},
-				"baserent": {
-					"type": "L101",
-					"unitprice" : "0.00",
-					"formula": "B",
-					"validfrom": "2019-01-20",
-					"validto" : "2020-12-20"
-				},
-				"svcrent": {
-					"type": "L102",
-					"unitprice" : "0.00",
-					"formula": "B",
-					"validfrom": "2019-01-20",
-					"validto" : "2020-12-20"
-				},
-				"anprent": {
-					"type": "L103",
-					"unitprice" : "0.00",
-					"formula": "B",
-					"validfrom": "2019-01-20",
-					"validto" : "2020-12-20"
-				},
-				"bp" : [],
-				"rows" : []
-			}
+{"isparent":true,"recnkey":"CN0001","unitsize":0,"uom":"","startdate":"2019-11-27","enddate":"2020-11-27","baserent":{"condtype":"L101","unitprice":12.000000,"formula":"B","validfrom":"2019-11-27","validto":"2029-11-27"},"svcrent":{"condtype":"L101","unitprice":12.000000,"formula":"B","validfrom":"2019-11-27","validto":"2029-11-27"},"anprent":{"condtype":"L101","unitprice":12.000000,"formula":"B","validfrom":"2019-11-27","validto":"2029-11-27"},"usrfields":{"zzhdate":"2019-12-31","zzstmdate1":"0000-00-00","zzstmdate2":"0000-00-00","zzstmdate3":"0000-00-00","zzstmdate4":"0000-00-00","zznovdate":"0000-00-00"},"bp":[{"partner":"112233","bprole":"BPR101","bpname":"Halomoan"},{"partner":"443311","bprole":"BPL101","bpname":"Clain"}],"rows":[{"isparent":false,"reimkey":"0000101","reunit":"#01-01","unitsize":0,"uom":""},{"isparent":false,"reimkey":"0000102","reunit":"#01-02","unitsize":0,"uom":""}]}
 		]
 	}
   	
-  }
 }

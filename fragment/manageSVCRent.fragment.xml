@@ -71,7 +71,8 @@
 								items="{
 									path: 'CondFModel>/formulas',
 									sorter: { path: 'key' }
-								}">
+								}"
+								selectedKey="{viewModel>/svcrent/formula}">
 								<core:ListItem key="{CondFModel>key}" text="{CondFModel>text}" additionalText = "{CondFModel>key}"/>
 							</ComboBox>
 		                        

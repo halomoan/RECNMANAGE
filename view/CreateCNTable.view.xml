@@ -5,8 +5,9 @@
 	xmlns:f="sap.f"
 	xmlns:t="sap.ui.table"
 	controllerName="fin.re.conmgmts1.controller.CreateCNTable"
-	xmlns:html="http://www.w3.org/1999/xhtml">
-	<f:DynamicPage id="page">
+	xmlns:html="http://www.w3.org/1999/xhtml"
+	height="100%">
+	<f:DynamicPage id="page" preserveHeaderStateOnScroll="true">
 		<f:title>
             <f:DynamicPageTitle>
                 <f:heading>
@@ -19,43 +20,50 @@
                
             </f:DynamicPageHeader>
         </f:header>
-         <f:content>
-                	 <t:TreeTable 
+        <f:content>
+              	 <t:TreeTable 
                 		id="createCNTable"
-	                    rows="{path: 'CNModel>/catalog/createCNTable', parameters: { arrayNames: ['rows']  }}"
+	                    rows="{path: 'CNModel>/createCNTable', parameters: { arrayNames: ['rows']  }}"
 	                    rowSelectionChange="onRowSelect"
 	                    selectionMode="MultiToggle"
 	                    enableSelectAll="false"
-	                    visibleRowCount="15"
+	                    visibleRowCount="20"
 	                    ariaLabelledBy="title">
                 
-						<t:extension>
-		                <OverflowToolbar>
-								<Button text="{i18n>Common.Button.Delete}" press="onDelete"/>
+					
+		                <t:toolbar>
+		                    <Toolbar>
+		                    
+		                    	<Button icon="sap-icon://collapse" tooltip="Collapse" press="onCollapseAll"/>
+		                    	<Button icon="sap-icon://expand" tooltip="Expand" press="onExpandFirstLevel"/>
+		                    	<ToolbarSeparator/>
+		                    	<Button icon="sap-icon://add-document" text="{i18n>Common.Button.New}" press="onNew"/>
+		                    	<Button icon="sap-icon://copy" text="{i18n>Common.Button.Copy}" press="onCopy"/>
 		                        <ToolbarSpacer/>
-		                        <Button text="Collapse" press="onCollapseAll"/>
-		                    	<Button text="Expand" press="onExpandFirstLevel"/>
-		                </OverflowToolbar>
-		                </t:extension>
+		                        <Button text="{i18n>Common.Button.Save}" press="onSave"/>
+		                        <Button text="{i18n>Common.Button.Delete}" press="onDelete"/>
+		                       
+		                    </Toolbar>
+		                </t:toolbar>
 		               
 		                <t:columns>
 		                    <t:Column width="20rem">
 		                        <Label text="{i18n>TreeTable.Column.Unit}"/>
 		                          <t:template>
-			                    	<Input value="{CNModel>reunit}" editable="{CNModel>isParent}" valueState="{= ${CNModel>error/reunit} ? 'Error': 'None'}"/>
+			                    	<Input value="{CNModel>reunit}" editable="{CNModel>isparent}" valueState="{= ${CNModel>error/reunit} ? 'Error': 'None'}"/>
 								  </t:template>
 		                        <!--<t:template>-->
 		                        
 		                        
 		                           <!-- <Text text="{CNModel>reunit}" wrapping="false"/>-->
 		                            <!--<Input value="{CNModel>reunit}"/>-->
-		                            	<!--<Button icon="sap-icon://add" press="handleButtonPress" class="sapUiSmallMarginEnd" visible="{CNModel>isParent}" />-->
+		                            	<!--<Button icon="sap-icon://add" press="handleButtonPress" class="sapUiSmallMarginEnd" visible="{CNModel>isparent}" />-->
 		                        <!--</t:template>-->
 		                    </t:Column>
 		                    <t:Column width="3rem" hAlign="End" resizable="false">
 		                        <Label text=""/>
 		                        <t:template>
-		                           <Button icon="sap-icon://add" press="onAddUnit" class="sapUiSmallMarginEnd" visible="{CNModel>isParent}" />
+		                           <Button icon="sap-icon://add" press="onAddUnit" class="sapUiSmallMarginEnd" visible="{CNModel>isparent}" />
 		                        </t:template>
 		                    </t:Column>
 		                    <t:Column width="8rem" hAlign="End">
@@ -71,7 +79,7 @@
 		                    <t:Column width="20rem" autoResizable="true" filterProperty="partner">
 		                        <Label text="{i18n>TreeTable.Column.Customer}"/>
 		                        <t:template>
-		                        	 <Link text="{= ${CNModel>bp/0/bpname} ? ${CNModel>bp/0/bpname} : ${i18n>BP.New} }" href="" press="onBPManage" tooltip="{CNModel>bp/0/bpid}" target="_blank" visible="{CNModel>isParent}" />
+		                        	 <Link text="{= ${CNModel>bp/0/bpname} ? ${CNModel>bp/0/bpname} : ${i18n>BP.New} }" href="" press="onBPManage" tooltip="{CNModel>bp/0/bpid}" target="_blank" visible="{CNModel>isparent}" />
 		                        </t:template>
 		                    </t:Column>
 		                    
@@ -80,7 +88,7 @@
 							<t:template>
 								<Button text="{= ${CNModel>industry} ? ${CNModel>industry} : ${i18n>TreeTable.Button.ChooseIndustry} }" 
 									type="{= ${CNModel>industry} ? 'Accept' : 'Default' }" 
-									press="onSelectInd" visible="{CNModel>isParent}"/>
+									press="onSelectInd" visible="{CNModel>isparent}"/>
 							</t:template>
 							</t:Column>
 		                    
@@ -89,7 +97,7 @@
 		                        <t:template>
 		                           	<DatePicker value="{CNModel>startdate}" valueFormat="yyyy-MM-dd" 
 		                           		valueState="{= ${CNModel>error/startdate} ? 'Error': 'None'}"
-		                           		visible="{CNModel>isParent}" 
+		                           		visible="{CNModel>isparent}" 
 		                           		change="onSDateChange"/>
 		                        </t:template>
 		                    </t:Column>
@@ -99,7 +107,7 @@
 		                        <t:template>
 		                           <DatePicker value="{CNModel>enddate}" valueFormat="yyyy-MM-dd" 
 		                           valueState="{= ${CNModel>error/enddate} ? 'Error': 'None'}"
-		                           visible="{CNModel>isParent}" change="onEDateChange"/>
+		                           visible="{CNModel>isparent}" change="onEDateChange"/>
 		                        </t:template>
 		                    </t:Column>
 		                     <t:Column width="10rem" resizable="false" hAlign="End">
@@ -112,7 +120,7 @@
 										showValueHelp="true"
 										valueHelpRequest="onVHBaseRent"
 										change="onBSAChange"
-										visible="{CNModel>isParent}"
+										visible="{CNModel>isparent}"
 										valueState="{= ${CNModel>baserent/error} ? 'Error': 'None'}"
 										value="{ path: 'CNModel>baserent/unitprice', type:'sap.ui.model.type.Float',formatOptions: {minFractionDigits: 2,maxFractionDigits: 2}}"
 										>
@@ -132,7 +140,7 @@
 										showValueHelp="true"
 										valueHelpRequest="onVHSVCRent"
 										change="onBSAChange"
-										visible="{CNModel>isParent}"
+										visible="{CNModel>isparent}"
 										valueState="{= ${CNModel>svcrent/error} ? 'Error': 'None'}"
 										value="{ path: 'CNModel>svcrent/unitprice', type:'sap.ui.model.type.Float',formatOptions: {minFractionDigits: 2,maxFractionDigits: 2}}"
 										>
@@ -152,7 +160,7 @@
 										showValueHelp="true"
 										valueHelpRequest="onVHANPRent"
 										change="onBSAChange"
-										visible="{CNModel>isParent}"
+										visible="{CNModel>isparent}"
 										valueState="{= ${CNModel>anprent/error} ? 'Error': 'None'}"
 										value="{ path: 'CNModel>anprent/unitprice', type:'sap.ui.model.type.Float',formatOptions: {minFractionDigits: 2,maxFractionDigits: 2}}"
 										>
@@ -162,8 +170,15 @@
 									</Input>
 		                        </t:template>
 		                    </t:Column>
+		                    <t:Column width="9rem">
+							<Label text="{i18n>TreeTable.Column.UserFields}" />
+							<t:template>
+								<Button icon="sap-icon://notes"
+									press="onUserFields" visible="{CNModel>isparent}"/>
+							</t:template>
+							</t:Column>
 		                </t:columns>
-                	 </t:TreeTable>	
-                </f:content>
+                	 </t:TreeTable>	    
+        </f:content>
 	</f:DynamicPage>
 </mvc:View>

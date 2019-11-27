@@ -11,6 +11,10 @@
 		cancel="onUnitCancel"
 		items="{
 			path : '/RentalObjectSearchSet',
+			sorter : {
+					path : 'Xmetxt',
+					descending : false
+			},
 			filters: [
             	{path: 'Bukrs',operator: 'EQ',value1: '0'},
             	{path: 'Swenr',operator: 'EQ',value1: '0'},
@@ -30,7 +34,7 @@
 				<ObjectNumber
 					number="{
 						path: 'ROSize',
-						formatter: '.formatter.numberUnit'
+						formatter: '.formatter.floatFormat'
 					}"
 					unit="{ROUnit}"
 					state="Success" />

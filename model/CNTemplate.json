@@ -1,0 +1,36 @@
+{	"template": 
+	{	"isParent": true,
+				"reobjnr" : "",
+				"reunit"  : "",
+				"unitsize" : "0.00",
+				"uom"		: "SF",
+				"startdate" : "",
+				"enddate" : "",
+				"indsector": "",
+				"industry" : "",
+				"error" : {},
+				"baserent": {
+					"type": "L101",
+					"unitprice" : "0.00",
+					"formula": "B",
+					"validfrom": "",
+					"validto" : ""
+				},
+				"svcrent": {
+					"type": "L102",
+					"unitprice" : "0.00",
+					"formula": "B",
+					"validfrom": "",
+					"validto" : ""
+				},
+				"anprent": {
+					"type": "L103",
+					"unitprice" : "0.00",
+					"formula": "B",
+					"validfrom": "",
+					"validto" : ""
+				},
+				"bp": [],
+				"rows" : []
+	}
+}

@@ -3,10 +3,11 @@ sap.ui.define([
 	'sap/m/MessageBox',
 	"sap/ui/model/json/JSONModel",
 	'sap/ui/core/Fragment',
+	'sap/ui/model/Sorter',
 	'sap/ui/model/Filter',
 	'sap/ui/model/FilterOperator',
 	"fin/re/conmgmts1/model/formatter"
-], function(BaseController,MessageBox,JSONModel,Fragment,Filter,FilterOperator,formatter) {
+], function(BaseController,MessageBox,JSONModel,Fragment,Sorter,Filter,FilterOperator,formatter) {
 	"use strict";
 
 	return BaseController.extend("fin.re.conmgmts1.controller.CreateCNTable", {
@@ -101,7 +102,7 @@ sap.ui.define([
 					var oContext = oTreeTable.getContextByIndex(aSelectedIndices[idx]);
 					var oDeleteItem = oContext.getProperty();
 					
-						if (oDeleteItem.isParent) {
+						if (oDeleteItem.isparent) {
 							for(i = 0; i < oData.catalog.createCNTable.rows.length; i++){
 								oRow = oData.catalog.createCNTable.rows[i];
 								if (oRow.reobjnr === oDeleteItem.reobjnr ){
@@ -150,6 +151,20 @@ sap.ui.define([
 			oTreeTable.expandToLevel(1);
 		},
 		
+		/*onToggleExpand: function(){
+			var oTreeTable = this.byId("createCNTable");
+			var oViewModel = this.getView().getModel("viewModel");
+			var iconState = oViewModel.getProperty("/toogleexpand");
+			
+			if(iconState === "sap-icon://collapse") {
+				oTreeTable.collapseAll();
+				oViewModel.setProperty("/toogleexpand","sap-icon://expand");	
+			} else{
+				oTreeTable.expandToLevel(1);
+				oViewModel.setProperty("/toogleexpand","sap-icon://collapse");
+			}
+		},*/
+		
 		onAddUnit: function(oEvent){
 			
 			
@@ -159,6 +174,8 @@ sap.ui.define([
 				this._oSelectUnit = sap.ui.xmlfragment("selectRO","fin.re.conmgmts1.fragment.selectUnit", this);
 				this._oSelectUnit.setModel(this.getView().getModel());
 			}
+			
+			var oSorter = new sap.ui.model.Sorter("Xmetxt", false);
 			
 			var aFilters = [];
 			aFilters.push(new Filter("Bukrs", FilterOperator.EQ, "1001"));
@@ -171,6 +188,7 @@ sap.ui.define([
 			var oBindingInfo = {
 				path: "/RentalObjectSearchSet",
 				template: oTemplate,
+				sorter : oSorter,
 				filters: aFilters
 			};
 			
@@ -207,9 +225,10 @@ sap.ui.define([
 			var sValue = oEvent.getParameter("value");
 		
 			var oFilter1 = new Filter("Xmetxt", sap.ui.model.FilterOperator.Contains, sValue);
-			var oFilter2 = new Filter("Smenr", sap.ui.model.FilterOperator.Contains, sValue);
+			//var oFilter2 = new Filter("Smenr", sap.ui.model.FilterOperator.Contains, sValue);
 			var oBinding = oEvent.getSource().getBinding("items");
-			oBinding.filter([oFilter1,oFilter2]);
+			//oBinding.filter(new Filter([oFilter1,oFilter2],false));
+			oBinding.filter([oFilter1]);
 		},
 		onUnitSelect: function(oEvent){
 		
@@ -242,8 +261,8 @@ sap.ui.define([
 								}
 							);
 					} else{
-						var oRow = {"isParent": false,
-							"reobjnr" : oObject.ROKey,
+						var oRow = {"isparent": false,
+							"reimkey" : oObject.ROKey,
 							"reunit"  : oObject.Xmetxt,
 							"unitsize": oObject.ROSize,       
 							"uom" : oObject.ROUnit 
@@ -361,15 +380,15 @@ sap.ui.define([
 			var oList = Fragment.byId("manageBP", "listBP");
 			var oItemTemplate = new sap.m.StandardListItem({
 				title:"{CNModel>bpname}",
-				description : "{CNModel>bpid}",
+				description : "{CNModel>partner}",
 				info : "{= ${CNModel>bprole} === '" + this.getMainBPRole() + "' ? 'Main Customer' : 'Contact' }",
 				infoState: "{= ${CNModel>bprole} === '" + this.getMainBPRole() + "' ? 'Success' : 'Warning' }",
 				type: "Active",
 				press: [oThis.onNavToBP ,oThis],
 				customData: [
 				new sap.ui.core.CustomData({
-					key : "bpid",
-					value: "{CNModel>bpid}"
+					key : "partner",
+					value: "{CNModel>partner}"
 					})
 				]
 			});
@@ -448,7 +467,7 @@ sap.ui.define([
 			if (aContexts && aContexts.length) {
 			
 				aContexts.map(function(oContext) {	
-					var bp = { "bpid" : oContext.getObject().BusinessPartner,
+					var bp = { "partner" : oContext.getObject().BusinessPartner,
 					  "bprole": oContext.getObject().BusinessPartnerRole,
 					  "customerid" : oContext.getObject().Customer,
 					  "bpname" : oContext.getObject().BusinessPartnerFullName
@@ -507,7 +526,7 @@ sap.ui.define([
 		onNavToBP : function (oEvent) {
 			//var oCtx = oEvent.getSource().getBindingContext();
 			var oItem = oEvent.getSource();
-			var sBPId = oItem.data("bpid");
+			var sBPId = oItem.data("partner");
 			
 			var oNavCon = Fragment.byId("manageBP", "navCon");
 			var omanageBP = Fragment.byId("manageBP", "detail");
@@ -530,12 +549,8 @@ sap.ui.define([
 			var oTableCtx = oTreeTable.getContextByIndex(this._selectedIdx);
 			var oData = oTableCtx.getProperty();
 			this._selectedODATA = oData;
-			
-			
-			
+		
 			oViewModel.setProperty("/baserent",oData.baserent);
-			
-			
 			
 			this._oEventSource = oEvent.getSource();
 			this._oManageBaseRent.openBy(this._oEventSource);
@@ -714,12 +729,70 @@ sap.ui.define([
 				}
 			}
 		},
+		onUserFields: function(oEvent){
+			if (!this._oUserFields) {
+				
+				this._oUserFields = sap.ui.xmlfragment("manageUserFields","fin.re.conmgmts1.fragment.manageUserFields", this);
+				this.getView().addDependent(this._oUserFields);
+			}
+			
+			this._selectedIdx = oEvent.getSource().getParent().getIndex();
+			
+			var oView = this.getView();
+			var oViewModel = oView.getModel("viewModel");
+			var oTreeTable = oView.byId("createCNTable");
+			var oTableCtx = oTreeTable.getContextByIndex(this._selectedIdx);
+			var oData = oTableCtx.getProperty();
+			this._selectedODATA = oData;
+			
+			oViewModel.setProperty("/usrfields",oData.usrfields);
+			
+			this._oEventSource = oEvent.getSource();
+			this._oUserFields.openBy(this._oEventSource);
+		},
+		
+		onUserFieldsClose: function(){
+			
+			this._oEventSource = null;
+			this._oUserFields.close();
+		},
+		
+		onNew: function(){
+			sap.ui.core.BusyIndicator.hide();
+		},
+		onSave: function(){
+			
+			var oThis = this;
+			var oTreeTable = this.byId("createCNTable");
+			var oModel =  oTreeTable.getBinding("rows").getModel();
+			var oData = oModel.getData();
+			
+			sap.ui.core.BusyIndicator.show(0);
+			
+			oModel.create("/MarketListHeaderSet", oData, {
+			    	method: "POST",
+				    success: function(data) {
+				    	sap.ui.core.BusyIndicator.hide();
+				    	sap.m.MessageBox.Success(oThis.getResourceBundle().getText("Msg.SuccessSave"), {
+				            title: "Success",                                      
+				            initialFocus: null                                   
+				        });
+				    },
+				     error: function(e) {
+				    	sap.ui.core.BusyIndicator.hide();
+				    	sap.m.MessageBox.Error(oThis.getResourceBundle().getText("Error.FailToSave"), {
+				            title: "Error",                                      
+				            initialFocus: null                                   
+				        });
+				    }
+			});
+		},
 		_calcUnitSize: function(){
 			var oTreeTable = this.getView().byId("createCNTable");
 			var oData = oTreeTable.getBinding("rows").getModel().getData();
 			
-			for(var i = 0; i < 	oData.catalog.createCNTable.rows.length; i++){
-				var oRow1 = oData.catalog.createCNTable.rows[i];
+			for(var i = 0; i < 	oData.createCNTable.rows.length; i++){
+				var oRow1 = oData.createCNTable.rows[i];
 				
 				var fTotalSize = 0.00;
 				var sUOM = "";
