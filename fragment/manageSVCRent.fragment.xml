@@ -43,7 +43,7 @@
 							
 							<Label text="Unit Price" />
 							<Input type="Text" 
-								value="{ path: 'viewModel>/svcrent/unitprice', type:'sap.ui.model.type.Float',formatOptions: {minFractionDigits: 2,maxFractionDigits: 2} }"
+								value="{ path: 'viewModel>/svcrent/UnitPrice', type:'sap.ui.model.type.Float',formatOptions: {minFractionDigits: 2,maxFractionDigits: 2} }"
 								valueState="{= ${viewModel>/svcrent/error} ? 'Error': 'None'}"
 								textAlign="Right"
 								change="onManageBSAChange">
@@ -55,12 +55,12 @@
     							</customData>
 							</Input>
 							<Label text="Valid From/To"/>
-							 <DatePicker value="{viewModel>/svcrent/validfrom}" valueFormat="yyyy-MM-dd">
+							 <DatePicker value="{viewModel>/svcrent/ValidFrom}" valueFormat="yyyyMMdd">
 							 <layoutData>
 								<l:GridData span="XL8 L1 M3 S6" />
 							</layoutData>
 							 </DatePicker>
-							 <DatePicker value="{viewModel>/svcrent/validto}" valueFormat="yyyy-MM-dd">
+							 <DatePicker value="{viewModel>/svcrent/ValidTo}" valueFormat="yyyyMMdd">
 							 <layoutData>
 								<l:GridData span="XL8 L1 M3 S6" />
 							</layoutData>
@@ -69,10 +69,10 @@
 							 <ComboBox
 								showSecondaryValues= "true"
 								items="{
-									path: 'CondFModel>/formulas',
+									path: 'CondFModel>/Formulas',
 									sorter: { path: 'key' }
 								}"
-								selectedKey="{viewModel>/svcrent/formula}">
+								selectedKey="{viewModel>/svcrent/Formula}">
 								<core:ListItem key="{CondFModel>key}" text="{CondFModel>text}" additionalText = "{CondFModel>key}"/>
 							</ComboBox>
 		                        

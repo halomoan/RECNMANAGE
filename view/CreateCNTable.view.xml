@@ -50,54 +50,54 @@
 		                    <t:Column width="20rem">
 		                        <Label text="{i18n>TreeTable.Column.Unit}"/>
 		                          <t:template>
-			                    	<Input value="{CNModel>reunit}" editable="{CNModel>isparent}" valueState="{= ${CNModel>error/reunit} ? 'Error': 'None'}"/>
+			                    	<Input value="{CNModel>REUnit}" editable="{CNModel>IsParent}" valueState="{= ${CNModel>error/reunit} ? 'Error': 'None'}"/>
 								  </t:template>
 		                        <!--<t:template>-->
 		                        
 		                        
 		                           <!-- <Text text="{CNModel>reunit}" wrapping="false"/>-->
 		                            <!--<Input value="{CNModel>reunit}"/>-->
-		                            	<!--<Button icon="sap-icon://add" press="handleButtonPress" class="sapUiSmallMarginEnd" visible="{CNModel>isparent}" />-->
+		                            	<!--<Button icon="sap-icon://add" press="handleButtonPress" class="sapUiSmallMarginEnd" visible="{CNModel>IsParent}" />-->
 		                        <!--</t:template>-->
 		                    </t:Column>
 		                    <t:Column width="3rem" hAlign="End" resizable="false">
 		                        <Label text=""/>
 		                        <t:template>
-		                           <Button icon="sap-icon://add" press="onAddUnit" class="sapUiSmallMarginEnd" visible="{CNModel>isparent}" />
+		                           <Button icon="sap-icon://add" press="onAddUnit" class="sapUiSmallMarginEnd" visible="{CNModel>IsParent}" />
 		                        </t:template>
 		                    </t:Column>
 		                    <t:Column width="8rem" hAlign="End">
 		                        <Label text="{i18n>TreeTable.Column.TotalSize}"/>
 		                        <t:template>
 		                            <Text text="{
-												path: 'CNModel>unitsize',
+												path: 'CNModel>UnitSize',
 												formatter: '.formatter.floatFormat'
-												} {CNModel>uom}"
+												} {CNModel>UOM}"
 									/>
 		                        </t:template>
 		                    </t:Column>
-		                    <t:Column width="20rem" autoResizable="true" filterProperty="partner">
+		                    <t:Column width="20rem" autoResizable="true">
 		                        <Label text="{i18n>TreeTable.Column.Customer}"/>
 		                        <t:template>
-		                        	 <Link text="{= ${CNModel>bp/0/bpname} ? ${CNModel>bp/0/bpname} : ${i18n>BP.New} }" href="" press="onBPManage" tooltip="{CNModel>bp/0/bpid}" target="_blank" visible="{CNModel>isparent}" />
+		                        	 <Link text="{= ${CNModel>bp/0/BusinessPartnerFullName} ? ${CNModel>bp/0/BusinessPartnerFullName} : ${i18n>BP.New} }" href="" press="onBPManage" tooltip="{CNModel>bp/0/BusinessPartner}" target="_blank" visible="{CNModel>IsParent}" />
 		                        </t:template>
 		                    </t:Column>
 		                    
 		                    <t:Column width="9rem">
 							<Label text="{i18n>TreeTable.Column.Industry}" />
 							<t:template>
-								<Button text="{= ${CNModel>industry} ? ${CNModel>industry} : ${i18n>TreeTable.Button.ChooseIndustry} }" 
-									type="{= ${CNModel>industry} ? 'Accept' : 'Default' }" 
-									press="onSelectInd" visible="{CNModel>isparent}"/>
+								<Button text="{= ${CNModel>Industry} ? ${CNModel>Industry} : ${i18n>TreeTable.Button.ChooseIndustry} }" 
+									type="{= ${CNModel>Industry} ? 'Accept' : 'Default' }" 
+									press="onSelectInd" visible="{CNModel>IsParent}"/>
 							</t:template>
 							</t:Column>
 		                    
 		                    <t:Column width="10rem" resizable="false">
 		                        <Label text="{i18n>TreeTable.Column.StartDate}"/>
 		                        <t:template>
-		                           	<DatePicker value="{CNModel>startdate}" valueFormat="yyyy-MM-dd" 
-		                           		valueState="{= ${CNModel>error/startdate} ? 'Error': 'None'}"
-		                           		visible="{CNModel>isparent}" 
+		                           	<DatePicker value="{CNModel>StartDate}" valueFormat="yyyyMMdd" 
+		                           		valueState="{= ${CNModel>error/StartDate} ? 'Error': 'None'}"
+		                           		visible="{CNModel>IsParent}" 
 		                           		change="onSDateChange"/>
 		                        </t:template>
 		                    </t:Column>
@@ -105,9 +105,9 @@
 		                    <t:Column width="10rem" resizable="false">
 		                        <Label text="{i18n>TreeTable.Column.EndDate}"/>
 		                        <t:template>
-		                           <DatePicker value="{CNModel>enddate}" valueFormat="yyyy-MM-dd" 
-		                           valueState="{= ${CNModel>error/enddate} ? 'Error': 'None'}"
-		                           visible="{CNModel>isparent}" change="onEDateChange"/>
+		                           <DatePicker value="{CNModel>EndDate}" valueFormat="yyyyMMdd" 
+		                           valueState="{= ${CNModel>error/EndDate} ? 'Error': 'None'}"
+		                           visible="{CNModel>IsParent}" change="onEDateChange"/>
 		                        </t:template>
 		                    </t:Column>
 		                     <t:Column width="10rem" resizable="false" hAlign="End">
@@ -120,9 +120,9 @@
 										showValueHelp="true"
 										valueHelpRequest="onVHBaseRent"
 										change="onBSAChange"
-										visible="{CNModel>isparent}"
+										visible="{CNModel>IsParent}"
 										valueState="{= ${CNModel>baserent/error} ? 'Error': 'None'}"
-										value="{ path: 'CNModel>baserent/unitprice', type:'sap.ui.model.type.Float',formatOptions: {minFractionDigits: 2,maxFractionDigits: 2}}"
+										value="{ path: 'CNModel>baserent/UnitPrice', type:'sap.ui.model.type.Float',formatOptions: {minFractionDigits: 2,maxFractionDigits: 2}}"
 										>
 		                           		<customData>
     											<core:CustomData key="myId" value="baserent" writeToDom="false"/>
@@ -140,9 +140,9 @@
 										showValueHelp="true"
 										valueHelpRequest="onVHSVCRent"
 										change="onBSAChange"
-										visible="{CNModel>isparent}"
+										visible="{CNModel>IsParent}"
 										valueState="{= ${CNModel>svcrent/error} ? 'Error': 'None'}"
-										value="{ path: 'CNModel>svcrent/unitprice', type:'sap.ui.model.type.Float',formatOptions: {minFractionDigits: 2,maxFractionDigits: 2}}"
+										value="{ path: 'CNModel>svcrent/UnitPrice', type:'sap.ui.model.type.Float',formatOptions: {minFractionDigits: 2,maxFractionDigits: 2}}"
 										>
 		                           		<customData>
     											<core:CustomData key="myId" value="svcrent" writeToDom="false"/>
@@ -160,9 +160,9 @@
 										showValueHelp="true"
 										valueHelpRequest="onVHANPRent"
 										change="onBSAChange"
-										visible="{CNModel>isparent}"
+										visible="{CNModel>IsParent}"
 										valueState="{= ${CNModel>anprent/error} ? 'Error': 'None'}"
-										value="{ path: 'CNModel>anprent/unitprice', type:'sap.ui.model.type.Float',formatOptions: {minFractionDigits: 2,maxFractionDigits: 2}}"
+										value="{ path: 'CNModel>anprent/UnitPrice', type:'sap.ui.model.type.Float',formatOptions: {minFractionDigits: 2,maxFractionDigits: 2}}"
 										>
 		                           		<customData>
     											<core:CustomData key="myId" value="anprent" writeToDom="false"/>
@@ -174,7 +174,7 @@
 							<Label text="{i18n>TreeTable.Column.UserFields}" />
 							<t:template>
 								<Button icon="sap-icon://notes"
-									press="onUserFields" visible="{CNModel>isparent}"/>
+									press="onUserFields" visible="{CNModel>IsParent}"/>
 							</t:template>
 							</t:Column>
 		                </t:columns>

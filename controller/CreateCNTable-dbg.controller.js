@@ -19,8 +19,15 @@ sap.ui.define([
 		 */
 		onInit: function() {
 			
+			jQuery.sap.require("sap.ui.core.format.DateFormat");
+			var oDateFormat = sap.ui.core.format.DateFormat.getDateTimeInstance({pattern: "yyyyMMdd"});
+	
 			var oViewModel = new JSONModel({
-				addMainBP : true
+				addMainBP : true,
+				busy: false,
+				today: oDateFormat.format(new Date()),
+				durationUnits : [{"key": "day","text": "Day(s)"},{"key": "month","text": "Month(s)"},{"key": "year","text": "Year(s)"}],
+				durationUnitKey: "month"
 			});
 			this.setModel(oViewModel, "viewModel");
 			
@@ -29,8 +36,8 @@ sap.ui.define([
 			
 			var oCondFormModel = new JSONModel("/model/CondFModel.json");
 			this.getView().setModel(oCondFormModel,"CondFModel");
-			
-			
+
+			this.getOwnerComponent().getModel().metadataLoaded().then(this._onMetadataLoaded.bind(this));
 			
 			// var oBindingModel = new sap.ui.model.Binding(oModel,"/catalog/createCNTable/rows",oModel.getContext("/CNModel"));
 			//  oBindingModel.attachChange(function() {
@@ -38,34 +45,83 @@ sap.ui.define([
 			//  });
 			
 		},
+		_onMetadataLoaded: function() {
+			var oViewModel = this.getView().getModel("viewModel");
+			
+			
+			var oModel = new JSONModel("/model/CNTemplate.json");
+			
+			oModel.attachRequestCompleted(function() {
+				var oData = oModel.getData();
+				oViewModel.setProperty("/CNTemplate",oData.template);
+			});
+			
+			// this.getView().bindElement({
+			// 	path: "/ZContractDataSet('1234')",
+			// 	events: {
+			// 		dataRequested: function(){
+			// 			oViewModel.setProperty("/busy", true);	
+			// 		},
+			// 		dataReceived: function(rData) {
+			// 			oViewModel.setProperty("/busy", false);
+			// 		}
+			// 	}
+			// });
 
-		/**
-		 * Similar to onAfterRendering, but this hook is invoked before the controller's View is re-rendered
-		 * (NOT before the first rendering! onInit() is used for that one!).
-		 * @memberOf fin.re.conmgmts1.view.CreateCNTable
-		 */
-		//	onBeforeRendering: function() {
-		//
-		//	},
+		},
 
-		/**
-		 * Called when the View has been rendered (so its HTML is part of the document). Post-rendering manipulations of the HTML could be done here.
-		 * This hook is the same one that SAPUI5 controls get after being rendered.
-		 * @memberOf fin.re.conmgmts1.view.CreateCNTable
-		 */
-		/*	onAfterRendering: function() {
-				
+		onNewCNDuration: function(oEvent){
+			var iDuration =	oEvent.getParameter("value");
+			var oStartDate = Fragment.byId("newContract", "StartDate").getDateValue();
+			var oEndDate = new Date(oStartDate.getTime());
+			var oDurationUnit = Fragment.byId("newContract", "durationUnit");
+			
+			switch(oDurationUnit.getSelectedKey()){
+				case "day":
+						oEndDate.setDate(oStartDate.getDate() + iDuration);
+					break;
+				case "month":
+						oEndDate.setMonth(oStartDate.getMonth() + iDuration);
+					break;
+				case "year":
+						oEndDate = new Date(oEndDate.setFullYear(oStartDate.getFullYear() + iDuration));
+					break;
+				default:
+			}
+			
+			Fragment.byId("newContract", "EndDate").setDateValue(oEndDate);
+		},
 		
-			},
-		*/
-		/**
-		 * Called when the Controller is destroyed. Use this one to free resources and finalize activities.
-		 * @memberOf fin.re.conmgmts1.view.CreateCNTable
-		 */
-		//	onExit: function() {
-		//
-		//	}
-		
+		onNewCNStartDate: function(oEvent){
+			var oDP = oEvent.oSource;
+			
+			Fragment.byId("newContract", "LeaseStart").setDateValue(oDP.getDateValue());
+		},
+		onNewCNEndDate: function(oEvent){
+			var oEndDate = oEvent.oSource;
+			
+			var oStartDate = Fragment.byId("newContract", "StartDate");
+			
+			if (oEndDate.getDateValue() < oStartDate.getDateValue()) {
+				oEndDate.setValueState(sap.ui.core.ValueState.Error);
+			} else{
+				oEndDate.setValueState(sap.ui.core.ValueState.None);
+			}
+			
+		},
+		onNewCNLeaseStart: function(oEvent){
+			var oLeaseStart = oEvent.oSource;
+			
+			var oStartDate = Fragment.byId("newContract", "StartDate");
+			var oEndDate = Fragment.byId("newContract", "EndDate");
+			
+			if (oLeaseStart.getDateValue() < oStartDate.getDateValue() || oLeaseStart.getDateValue() > oEndDate.getDateValue()) {
+				oLeaseStart.setValueState(sap.ui.core.ValueState.Error);
+			} else{
+				oLeaseStart.setValueState(sap.ui.core.ValueState.None);
+			}
+			
+		},
 		onDelete: function() {
 			var bCompact = !!this.getView().$().closest(".sapUiSizeCompact").length;
 			MessageBox.confirm(
@@ -87,57 +143,7 @@ sap.ui.define([
 		},
 		
 		
-		_onDelete: function(){
-			var oTreeTable = this.byId("createCNTable");
-			var aSelectedIndices = oTreeTable.getSelectedIndices();
-			var oModel =  oTreeTable.getBinding("rows").getModel();
-			var oData = oModel.getData();
-			var bDeleted = false;
-			var i = 0;
-			var oRow = null;
-			
-			
-			if (aSelectedIndices.length > 0) {
-				for (var idx = 0; idx < aSelectedIndices.length; idx++) {
-					var oContext = oTreeTable.getContextByIndex(aSelectedIndices[idx]);
-					var oDeleteItem = oContext.getProperty();
-					
-						if (oDeleteItem.isparent) {
-							for(i = 0; i < oData.catalog.createCNTable.rows.length; i++){
-								oRow = oData.catalog.createCNTable.rows[i];
-								if (oRow.reobjnr === oDeleteItem.reobjnr ){
-									oData.catalog.createCNTable.rows.splice(i,1);
-									this._genREText(oRow);
-									bDeleted = true;
-								}
-							}
-							bDeleted = true;
-						} else {
-							for(i = 0; i < oData.catalog.createCNTable.rows.length; i++){
-								oRow = oData.catalog.createCNTable.rows[i];
-								for(var j = 0; j < oRow.rows.length; j++ ) {{
-									if (oRow.rows[j].reobjnr === oDeleteItem.reobjnr ){
-										oRow.rows.splice(j,1);
-										bDeleted = true;
-										this._genREText(oRow);
-									}
-								
-								}
-								
-							}	
-						}
-					}	
-				}
-			
-			}
-			if (bDeleted) {
-				this._calcUnitSize();
-				oModel.refresh();
-				oTreeTable.clearSelection();
-			}
-			
-			
-		},
+
 		
 	
 		onCollapseAll: function() {
@@ -247,7 +253,8 @@ sap.ui.define([
 					var bFound = false;
 					
 					for(var idx in oData.rows){
-						if (oData.rows[idx].reobjnr === oObject.ROKey){
+					
+						if (oData.rows[idx].REIMKEY === oObject.ROKey){
 							bFound = true; 
 							break;
 						}
@@ -261,11 +268,11 @@ sap.ui.define([
 								}
 							);
 					} else{
-						var oRow = {"isparent": false,
-							"reimkey" : oObject.ROKey,
-							"reunit"  : oObject.Xmetxt,
-							"unitsize": oObject.ROSize,       
-							"uom" : oObject.ROUnit 
+						var oRow = {"IsParent": false,
+							"REIMKEY" : oObject.ROKey,
+							"REUnit"  : oObject.Xmetxt,
+							"UnitSize": oObject.ROSize,       
+							"UOM" : oObject.ROUnit 
 						};
 						oData.rows.push(oRow);
 					}
@@ -338,7 +345,7 @@ sap.ui.define([
 				var oData = oTableCtx.getProperty();
 				
 				aContexts.map(function(oContext) { 
-					oData.indsector = oContext.getObject().IndSector;
+					oData.indsector = oContext.getObject().Ind_Sector;
 					oData.industry = oContext.getObject().Text;
 				});
 				
@@ -379,16 +386,16 @@ sap.ui.define([
 
 			var oList = Fragment.byId("manageBP", "listBP");
 			var oItemTemplate = new sap.m.StandardListItem({
-				title:"{CNModel>bpname}",
-				description : "{CNModel>partner}",
-				info : "{= ${CNModel>bprole} === '" + this.getMainBPRole() + "' ? 'Main Customer' : 'Contact' }",
-				infoState: "{= ${CNModel>bprole} === '" + this.getMainBPRole() + "' ? 'Success' : 'Warning' }",
+				title:"{CNModel>BusinessPartnerFullName}",
+				description : "{CNModel>BusinessPartner}",
+				info : "{= ${CNModel>BusinessPartnerRole} === '" + this.getMainBPRole() + "' ? 'Main Customer' : 'Contact' }",
+				infoState: "{= ${CNModel>BusinessPartnerRole} === '" + this.getMainBPRole() + "' ? 'Success' : 'Warning' }",
 				type: "Active",
 				press: [oThis.onNavToBP ,oThis],
 				customData: [
 				new sap.ui.core.CustomData({
-					key : "partner",
-					value: "{CNModel>partner}"
+					key : "BusinessPartner",
+					value: "{CNModel>BusinessPartner}"
 					})
 				]
 			});
@@ -467,16 +474,16 @@ sap.ui.define([
 			if (aContexts && aContexts.length) {
 			
 				aContexts.map(function(oContext) {	
-					var bp = { "partner" : oContext.getObject().BusinessPartner,
-					  "bprole": oContext.getObject().BusinessPartnerRole,
-					  "customerid" : oContext.getObject().Customer,
-					  "bpname" : oContext.getObject().BusinessPartnerFullName
+					var bp = { "BusinessPartner" : oContext.getObject().BusinessPartner,
+					  "BusinessPartnerRole": oContext.getObject().BusinessPartnerRole,
+					  "Customer" : oContext.getObject().Customer,
+					  "BusinessPartnerFullName" : oContext.getObject().BusinessPartnerFullName
 					};
 					
 					if (oContext.getObject().BusinessPartnerRole === oThis.getMainBPRole()){
 						
 						if (oData.bp.length > 0) {
-							if (oData.bp[0].bprole === oThis.getMainBPRole()){
+							if (oData.bp[0].BusinessPartnerRole === oThis.getMainBPRole()){
 								oData.bp.splice(0,1,bp);
 							} else {
 								oData.bp.splice(0,0,bp);
@@ -526,7 +533,8 @@ sap.ui.define([
 		onNavToBP : function (oEvent) {
 			//var oCtx = oEvent.getSource().getBindingContext();
 			var oItem = oEvent.getSource();
-			var sBPId = oItem.data("partner");
+			
+			var sBPId = oItem.data("BusinessPartner");
 			
 			var oNavCon = Fragment.byId("manageBP", "navCon");
 			var omanageBP = Fragment.byId("manageBP", "detail");
@@ -745,7 +753,7 @@ sap.ui.define([
 			var oData = oTableCtx.getProperty();
 			this._selectedODATA = oData;
 			
-			oViewModel.setProperty("/usrfields",oData.usrfields);
+			oViewModel.setProperty("/userfields",oData.userfields);
 			
 			this._oEventSource = oEvent.getSource();
 			this._oUserFields.openBy(this._oEventSource);
@@ -758,34 +766,164 @@ sap.ui.define([
 		},
 		
 		onNew: function(){
-			sap.ui.core.BusyIndicator.hide();
+			if (!this._onNewCN) {
+				
+				this._onNewCN = sap.ui.xmlfragment("newContract","fin.re.conmgmts1.fragment.newContract", this);
+				this.getView().addDependent(this._onNewCN);
+			}
+			
+			this.getView().addDependent(this._onNewCN);
+			jQuery.sap.syncStyleClass("sapUiSizeCompact", this.getView(), this._onNewCN);
+			this._onNewCN.open();
+		},
+		onNewCNClose: function(){
+			this._onNewCN.close();
 		},
 		onSave: function(){
 			
 			var oThis = this;
 			var oTreeTable = this.byId("createCNTable");
+			var aSelectedIndices = oTreeTable.getSelectedIndices();
+		
+			
+			
+			if (aSelectedIndices.length > 0) {
+				
+				var oHeader = {};
+				var bValid = true;
+				
+				oHeader.HeaderId = "1";
+				oHeader.ZContractDataSet = [];
+				
+				for (var idx = 0; idx < aSelectedIndices.length; idx++) {
+					var oContext = oTreeTable.getContextByIndex(aSelectedIndices[idx]);
+					var oItem = oContext.getProperty();
+					
+					bValid = this._validateSave(oItem);
+					
+					if (!bValid) {
+						break;
+					}
+					var oContract = {};
+					oContract.HeaderId = "1";
+					oContract.ODHeaderId = oItem.ODHeaderId;                         
+					oContract.RECNKEY = oItem.RECNKey;
+					oContract.RECNText = oItem.REUnit;
+					oContract.StartDate = oItem.StartDate;
+					oContract.EndDate = oItem.EndDate;
+					oContract.IndSector = oItem.IndSector;
+					oContract.UnitSize = oItem.UnitSize;
+					oContract.UOM = oItem.UOM;
+					oContract.IsParent = oItem.IsParent;
+					oContract.UserFields = oItem.userfields;                         
+					oContract.BaseRent = oItem.baserent;
+					oContract.SVCRent = oItem.svcrent;
+					oContract.ANPRent = oItem.anprent;
+					oContract.BP = oItem.bp;
+					oContract.ROUnits = oItem.rows;
+					oHeader.ZContractDataSet.push(oContract);
+				}
+				
+				if(bValid) {
+					var oModel = this.getModel();
+					oModel.create("/ZContractListSet", oHeader, {
+				    	method: "POST",
+					    success: function(data) {
+					    	sap.ui.core.BusyIndicator.hide();
+					    	sap.m.MessageBox.success(oThis.getResourceBundle().getText("Msg.SuccessSave"), {
+					            title: "Success",                                      
+					            initialFocus: null                                   
+					        });
+					    },
+					     error: function(e) {
+					    	sap.ui.core.BusyIndicator.hide();
+					    	sap.m.MessageBox.Error(oThis.getResourceBundle().getText("Error.FailToSave"), {
+					            title: "Error",                                      
+					            initialFocus: null                                   
+					        });
+					    }
+					});
+				}
+			
+			} else {
+				MessageBox.warning(this.getResourceBundle().getText("Msg.PickContract"), {
+					title: "Warning",                                      
+				    initialFocus: null                                   
+				});
+			}
+			
+		},
+		_validateSave: function(oItem){
+			var sMsg = "";
+			var bValid = true;
+			
+			if(!oItem.IsParent){
+				bValid = false;
+				sMsg = this.getResourceBundle().getText("Msg.PickContract");
+			}
+			
+			if(!bValid){
+				MessageBox.error(sMsg, {
+					title: "Error",                                      
+					initialFocus: null                                   
+				});
+			}
+			return bValid;
+		},
+		_onDelete: function(){
+			var oTreeTable = this.byId("createCNTable");
+			var aSelectedIndices = oTreeTable.getSelectedIndices();
 			var oModel =  oTreeTable.getBinding("rows").getModel();
 			var oData = oModel.getData();
+			var bDeleted = false;
+			var i = 0;
+			var oRow = null;
 			
-			sap.ui.core.BusyIndicator.show(0);
 			
-			oModel.create("/MarketListHeaderSet", oData, {
-			    	method: "POST",
-				    success: function(data) {
-				    	sap.ui.core.BusyIndicator.hide();
-				    	sap.m.MessageBox.Success(oThis.getResourceBundle().getText("Msg.SuccessSave"), {
-				            title: "Success",                                      
-				            initialFocus: null                                   
-				        });
-				    },
-				     error: function(e) {
-				    	sap.ui.core.BusyIndicator.hide();
-				    	sap.m.MessageBox.Error(oThis.getResourceBundle().getText("Error.FailToSave"), {
-				            title: "Error",                                      
-				            initialFocus: null                                   
-				        });
-				    }
-			});
+			if (aSelectedIndices.length > 0) {
+				for (var idx = 0; idx < aSelectedIndices.length; idx++) {
+					var oContext = oTreeTable.getContextByIndex(aSelectedIndices[idx]);
+					var oDeleteItem = oContext.getProperty();
+						if (oDeleteItem.isparent) {
+							for(i = 0; i < oData.createCNTable.rows.length; i++){
+								oRow = oData.createCNTable.rows[i];
+								if (oRow.reobjnr === oDeleteItem.reobjnr ){
+									oData.createCNTable.rows.splice(i,1);
+									this._genREText(oRow);
+									bDeleted = true;
+								}
+							}
+							bDeleted = true;
+						} else {
+							for(i = 0; i < oData.createCNTable.rows.length; i++){
+								oRow = oData.createCNTable.rows[i];
+								for(var j = 0; j < oRow.rows.length; j++ ) {{
+									if (oRow.rows[j].reobjnr === oDeleteItem.reobjnr ){
+										oRow.rows.splice(j,1);
+										bDeleted = true;
+										this._genREText(oRow);
+									}
+								
+								}
+								
+							}	
+						}
+					}	
+				}
+			
+			} else {
+				MessageBox.warning(this.getResourceBundle().getText("Msg.PickContractorUnit"), {
+					title: "Warning",                                      
+					initialFocus: null                                   
+				});
+			}
+			if (bDeleted) {
+				this._calcUnitSize();
+				oModel.refresh();
+				oTreeTable.clearSelection();
+			}
+			
+			
 		},
 		_calcUnitSize: function(){
 			var oTreeTable = this.getView().byId("createCNTable");
@@ -800,15 +938,15 @@ sap.ui.define([
 				
 				for(var j = 0; j < oRow1.rows.length; j++ ) {
 				
-					fUnitSize = parseFloat(oRow1.rows[j].unitsize);
+					fUnitSize = parseFloat(oRow1.rows[j].UnitSize);
 					if (fUnitSize > 0 ) {
-						fTotalSize = fTotalSize + parseFloat(oRow1.rows[j].unitsize);
-						sUOM = oRow1.rows[j].uom;
+						fTotalSize = fTotalSize + parseFloat(oRow1.rows[j].UnitSize);
+						sUOM = oRow1.rows[j].UOM;
 					} 
 					
 				}
-				oRow1.unitsize = fTotalSize;
-				oRow1.uom = sUOM;
+				oRow1.UnitSize = fTotalSize;
+				oRow1.UOM = sUOM;
 			}
 		},
 		
@@ -816,14 +954,14 @@ sap.ui.define([
 			var retext = "";
 			for(var i in oData.rows) {
 				if (retext.length > 0) {
-					retext = retext + ", " + oData.rows[i].reunit;
+					retext = retext + ", " + oData.rows[i].REUnit;
 				}else{
-					retext = oData.rows[i].reunit;
+					retext = oData.rows[i].REUnit;
 				}
 			}
 			
 			if (oData.bp.length > 0) {
-				retext = retext + " " + oData.bp[0].bpname;
+				retext = retext + " " + oData.bp[0].BusinessPartnerFullName;
 			}
 			oData.reunit = retext.trim();
 		}

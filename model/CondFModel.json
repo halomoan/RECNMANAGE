@@ -1,5 +1,5 @@
 {
-	"formulas" : [
+	"Formulas" : [
 		{"key" : "A", "text": "Fixed Amount (A)"},
 		{"key" : "B", "text": "Resid./Usable Space in SF"},
 		{"key" : "B1", "text": "Resid./Usable Space in SM"},

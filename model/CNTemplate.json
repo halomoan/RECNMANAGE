@@ -1,36 +1,59 @@
-{	"template": 
-	{	"isParent": true,
-				"reobjnr" : "",
-				"reunit"  : "",
-				"unitsize" : "0.00",
-				"uom"		: "SF",
-				"startdate" : "",
-				"enddate" : "",
-				"indsector": "",
-				"industry" : "",
-				"error" : {},
-				"baserent": {
-					"type": "L101",
-					"unitprice" : "0.00",
-					"formula": "B",
-					"validfrom": "",
-					"validto" : ""
-				},
-				"svcrent": {
-					"type": "L102",
-					"unitprice" : "0.00",
-					"formula": "B",
-					"validfrom": "",
-					"validto" : ""
-				},
-				"anprent": {
-					"type": "L103",
-					"unitprice" : "0.00",
-					"formula": "B",
-					"validfrom": "",
-					"validto" : ""
-				},
-				"bp": [],
-				"rows" : []
-	}
+{
+	"template": {
+			"ODHeaderId" : "",
+			"IsParent": true,
+			"RECNKey": "CN0001",
+			"UnitSize": 2239,
+			"UOM": "SF",
+			"StartDate": "20191127",
+			"EndDate": "20201127",
+			"baserent": {
+				"CondType": "L101",
+				"UnitPrice": 1,
+				"Formula": "B",
+				"ValidFrom": "20191127",
+				"ValidTo": "20291127"
+			},
+			"svcrent": {
+				"CondType": "L101",
+				"UnitPrice": 1,
+				"Formula": "B",
+				"ValidFrom": "20191127",
+				"ValidTo": "20291127"
+			},
+			"anprent": {
+				"CondType": "L101",
+				"UnitPrice": 1,
+				"Formula": "B",
+				"ValidFrom": "20191127",
+				"ValidTo": "20291127"
+			},
+			"userfields": {
+				"ZZHDATE": "20191231",
+				"ZZSTMDATE1": "00000000",
+				"ZZSTMDATE2": "00000000",
+				"ZZSTMDATE3": "00000000",
+				"ZZSTMDATE4": "00000000",
+				"ZZNOVDATE": "00000000",
+				"ZZPARTDATE": "00000000",
+				"ZZBGEDATE": "00000000",
+				"ZZMONCSH": "",
+				"ZZMONBG": "",
+				"ZZDGCG": "",
+				"ZZLTERMY": "",
+				"ZZLTERMM": "",
+				"ZZLTERMD": "",
+				"ZZOPTRNEW": "",
+				"ZZIRASUSG": "",
+				"ZZPOREF": "",
+				"ZZAGTCOMM": "",
+				"ZZINCVREM": ""
+			},
+			"bp": [],
+			"rows": [],
+			"REUnit": "",
+			"IndSector": "",
+			"Industry": ""
+		}
+		
 }

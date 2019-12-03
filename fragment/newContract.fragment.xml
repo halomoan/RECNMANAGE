@@ -1,0 +1,68 @@
+<core:FragmentDefinition
+	xmlns="sap.m"
+	xmlns:form="sap.ui.layout.form"
+	xmlns:l="sap.ui.layout"
+	xmlns:core="sap.ui.core">
+	<Dialog
+		showHeader="false"
+		contentWidth="500px"
+		contentHeight="550px"
+		placement="Bottom" >
+		<NavContainer
+			id="navCon">
+			<Page
+				id="master"
+				title="{i18n>Dialog.New.Contract}">
+					<Wizard id="CreateCNWizard"
+								finishButtonText="Done"
+								complete="onNewCNClose">
+							<WizardStep id="duration"
+										title="{i18n>Lbl.Duration}"
+										validated="true">
+								<form:SimpleForm
+								editable="true">
+									<Label text="{i18n>TreeTable.Column.StartDate}" required="true"/>
+									<DatePicker id="StartDate" value="{viewModel>/CNTemplate/StartDate}" valueFormat="yyyyMMdd" 
+		                           		valueState="{= ${viewModel>/NewCN/error/StartDate} ? 'Error': 'None'}"
+		                           		change="onNewCNStartDate"/>
+									<Label text="{i18n>Lbl.Duration}" required="false"/>
+									<HBox>
+										<StepInput
+			                            value="3"
+			                            displayValuePrecision="1"
+			                            min="1"
+			                            max="999"
+			                            width="90%"
+			                            step="1"
+			                            largerStep="3"
+			                            enabled="true"
+			                            editable="true"
+			                            change="onNewCNDuration">
+									
+									</StepInput> 
+			                        <ComboBox id="durationUnit" items="{viewModel>/durationUnits}" selectedKey="{viewModel>/durationUnitKey}"  width="100%">
+			                        	<core:Item key="{viewModel>key}" text="{viewModel>text}" />
+			                        
+			                        </ComboBox>  
+			                        </HBox>
+			                        
+			                        <Label text="{i18n>TreeTable.Column.EndDate}" required="true"/>
+									<DatePicker  id="EndDate" value="{viewModel>/CNTemplate/EndDate}" valueFormat="yyyyMMdd" 
+		                           		valueState="{= ${viewModel>/NewCN/error/EndDate} ? 'Error': 'None'}"
+		                           		change="onNewCNEndDate"/>
+									<Label text="{i18n>UF.LeaseStartDate}" required="true"/>
+									<DatePicker  id="LeaseStart" value="{viewModel>/CNTemplate/userfields/ZZHDATE}" valueFormat="yyyyMMdd" 
+		                           		valueState="{= ${viewModel>/NewCN/error/LeaseStart} ? 'Error': 'None'}"
+		                           		change="onNewCNLeaseStart"/>
+								</form:SimpleForm>
+							</WizardStep>	
+							<WizardStep id="bp"
+										title="{i18n>TreeTable.Column.Customer}"
+										validated="true">
+							</WizardStep>
+					</Wizard>			
+			
+			</Page>
+		</NavContainer>
+	</Dialog>
+</core:FragmentDefinition>

@@ -1,9 +1,78 @@
 {
-
-	"createCNTable" : {
-		"rows" : [
-{"isparent":true,"recnkey":"CN0001","unitsize":0,"uom":"","startdate":"2019-11-27","enddate":"2020-11-27","baserent":{"condtype":"L101","unitprice":12.000000,"formula":"B","validfrom":"2019-11-27","validto":"2029-11-27"},"svcrent":{"condtype":"L101","unitprice":12.000000,"formula":"B","validfrom":"2019-11-27","validto":"2029-11-27"},"anprent":{"condtype":"L101","unitprice":12.000000,"formula":"B","validfrom":"2019-11-27","validto":"2029-11-27"},"usrfields":{"zzhdate":"2019-12-31","zzstmdate1":"0000-00-00","zzstmdate2":"0000-00-00","zzstmdate3":"0000-00-00","zzstmdate4":"0000-00-00","zznovdate":"0000-00-00"},"bp":[{"partner":"112233","bprole":"BPR101","bpname":"Halomoan"},{"partner":"443311","bprole":"BPL101","bpname":"Clain"}],"rows":[{"isparent":false,"reimkey":"0000101","reunit":"#01-01","unitsize":0,"uom":""},{"isparent":false,"reimkey":"0000102","reunit":"#01-02","unitsize":0,"uom":""}]}
-		]
+	"createCNTable": {
+		"rows": [{
+			"ODHeaderId" : "",
+			"IsParent": true,
+			"RECNKey": "CN0001",
+			"UnitSize": 2239,
+			"UOM": "SF",
+			"StartDate": "20191127",
+			"EndDate": "20201127",
+			"baserent": {
+				"CondType": "L101",
+				"UnitPrice": 1,
+				"Formula": "B",
+				"ValidFrom": "20191127",
+				"ValidTo": "20291127"
+			},
+			"svcrent": {
+				"CondType": "L101",
+				"UnitPrice": 1,
+				"Formula": "B",
+				"ValidFrom": "20191127",
+				"ValidTo": "20291127"
+			},
+			"anprent": {
+				"CondType": "L101",
+				"UnitPrice": 1,
+				"Formula": "B",
+				"ValidFrom": "20191127",
+				"ValidTo": "20291127"
+			},
+			"userfields": {
+				"ZZHDATE": "20191231",
+				"ZZSTMDATE1": "00000000",
+				"ZZSTMDATE2": "00000000",
+				"ZZSTMDATE3": "00000000",
+				"ZZSTMDATE4": "00000000",
+				"ZZNOVDATE": "00000000",
+				"ZZPARTDATE": "00000000",
+				"ZZBGEDATE": "00000000",
+				"ZZMONCSH": "",
+				"ZZMONBG": "",
+				"ZZDGCG": "",
+				"ZZLTERMY": "",
+				"ZZLTERMM": "",
+				"ZZLTERMD": "",
+				"ZZOPTRNEW": "",
+				"ZZIRASUSG": "",
+				"ZZPOREF": "",
+				"ZZAGTCOMM": "",
+				"ZZINCVREM": ""
+			},
+			"bp": [{
+				"BusinessPartner": "1000050620",
+				"BusinessPartnerRole": "BPR101",
+				"Customer": "1000025630",
+				"BusinessPartnerFullName": "DARTSLIVE (S) PTE LTD",
+				"HasCustomerRole" : "X"
+			}, {
+				"BusinessPartner": "1000001206",
+				"BusinessPartnerRole": "BPL002",
+				"Customer": "",
+				"BusinessPartnerFullName": " Desmond Chin",
+				"HasCustomerRole" : ""
+			}],
+			"rows": [{
+				"IsParent": false,
+				"REIMKEY": "IM00100000434",
+				"REUnit": "#19-04 to 05",
+				"UnitSize": "2239.0000",
+				"UOM": "SF"
+			}],
+			"REUnit": "#19-04 to 05 DARTSLIVE (S) PTE LTD",
+			"IndSector": "103",
+			"Industry": "Mining"
+		}]
 	}
-  	
 }

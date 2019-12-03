@@ -43,7 +43,7 @@
 							
 							<Label text="Unit Price" />
 							<Input type="Text" 
-								value="{path : 'viewModel>/baserent/unitprice' , type:'sap.ui.model.type.Float',formatOptions: {minFractionDigits: 2,maxFractionDigits: 2} }" 
+								value="{path : 'viewModel>/baserent/UnitPrice' , type:'sap.ui.model.type.Float',formatOptions: {minFractionDigits: 2,maxFractionDigits: 2} }" 
 								valueState="{= ${viewModel>/baserent/error} ? 'Error': 'None'}"
 								textAlign="Right"
 								change="onManageBSAChange">
@@ -55,12 +55,12 @@
     							</customData>
 							</Input>
 							<Label text="Valid From/To"/>
-							 <DatePicker value="{viewModel>/baserent/validfrom}" valueFormat="yyyy-MM-dd">
+							 <DatePicker value="{viewModel>/baserent/ValidFrom}" valueFormat="yyyyMMdd">
 							 <layoutData>
 								<l:GridData span="XL8 L1 M3 S6" />
 							</layoutData>
 							 </DatePicker>
-							 <DatePicker value="{viewModel>/baserent/validto}" valueFormat="yyyy-MM-dd">
+							 <DatePicker value="{viewModel>/baserent/ValidTo}" valueFormat="yyyyMMdd">
 							 <layoutData>
 								<l:GridData span="XL8 L1 M3 S6" />
 							</layoutData>
@@ -69,10 +69,10 @@
 							 <ComboBox
 								showSecondaryValues= "true"
 								items="{
-									path: 'CondFModel>/formulas',
+									path: 'CondFModel>/Formulas',
 									sorter: { path: 'key' }
 								}"
-								selectedKey="{viewModel>/baserent/formula}">
+								selectedKey="{viewModel>/baserent/Formula}">
 								<core:ListItem key="{CondFModel>key}" text="{CondFModel>text}" additionalText = "{CondFModel>key}"/>
 							</ComboBox>
 		                        
@@ -89,22 +89,11 @@
 				</footer>
 			</Page>
 			<Page
-				id="bsdetail"
+				id="detail"
 				showNavButton="true"
 				navButtonPress="onBPNavBack"
-				title="{BusinessPartnerRoleText}">
-				<ObjectHeader
-					title="{BusinessPartnerFullName}" >
-					<attributes>
-						<ObjectAttribute title="BP Number" text="{BusinessPartner}" />
-						<ObjectAttribute title="Address" text="{FormattedAddress}" />
-						<ObjectAttribute title="Country" text="{Country}" />
-						<ObjectAttribute title="House Number" text="{HouseNumber}" />
-						<ObjectAttribute title="Phone Number" text="{PhoneNumber} - {PhoneNumberExtension}" />
-						<ObjectAttribute title="Email" text="{EmailAddress}" />
-						
-					</attributes>
-				</ObjectHeader>
+				title="Not Used">
+
 			</Page>
 		</NavContainer>
 	</Popover>

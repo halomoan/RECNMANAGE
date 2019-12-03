@@ -34,25 +34,25 @@
 						<f:content>
 							<core:Title text="Dates" />
 							<Label text="{i18n>UF.LeaseStartDate}" />
-							<DatePicker value="{viewModel>/usrfields/zzhdate}" valueFormat="yyyy-MM-dd"/>
+							<DatePicker value="{viewModel>/userfields/ZZHDATE}" valueFormat="yyyyMMdd"/>
 							 
 							<Label text="{i18n>UF.1stStampingDate}"/>
-							<DatePicker value="{viewModel>/usrfields/zzstmdate1}" valueFormat="yyyy-MM-dd"/>
+							<DatePicker value="{viewModel>/userfields/ZZSTMDATE1}" valueFormat="yyyyMMdd"/>
 							
 							<Label text="{i18n>UF.2ndStampingDate}"/>
-							<DatePicker value="{viewModel>/usrfields/zzstmdate2}" valueFormat="yyyy-MM-dd"/>
+							<DatePicker value="{viewModel>/userfields/ZZSTMDATE2}" valueFormat="yyyyMMdd"/>
 							
 							<Label text="{i18n>UF.3rdStampingDate}"/>
-							<DatePicker value="{viewModel>/usrfields/zzstmdate3}" valueFormat="yyyy-MM-dd"/>
+							<DatePicker value="{viewModel>/userfields/ZZSTMDATE3}" valueFormat="yyyyMMdd"/>
 							
 							<Label text="{i18n>UF.NovationDate}"/>
-							<DatePicker value="{viewModel>/usrfields/zznovdate}" valueFormat="yyyy-MM-dd"/>
+							<DatePicker value="{viewModel>/userfields/ZZNOVDATE}" valueFormat="yyyyMMdd"/>
 							
 							<Label text="{i18n>UF.DateOfPartialSurr}"/>
-							<DatePicker value="{viewModel>/usrfields/zzpartdate}" valueFormat="yyyy-MM-dd"/>
+							<DatePicker value="{viewModel>/userfields/ZZPARTDATE}" valueFormat="yyyyMMdd"/>
 							
 							<Label text="{i18n>UF.BGExpirationDate}"/>
-							<DatePicker value="{viewModel>/usrfields/zzbgedate}" valueFormat="yyyy-MM-dd"/>
+							<DatePicker value="{viewModel>/userfields/ZZBGEDATE}" valueFormat="yyyyMMdd"/>
 						</f:content>
 					</f:SimpleForm>	
 						<f:SimpleForm
@@ -75,27 +75,27 @@
 						<f:content>
 							<core:Title text="Misc" />
 		                    <Label text="{i18n>UF.NoOfMonthsSecD}"/>   
-		                    <Input value="{viewModel>/usrfields/zzmoncsh}"/>
+		                    <Input value="{viewModel>/userfields/ZZMONCSH}"/>
 		                     <Label text="{i18n>UF.NoOfMonthsBG}"/>   
-		                    <Input value="{viewModel>/usrfields/zzmonbg}"/>
+		                    <Input value="{viewModel>/userfields/ZZMONBG}"/>
 		                     <Label text="{i18n>UF.DGCG}"/>   
-		                    <Input value="{viewModel>/usrfields/zzdgcg}"/>
+		                    <Input value="{viewModel>/userfields/ZZDGCG}"/>
 		                    <Label text="{i18n>UF.LeaseTermYear}"/>   
-		                    <Input value="{viewModel>/usrfields/zzltermy}"/>
+		                    <Input value="{viewModel>/userfields/ZZLTERMY}"/>
 		                    <Label text="{i18n>UF.LeaseTermMonth}"/>   
-		                    <Input value="{viewModel>/usrfields/zzltermm}"/>
+		                    <Input value="{viewModel>/userfields/ZZLTERMM}"/>
 		                    <Label text="{i18n>UF.LeaseTermDay}"/>   
-		                    <Input value="{viewModel>/usrfields/zzltermd}"/>
+		                    <Input value="{viewModel>/userfields/ZZLTERMD}"/>
 		                    <Label text="{i18n>UF.OptionToRenew}"/>   
-		                    <Input value="{viewModel>/usrfields/zzoptrnew}"/>
+		                    <Input value="{viewModel>/userfields/ZZOPTRNEW}"/>
 		                    <Label text="{i18n>UF.IRASUsageCategory}"/>   
-		                    <Input value="{viewModel>/usrfields/zzirasusg}"/>
+		                    <Input value="{viewModel>/userfields/ZZIRASUSG}"/>
 		                    <Label text="{i18n>UF.POReference}"/>   
-		                    <Input value="{viewModel>/usrfields/zzporef}"/>
+		                    <Input value="{viewModel>/userfields/ZZPOREF}"/>
 		                    <Label text="{i18n>UF.AgentCommissionA}"/>   
-		                    <Input value="{viewModel>/usrfields/zzagtcomm}"/>
+		                    <Input value="{viewModel>/userfields/ZZAGTCOMM}"/>
 		                     <Label text="{i18n>UF.RemarkForIncentive}"/>   
-		                    <Input value="{viewModel>/usrfields/zzincvrem}"/>
+		                    <Input value="{viewModel>/userfields/ZZINCVREM}"/>
 						</f:content>
 					</f:SimpleForm>	
 				</HBox>		
