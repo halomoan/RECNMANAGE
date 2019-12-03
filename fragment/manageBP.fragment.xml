@@ -27,7 +27,7 @@
 					</MenuButton>
 						<ToolbarSpacer/>
 						<Button
-							text="{i18n>Common.Dialog.Close}"
+							text="{i18n>Common.Button.Close}"
 							press="onBPClose" />
 					</Toolbar>
 				</footer>

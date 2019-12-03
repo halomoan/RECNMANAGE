@@ -14,7 +14,7 @@
 				id="master"
 				title="{i18n>Dialog.New.Contract}">
 					<Wizard id="CreateCNWizard"
-								finishButtonText="Done"
+								finishButtonText="{i18n>Common.Button.Done}"
 								complete="onNewCNClose">
 							<WizardStep id="duration"
 										title="{i18n>Lbl.Duration}"
@@ -26,13 +26,13 @@
 		                           		valueState="{= ${viewModel>/NewCN/error/StartDate} ? 'Error': 'None'}"
 		                           		change="onNewCNStartDate"/>
 									<Label text="{i18n>Lbl.Duration}" required="false"/>
-									<HBox>
+									<HBox width="60%" alignItems="Start" justifyContent="Start">
 										<StepInput
 			                            value="3"
 			                            displayValuePrecision="1"
 			                            min="1"
 			                            max="999"
-			                            width="90%"
+			                            width="100%"
 			                            step="1"
 			                            largerStep="3"
 			                            enabled="true"
@@ -61,7 +61,17 @@
 										validated="true">
 							</WizardStep>
 					</Wizard>			
-			
+				<footer>
+					<Toolbar>
+						<ToolbarSpacer/>
+						<Button
+							text="{i18n>Common.Button.Close}"
+							press="onNewCNClose" />
+						<Button
+							text="{i18n>Common.Button.Cancel}"
+							press="onNewCNCancel" />	
+					</Toolbar>
+				</footer>
 			</Page>
 		</NavContainer>
 	</Dialog>

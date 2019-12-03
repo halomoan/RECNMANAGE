@@ -1,7 +1,9 @@
 sap.ui.define(
-  ['sap/ui/core/Control'],
-  function(Control) {
-  return Control.extend("fin.re.conmgmts1.controls.selection.BusinessPartner",{
+  ['sap/ui/core/XMLComposite'],
+  function(XMLComposite) {
+  	"use strict";
+  	
+    return XMLComposite.extend("fin.re.conmgmts1.controls.selection.BusinessPartner",{
        metadata: {
             properties: {
             	"ContractID" : "string",

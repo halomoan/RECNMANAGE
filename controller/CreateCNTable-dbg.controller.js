@@ -53,7 +53,7 @@ sap.ui.define([
 			
 			oModel.attachRequestCompleted(function() {
 				var oData = oModel.getData();
-				oViewModel.setProperty("/CNTemplate",oData.template);
+				oViewModel.setProperty("/OTemplate",oData.template);
 			});
 			
 			// this.getView().bindElement({
@@ -772,12 +772,27 @@ sap.ui.define([
 				this.getView().addDependent(this._onNewCN);
 			}
 			
+			var oViewModel = this.getView().getModel("viewModel");
+			
+			var wizard = Fragment.byId("newContract", "CreateCNWizard");
+			
+			if (wizard.getProgressStep()) {
+				wizard.setCurrentStep(wizard.getSteps()[0]);
+			}
+			
+			var oData = JSON.parse(JSON.stringify(oViewModel.getProperty("/OTemplate")));
+			oViewModel.setProperty("/CNTemplate",oData);
+
 			this.getView().addDependent(this._onNewCN);
 			jQuery.sap.syncStyleClass("sapUiSizeCompact", this.getView(), this._onNewCN);
 			this._onNewCN.open();
 		},
 		onNewCNClose: function(){
 			this._onNewCN.close();
+		},
+		onNewCNCancel: function(){
+				var wizard = Fragment.byId("newContract", "CreateCNWizard");
+				wizard.goToStep(wizard.getSteps()[0]);
 		},
 		onSave: function(){
 			
