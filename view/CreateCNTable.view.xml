@@ -33,9 +33,7 @@
 					
 		                <t:toolbar>
 		                    <Toolbar>
-		                    
-		                    	<Button icon="sap-icon://collapse" tooltip="Collapse" press="onCollapseAll"/>
-		                    	<Button icon="sap-icon://expand" tooltip="Expand" press="onExpandFirstLevel"/>
+		                    	<Button icon="sap-icon://{viewModel>/collapseIcon}" tooltip="{viewModel>/collapseIcon}" press="onToggleCollapse"/>
 		                    	<ToolbarSeparator/>
 		                    	<Button icon="sap-icon://add-document" text="{i18n>Common.Button.New}" press="onNew"/>
 		                    	<Button icon="sap-icon://copy" text="{i18n>Common.Button.Copy}" press="onCopy"/>

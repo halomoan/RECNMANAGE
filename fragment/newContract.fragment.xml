@@ -6,9 +6,9 @@
 	>
 	<Dialog
 		showHeader="false"
-		contentWidth="550"
+		contentWidth="500px"
 		contentHeight="570px"
-		placement="Bottom" >
+		 >
 		<NavContainer
 			id="navCon">
 			<Page
@@ -72,7 +72,7 @@
 										</Menu>
 									</menu>
 								</MenuButton>
-								<List id="listBP" mode="Delete" delete="onBPDelete" items="{viewModel>/CNTemplate/bp}">
+								<List id="listBP" mode="Delete" delete="onBPDelete" items="{viewModel>/CNTemplate/bp}" class="sapUiMediumMarginBottom">
 									<StandardListItem
 											title="{viewModel>BusinessPartnerFullName}"
 											description="{viewModel>BusinessPartner}"

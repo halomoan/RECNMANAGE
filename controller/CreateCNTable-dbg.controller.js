@@ -28,7 +28,8 @@ sap.ui.define([
 				busy: false,
 				today: oDateFormat.format(new Date()),
 				durationUnits : [{"key": "day","text": "Day(s)"},{"key": "month","text": "Month(s)"},{"key": "year","text": "Year(s)"}],
-				durationUnitKey: "month"
+				durationUnitKey: "month",
+				collapseIcon: "collapse"
 			});
 			this.setModel(oViewModel, "viewModel");
 			
@@ -93,34 +94,18 @@ sap.ui.define([
 		},
 		
 		
-
-		
-	
-		onCollapseAll: function() {
-			var oTreeTable = this.byId("createCNTable");
-			oTreeTable.collapseAll();
-		},
-		
-		
-		onExpandFirstLevel: function() {
-			var oTreeTable = this.byId("createCNTable");
-			oTreeTable.expandToLevel(1);
-		},
-		
-		/*onToggleExpand: function(){
+		onToggleCollapse: function(){
+			
 			var oTreeTable = this.byId("createCNTable");
 			var oViewModel = this.getView().getModel("viewModel");
-			var iconState = oViewModel.getProperty("/toogleexpand");
-			
-			if(iconState === "sap-icon://collapse") {
+			if(oViewModel.getProperty("/collapseIcon") === "collapse"){
 				oTreeTable.collapseAll();
-				oViewModel.setProperty("/toogleexpand","sap-icon://expand");	
+				oViewModel.setProperty("/collapseIcon","expand");
 			} else{
 				oTreeTable.expandToLevel(1);
-				oViewModel.setProperty("/toogleexpand","sap-icon://collapse");
-			}
-		},*/
-		
+				oViewModel.setProperty("/collapseIcon","collapse");
+			}	
+		},
 		onAddUnit: function(oEvent){
 			
 			
@@ -849,6 +834,13 @@ sap.ui.define([
 			
 		},
 		onNewCNClose: function(){
+			var oViewModel = this.getView().getModel("viewModel");
+			var oData = oViewModel.getProperty("/CNTemplate");
+			var oTreeTable = this.getView().byId("createCNTable");
+			var oModel = oTreeTable.getBinding("rows").getModel();
+			
+			console.log(oModel);
+				
 			this._onNewCN.close();
 		},
 		onNewCNCancel: function(){
