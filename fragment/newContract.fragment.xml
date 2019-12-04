@@ -6,8 +6,8 @@
 	>
 	<Dialog
 		showHeader="false"
-		contentWidth="500px"
-		contentHeight="550px"
+		contentWidth="550"
+		contentHeight="570px"
 		placement="Bottom" >
 		<NavContainer
 			id="navCon">

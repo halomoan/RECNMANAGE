@@ -295,8 +295,8 @@ sap.ui.define([
 				var oData = oTableCtx.getProperty();
 				
 				aContexts.map(function(oContext) { 
-					oData.indsector = oContext.getObject().Ind_Sector;
-					oData.industry = oContext.getObject().Text;
+					oData.IndSector = oContext.getObject().Ind_Sector;
+					oData.Industry = oContext.getObject().Text;
 				});
 				
 				oModel.refresh();
