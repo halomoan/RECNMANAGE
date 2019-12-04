@@ -1,31 +1,67 @@
 sap.ui.define(
-  ['sap/ui/core/XMLComposite'],
-  function(XMLComposite) {
+  [
+  	'sap/ui/core/XMLComposite',
+  	'sap/ui/core/Fragment',
+	'sap/ui/model/Filter',
+	'sap/ui/model/FilterOperator'
+  ],
+  function(XMLComposite,Fragment,Filter,FilterOperator) {
   	"use strict";
   	
     return XMLComposite.extend("fin.re.conmgmts1.controls.selection.BusinessPartner",{
        metadata: {
             properties: {
-            	"ContractID" : "string",
-            	"MainPartner" : "string",
-            	"Name" : "string"
+            	"addMainBP" : false
             },
-            events: {},
+            events: {
+            	
+            },
             aggregations: {
             	"items": {
             		
             	}
             }
        },
-       renderer: function(oRm,oControl){
-            //to do: render the control
-       },
-       onAfterRendering: function() {
-            //if I need to do any post render actions, it will happen here
-            if(sap.ui.core.Control.prototype.onAfterRendering) {
-                 sap.ui.core.Control.prototype.onAfterRendering.apply(this,arguments); //run the super class's method first
-            }
-       }
-  });
+       onBPAdd: function(oEvent){
+			
+				
+				if (!this._oSelectBP) {
+					this._oSelectBP = sap.ui.xmlfragment("selectBP","fin.re.conmgmts1.fragment.selectBP", this);
+				}
+				
+				var oItem = oEvent.getParameter("item");
+				var aFilters = [];
+				aFilters.push(new Filter("CompanyCode", FilterOperator.EQ, "1001"));
+				if (oItem) {
+					if (oItem.getText() === "Add Main Customer") {
+						aFilters.push(new Filter("BusinessPartnerRole", FilterOperator.EQ, "BPR101"));
+					} else {
+						aFilters.push(new Filter("BusinessPartnerRole", FilterOperator.EQ, "BPL002"));
+					}
+				} else {
+					if (oEvent.getSource().getText() === "Add Main Customer") {
+						aFilters.push(new Filter("BusinessPartnerRole", FilterOperator.EQ, "BPR101"));
+					} else {
+						aFilters.push(new Filter("BusinessPartnerRole", FilterOperator.EQ, "BPL002"));
+					}
+				}
+				
+	
+				var oTable = Fragment.byId("selectBP", "selectBP-table");
+				var oTemplate = oTable.getBindingInfo("items").template;
+				
+				var oBindingInfo = {
+					path: "/PartnerSearchSet",
+					template: oTemplate,
+					filters: aFilters
+				};
+				
+				oTable.bindAggregation("items", oBindingInfo);
+				
+				//this.getView().addDependent(this._oSelectBP);
+				//jQuery.sap.syncStyleClass("sapUiSizeCompact", this.getView(), this._oSelectBP);
+				this._oSelectBP.open();
+			}
+	});
   }
 );

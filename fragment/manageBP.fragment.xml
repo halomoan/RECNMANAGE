@@ -16,15 +16,15 @@
 				<footer>
 					<Toolbar>
 						<MenuButton text="{= ${viewModel>/addMainBP} ? 'Add Main Customer' : 'Add Other Contact'}" buttonMode="Split" type="Default" defaultAction="onBPAdd" useDefaultActionOnly="true">
-						<menu>
-							<Menu itemSelected="onBPAdd">
-								<items>
-									<MenuItem text="Add Main Customer" icon="sap-icon://customer"/>
-									<MenuItem text="Add Other Contact" icon="sap-icon://add-contact"/>
-								</items>
-							</Menu>
-						</menu>
-					</MenuButton>
+							<menu>
+								<Menu itemSelected="onBPAdd">
+									<items>
+										<MenuItem text="Add Main Customer" icon="sap-icon://customer"/>
+										<MenuItem text="Add Other Contact" icon="sap-icon://add-contact"/>
+									</items>
+								</Menu>
+							</menu>
+						</MenuButton>
 						<ToolbarSpacer/>
 						<Button
 							text="{i18n>Common.Button.Close}"

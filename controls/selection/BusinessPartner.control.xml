@@ -1,0 +1,24 @@
+<core:FragmentDefinition
+	xmlns="sap.m"
+	xmlns:l="sap.ui.layout"
+	xmlns:core="sap.ui.core">
+	
+	<Panel>
+		<l:VerticalLayout width="100%">
+		<List id="listBP" mode="Delete" delete="onBPDelete">
+		</List>
+	
+		<MenuButton text="{= ${this>/addMainBP} ? 'Add Main Customer' : 'Add Other Contact'}" buttonMode="Split" type="Default" defaultAction=".onBPAdd" useDefaultActionOnly="true">
+			<menu>
+				<Menu itemSelected=".onBPAdd">
+						<items>
+							<MenuItem text="Add Main Customer" icon="sap-icon://customer"/>
+							<MenuItem text="Add Other Contact" icon="sap-icon://add-contact"/>
+						</items>
+				</Menu>
+			</menu>
+		</MenuButton>
+		</l:VerticalLayout>     
+	</Panel>
+	
+</core:FragmentDefinition>

@@ -2,7 +2,8 @@
 	xmlns="sap.m"
 	xmlns:form="sap.ui.layout.form"
 	xmlns:l="sap.ui.layout"
-	xmlns:core="sap.ui.core">
+	xmlns:core="sap.ui.core"
+	>
 	<Dialog
 		showHeader="false"
 		contentWidth="500px"
@@ -18,7 +19,8 @@
 								complete="onNewCNClose">
 							<WizardStep id="duration"
 										title="{i18n>Lbl.Duration}"
-										validated="true">
+										validated="false"
+										activate="onNewCNDurationValidate">
 								<form:SimpleForm
 								editable="true">
 									<Label text="{i18n>TreeTable.Column.StartDate}" required="true"/>
@@ -28,7 +30,7 @@
 									<Label text="{i18n>Lbl.Duration}" required="false"/>
 									<HBox width="60%" alignItems="Start" justifyContent="Start">
 										<StepInput
-			                            value="3"
+			                            value="{viewModel>/duration}"
 			                            displayValuePrecision="1"
 			                            min="1"
 			                            max="999"
@@ -59,14 +61,36 @@
 							<WizardStep id="bp"
 										title="{i18n>TreeTable.Column.Customer}"
 										validated="true">
+								
+								<MenuButton text="{= ${viewModel>/addMainBP} ? 'Add Main Customer' : 'Add Other Contact'}" buttonMode="Split" type="Default" defaultAction="onBPAdd" useDefaultActionOnly="true">
+									<menu>
+										<Menu itemSelected="onBPAdd">
+											<items>
+												<MenuItem text="Add Main Customer" icon="sap-icon://customer"/>
+												<MenuItem text="Add Other Contact" icon="sap-icon://add-contact"/>
+											</items>
+										</Menu>
+									</menu>
+								</MenuButton>
+								<List id="listBP" mode="Delete" delete="onBPDelete" items="{viewModel>/CNTemplate/bp}">
+									<StandardListItem
+											title="{viewModel>BusinessPartnerFullName}"
+											description="{viewModel>BusinessPartner}"
+											info="{= ${viewModel>BusinessPartnerRole} === ${viewModel>/mainBPRole} ? 'Main Customer' : 'Contact' }"
+											infoState="{= ${viewModel>BusinessPartnerRole} === ${viewModel>/mainBPRole} ? 'Success' : 'Warning' }"
+											type="Active"
+										>
+										<customData>
+												<core:CustomData key="BusinessPartner" value="{viewModel>BusinessPartner}"/>
+										</customData>
+									</StandardListItem>	
+								</List>
+								
 							</WizardStep>
 					</Wizard>			
 				<footer>
 					<Toolbar>
 						<ToolbarSpacer/>
-						<Button
-							text="{i18n>Common.Button.Close}"
-							press="onNewCNClose" />
 						<Button
 							text="{i18n>Common.Button.Cancel}"
 							press="onNewCNCancel" />	

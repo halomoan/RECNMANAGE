@@ -24,6 +24,7 @@ sap.ui.define([
 	
 			var oViewModel = new JSONModel({
 				addMainBP : true,
+				mainBPRole : this.getMainBPRole(),
 				busy: false,
 				today: oDateFormat.format(new Date()),
 				durationUnits : [{"key": "day","text": "Day(s)"},{"key": "month","text": "Month(s)"},{"key": "year","text": "Year(s)"}],
@@ -70,58 +71,7 @@ sap.ui.define([
 
 		},
 
-		onNewCNDuration: function(oEvent){
-			var iDuration =	oEvent.getParameter("value");
-			var oStartDate = Fragment.byId("newContract", "StartDate").getDateValue();
-			var oEndDate = new Date(oStartDate.getTime());
-			var oDurationUnit = Fragment.byId("newContract", "durationUnit");
-			
-			switch(oDurationUnit.getSelectedKey()){
-				case "day":
-						oEndDate.setDate(oStartDate.getDate() + iDuration);
-					break;
-				case "month":
-						oEndDate.setMonth(oStartDate.getMonth() + iDuration);
-					break;
-				case "year":
-						oEndDate = new Date(oEndDate.setFullYear(oStartDate.getFullYear() + iDuration));
-					break;
-				default:
-			}
-			
-			Fragment.byId("newContract", "EndDate").setDateValue(oEndDate);
-		},
-		
-		onNewCNStartDate: function(oEvent){
-			var oDP = oEvent.oSource;
-			
-			Fragment.byId("newContract", "LeaseStart").setDateValue(oDP.getDateValue());
-		},
-		onNewCNEndDate: function(oEvent){
-			var oEndDate = oEvent.oSource;
-			
-			var oStartDate = Fragment.byId("newContract", "StartDate");
-			
-			if (oEndDate.getDateValue() < oStartDate.getDateValue()) {
-				oEndDate.setValueState(sap.ui.core.ValueState.Error);
-			} else{
-				oEndDate.setValueState(sap.ui.core.ValueState.None);
-			}
-			
-		},
-		onNewCNLeaseStart: function(oEvent){
-			var oLeaseStart = oEvent.oSource;
-			
-			var oStartDate = Fragment.byId("newContract", "StartDate");
-			var oEndDate = Fragment.byId("newContract", "EndDate");
-			
-			if (oLeaseStart.getDateValue() < oStartDate.getDateValue() || oLeaseStart.getDateValue() > oEndDate.getDateValue()) {
-				oLeaseStart.setValueState(sap.ui.core.ValueState.Error);
-			} else{
-				oLeaseStart.setValueState(sap.ui.core.ValueState.None);
-			}
-			
-		},
+
 		onDelete: function() {
 			var bCompact = !!this.getView().$().closest(".sapUiSizeCompact").length;
 			MessageBox.confirm(
@@ -357,6 +307,8 @@ sap.ui.define([
 		onBPManage: function(oEvent){
 			
 			this._selectedIdx = oEvent.getSource().getParent().getIndex();
+			this._useWizard = false;
+			
 			var oThis = this;
 			var oView = this.getView();
 			var oViewModel = oView.getModel("viewModel");
@@ -469,7 +421,14 @@ sap.ui.define([
 		onBPSearchClose: function(oEvent){
 			
 			var aContexts = oEvent.getParameter("selectedContexts");
-			var oData = this._selectedODATA;
+			var oData;
+			
+			if (this._useWizard) {
+				var oViewModel = this.getView().getModel("viewModel");
+				oData = oViewModel.getProperty("/CNTemplate");
+			} else {
+				oData = this._selectedODATA;	
+			}
 			var oThis = this;
 			if (aContexts && aContexts.length) {
 			
@@ -503,25 +462,45 @@ sap.ui.define([
 						// 	console.log("Failed");
 						// }
 					} else {
-						oThis._selectedODATA.bp.push(bp);
+						//oThis._selectedODATA.bp.push(bp);
+						oData.bp.push(bp);
 					}
 				});
+				
+				
 				this._genREText(oData);
-				var oModel = this.getView().getModel("CNModel");
-				oModel.refresh();
+				if (this._useWizard) {
+					oViewModel.setProperty("/CNTemplate",oData);
+				}else{
+					var oModel = this.getView().getModel("CNModel");
+					oModel.refresh();
+				}
 			}
-			oEvent.getSource().getBinding("items").filter([]);
 			
-			this._oManageBP.openBy(this._oEventSource);
+			
+			oEvent.getSource().getBinding("items").filter([]);
+			if (!this._useWizard) {
+				this._oManageBP.openBy(this._oEventSource);
+			}
 		},
 		onBPDelete: function(oEvent){
 			var oItem = oEvent.getParameter("listItem");
 			var idx = oItem.getParent().indexOfItem(oItem);	
-			var oModel = this.getView().getModel("CNModel");
-			var oData = this._selectedODATA;
+			var oData;
 			
-			oData.bp.splice(idx,1);
-			oModel.refresh();
+			if (this._useWizard) {
+				var oViewModel = this.getView().getModel("viewModel");
+				oData = oViewModel.getProperty("/CNTemplate");
+				oData.bp.splice(idx,1);
+				oViewModel.setProperty("/CNTemplate",oData);
+			} else {
+				var oModel = this.getView().getModel("CNModel");
+				oData = this._selectedODATA;
+				oData.bp.splice(idx,1);
+				oModel.refresh();
+			}
+			
+		
 			
 
 		},
@@ -774,6 +753,8 @@ sap.ui.define([
 			
 			var oViewModel = this.getView().getModel("viewModel");
 			
+			this._useWizard = true;
+			
 			var wizard = Fragment.byId("newContract", "CreateCNWizard");
 			
 			if (wizard.getProgressStep()) {
@@ -787,12 +768,93 @@ sap.ui.define([
 			jQuery.sap.syncStyleClass("sapUiSizeCompact", this.getView(), this._onNewCN);
 			this._onNewCN.open();
 		},
+		onNewCNDuration: function(oEvent){
+			var iDuration =	oEvent.getParameter("value");
+			var oStartDate = Fragment.byId("newContract", "StartDate").getDateValue();
+			var oEndDate = new Date(oStartDate.getTime());
+			var oDurationUnit = Fragment.byId("newContract", "durationUnit");
+			
+			switch(oDurationUnit.getSelectedKey()){
+				case "day":
+						oEndDate.setDate(oStartDate.getDate() + iDuration);
+					break;
+				case "month":
+						oEndDate.setMonth(oStartDate.getMonth() + iDuration);
+					break;
+				case "year":
+						oEndDate = new Date(oEndDate.setFullYear(oStartDate.getFullYear() + iDuration));
+					break;
+				default:
+			}
+			
+			Fragment.byId("newContract", "EndDate").setDateValue(oEndDate);
+			Fragment.byId("newContract", "EndDate").setValueState(sap.ui.core.ValueState.None);
+			
+			this.onNewCNDurationValidate();
+		},
+		
+		onNewCNStartDate: function(oEvent){
+			var oDP = oEvent.oSource;
+			
+			Fragment.byId("newContract", "LeaseStart").setDateValue(oDP.getDateValue());
+		},
+		onNewCNEndDate: function(oEvent){
+			var wizard = Fragment.byId("newContract", "CreateCNWizard");
+			var oEndDate = oEvent.oSource;
+			
+			var oStartDate = Fragment.byId("newContract", "StartDate");
+			
+			if (oEndDate.getDateValue() < oStartDate.getDateValue()) {
+				oEndDate.setValueState(sap.ui.core.ValueState.Error);
+				wizard.invalidateStep(wizard.getSteps()[0]);
+			} else{
+				oEndDate.setValueState(sap.ui.core.ValueState.None);
+				wizard.validateStep(wizard.getSteps()[0]);
+			}
+			
+		},
+		onNewCNLeaseStart: function(oEvent){
+			var wizard = Fragment.byId("newContract", "CreateCNWizard");
+			var oLeaseStart = oEvent.oSource;
+			
+			var oStartDate = Fragment.byId("newContract", "StartDate");
+			var oEndDate = Fragment.byId("newContract", "EndDate");
+			
+			if (oLeaseStart.getDateValue() < oStartDate.getDateValue() || oLeaseStart.getDateValue() > oEndDate.getDateValue()) {
+				oLeaseStart.setValueState(sap.ui.core.ValueState.Error);
+				wizard.invalidateStep(wizard.getSteps()[0]);
+			} else{
+				oLeaseStart.setValueState(sap.ui.core.ValueState.None);
+				wizard.validateStep(wizard.getSteps()[0]);
+				
+			}
+			
+		},
+		onNewCNDurationValidate: function(){
+			var wizard = Fragment.byId("newContract", "CreateCNWizard");
+			var oStartDate = Fragment.byId("newContract", "StartDate");
+			var oEndDate = Fragment.byId("newContract", "EndDate");
+			var oLeaseStart = Fragment.byId("newContract", "LeaseStart");
+			
+			var bValid = oStartDate.getValueState() === sap.ui.core.ValueState.None &&
+						 oEndDate.getValueState() === sap.ui.core.ValueState.None &&
+						 oLeaseStart.getValueState() === sap.ui.core.ValueState.None;
+			
+		
+			if (bValid) {
+				wizard.validateStep(wizard.getSteps()[0]);
+			} else {
+				wizard.invalidateStep(wizard.getSteps()[0]);
+			}
+			
+		},
 		onNewCNClose: function(){
 			this._onNewCN.close();
 		},
 		onNewCNCancel: function(){
 				var wizard = Fragment.byId("newContract", "CreateCNWizard");
 				wizard.goToStep(wizard.getSteps()[0]);
+				this._onNewCN.close();
 		},
 		onSave: function(){
 			
