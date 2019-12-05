@@ -240,7 +240,6 @@ sap.ui.define([
 				}*/
 				
 				oThis._genREText(oData);
-				
 				oThis._calcUnitSize();
 				
 				if (this._useWizard ) {
@@ -342,8 +341,8 @@ sap.ui.define([
 				title:"{CNModel>BusinessPartnerFullName}",
 				description : "{CNModel>BusinessPartner}",
 				icon : "{= ${viewModel>BusinessPartnerRole} === ${viewModel>/mainBPRole} ? 'sap-icon://customer' : 'sap-icon://contacts' }",
-				iconDensityAware:"false",
-				iconInset:"false",
+				iconDensityAware: false,
+				iconInset: false,
 				info : "{= ${CNModel>BusinessPartnerRole} === '" + this.getMainBPRole() + "' ? 'Main Customer' : 'Contact' }",
 				infoState: "{= ${CNModel>BusinessPartnerRole} === '" + this.getMainBPRole() + "' ? 'Success' : 'Warning' }",
 				type: "Active",
@@ -968,12 +967,23 @@ sap.ui.define([
 					}
 					
 					if (oItem.IsParent) {
-						oData.createCNTable.rows.push(JSON.parse(JSON.stringify(oItem)));
 						oTreeTable.clearSelection();
+						oItem.RECNKey = "CN" + oData.createCNTable.rows.length;        
+						oData.createCNTable.rows.push(JSON.parse(JSON.stringify(oItem)));
 						oModel.refresh();
 					}
 				}
 			}
+		},
+		onUnitDelete: function(oEvent){
+			var oViewModel = this.getView().getModel("viewModel");
+			var oData = oViewModel.getProperty("/CNTemplate");
+			var oItem = oEvent.getParameter("listItem");
+			var idx = oItem.sId.match(/\d+$/);
+			
+			oData.rows.splice(idx,1);
+			oViewModel.setProperty("/CNTemplate",oData);
+
 		},
 		_validateSave: function(oItem){
 			var sMsg = "";
@@ -1028,8 +1038,7 @@ sap.ui.define([
 							
 							for(i = 0; i < oData.createCNTable.rows.length; i++){
 								oRow = oData.createCNTable.rows[i];
-								console.log(i,oDeleteItem,oRow,JSON.stringify(oDeleteItem) === JSON.stringify(oRow)  );
-								if (oRow.reobjnr === oDeleteItem.reobjnr ){
+								if (JSON.stringify(oDeleteItem) === JSON.stringify(oRow)){
 									oData.createCNTable.rows.splice(i,1);
 									this._genREText(oRow);
 									bDeleted = true;

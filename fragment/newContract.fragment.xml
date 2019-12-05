@@ -121,7 +121,7 @@
 										</customData>
 									</StandardListItem>
 								</List>
-								<Title text="Total" level="sap.ui.core.TitleLevel.H1" textAlign="End" width="100%"></Title>
+								<Title text="Total Size:" level="sap.ui.core.TitleLevel.H1" textAlign="End" width="100%"></Title>
 							</WizardStep>	
 							
 					</Wizard>			
