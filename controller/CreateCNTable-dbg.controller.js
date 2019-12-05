@@ -947,7 +947,52 @@ sap.ui.define([
 			}
 			
 		},
+		
+		onCopy: function(){
+			var oTreeTable = this.getView().byId("createCNTable");
+			var aSelectedIndices = oTreeTable.getSelectedIndices();
+		
+			if (aSelectedIndices.length > 0) {
+			
+				var oModel = oTreeTable.getBinding("rows").getModel();
+				var oData = oModel.getData();
+				
+				for (var idx = 0; idx < aSelectedIndices.length; idx++) {
+					var oContext = oTreeTable.getContextByIndex(aSelectedIndices[idx]);
+					var oItem = oContext.getProperty();
+					
+					var bValid = this._validateCopy(oItem);
+					
+					if (!bValid) {
+						break;
+					}
+					
+					if (oItem.IsParent) {
+						oData.createCNTable.rows.push(JSON.parse(JSON.stringify(oItem)));
+						oTreeTable.clearSelection();
+						oModel.refresh();
+					}
+				}
+			}
+		},
 		_validateSave: function(oItem){
+			var sMsg = "";
+			var bValid = true;
+			
+			if(!oItem.IsParent){
+				bValid = false;
+				sMsg = this.getResourceBundle().getText("Msg.PickContract");
+			}
+			
+			if(!bValid){
+				MessageBox.error(sMsg, {
+					title: "Error",                                      
+					initialFocus: null                                   
+				});
+			}
+			return bValid;
+		},
+		_validateCopy: function(oItem){
 			var sMsg = "";
 			var bValid = true;
 			
@@ -976,11 +1021,14 @@ sap.ui.define([
 			
 			if (aSelectedIndices.length > 0) {
 				for (var idx = 0; idx < aSelectedIndices.length; idx++) {
+					
 					var oContext = oTreeTable.getContextByIndex(aSelectedIndices[idx]);
 					var oDeleteItem = oContext.getProperty();
-						if (oDeleteItem.IsParent) {
+					if (oDeleteItem.IsParent) {
+							
 							for(i = 0; i < oData.createCNTable.rows.length; i++){
 								oRow = oData.createCNTable.rows[i];
+								console.log(i,oDeleteItem,oRow,JSON.stringify(oDeleteItem) === JSON.stringify(oRow)  );
 								if (oRow.reobjnr === oDeleteItem.reobjnr ){
 									oData.createCNTable.rows.splice(i,1);
 									this._genREText(oRow);

@@ -35,11 +35,11 @@
 		                    <Toolbar>
 		                    	<Button icon="sap-icon://{viewModel>/collapseIcon}" tooltip="{viewModel>/collapseIcon}" press="onToggleCollapse"/>
 		                    	<ToolbarSeparator/>
+		                    	<ToolbarSpacer/>
 		                    	<Button icon="sap-icon://add-document" text="{i18n>Common.Button.New}" press="onNew"/>
 		                    	<Button icon="sap-icon://copy" text="{i18n>Common.Button.Copy}" press="onCopy"/>
-		                        <ToolbarSpacer/>
-		                        <Button text="{i18n>Common.Button.Save}" press="onSave"/>
-		                        <Button text="{i18n>Common.Button.Delete}" press="onDelete"/>
+		                        <Button icon="sap-icon://save" text="{i18n>Common.Button.Save}" press="onSave"/>
+		                        <Button icon="sap-icon://delete" text="{i18n>Common.Button.Delete}" press="onDelete"/>
 		                       
 		                    </Toolbar>
 		                </t:toolbar>
