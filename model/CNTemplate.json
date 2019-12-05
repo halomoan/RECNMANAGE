@@ -50,7 +50,13 @@
 				"ZZINCVREM": ""
 			},
 			"bp": [],
-			"rows": [],
+			"rows": [{
+				"IsParent": false,
+				"REIMKEY": "IM00100000434",
+				"REUnit": "#19-04 to 05",
+				"UnitSize": "2239.0000",
+				"UOM": "SF"
+			}],
 			"REUnit": "",
 			"IndSector": "",
 			"Industry": ""

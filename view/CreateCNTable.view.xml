@@ -27,7 +27,7 @@
 	                    rowSelectionChange="onRowSelect"
 	                    selectionMode="MultiToggle"
 	                    enableSelectAll="false"
-	                    visibleRowCount="20"
+	                    visibleRowCount="10"
 	                    ariaLabelledBy="title">
                 
 					

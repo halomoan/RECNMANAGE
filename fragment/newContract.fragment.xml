@@ -61,7 +61,8 @@
 							<WizardStep id="bp"
 										title="{i18n>TreeTable.Column.Customer}"
 										validated="true">
-								
+								<FlexBox justifyContent="End">
+								<items>
 								<MenuButton text="{= ${viewModel>/addMainBP} ? 'Add Main Customer' : 'Add Other Contact'}" buttonMode="Split" type="Default" defaultAction="onBPAdd" useDefaultActionOnly="true">
 									<menu>
 										<Menu itemSelected="onBPAdd">
@@ -72,10 +73,15 @@
 										</Menu>
 									</menu>
 								</MenuButton>
+								</items>
+								</FlexBox>
 								<List id="listBP" mode="Delete" delete="onBPDelete" items="{viewModel>/CNTemplate/bp}" class="sapUiMediumMarginBottom">
 									<StandardListItem
 											title="{viewModel>BusinessPartnerFullName}"
 											description="{viewModel>BusinessPartner}"
+											icon="{= ${viewModel>BusinessPartnerRole} === ${viewModel>/mainBPRole} ? 'sap-icon://customer' : 'sap-icon://contacts' }"
+											iconDensityAware="false"
+											iconInset="false"
 											info="{= ${viewModel>BusinessPartnerRole} === ${viewModel>/mainBPRole} ? 'Main Customer' : 'Contact' }"
 											infoState="{= ${viewModel>BusinessPartnerRole} === ${viewModel>/mainBPRole} ? 'Success' : 'Warning' }"
 											type="Active"
@@ -87,6 +93,37 @@
 								</List>
 								
 							</WizardStep>
+							<WizardStep id="unit"
+										title="{i18n>TreeTable.Column.Unit}"
+										validated="true">
+								<FlexBox justifyContent="End">
+								<items>
+									<Button text="{i18n>Common.Button.Add}" press="onAddUnit"></Button>
+								</items>
+								</FlexBox>
+								<List
+								    id="listUnit"
+								    mode="Delete" delete="onUnitDelete"
+								    items="{viewModel>/CNTemplate/rows}"
+								    class="sapUiMediumMarginBottom"
+								    >
+									<StandardListItem 
+										title="{viewModel>REUnit}"
+										icon="sap-icon://building"
+										iconDensityAware="false"
+										iconInset="false"
+										description="Size: {
+												path: 'viewModel>UnitSize',
+												formatter: '.formatter.floatFormat'
+												} {viewModel>UOM}">
+										<customData>
+												<core:CustomData key="REIMKEY" value="{viewModel>REIMKEY}"/>
+										</customData>
+									</StandardListItem>
+								</List>
+								<Title text="Total" level="sap.ui.core.TitleLevel.H1" textAlign="End" width="100%"></Title>
+							</WizardStep>	
+							
 					</Wizard>			
 				<footer>
 					<Toolbar>
