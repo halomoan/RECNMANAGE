@@ -215,6 +215,7 @@ sap.ui.define([
 							);
 					} else{
 						var oRow = {"IsParent": false,
+							"ODHeaderId" : oData.ODHeaderId,
 							"REIMKEY" : oObject.ROKey,
 							"REUnit"  : oObject.Xmetxt,
 							"UnitSize": oObject.ROSize,       
@@ -240,7 +241,7 @@ sap.ui.define([
 				}*/
 				
 				oThis._genREText(oData);
-				oThis._calcUnitSize();
+				oThis._calcUnitSize(oData);
 				
 				if (this._useWizard ) {
 					oViewModel.setProperty("/CNTemplate",oData);
@@ -436,7 +437,9 @@ sap.ui.define([
 			if (aContexts && aContexts.length) {
 			
 				aContexts.map(function(oContext) {	
-					var bp = { "BusinessPartner" : oContext.getObject().BusinessPartner,
+					var bp = { 
+					  "ODHeaderId" : oData.ODHeaderId,
+					  "BusinessPartner" : oContext.getObject().BusinessPartner,
 					  "BusinessPartnerRole": oContext.getObject().BusinessPartnerRole,
 					  "Customer" : oContext.getObject().Customer,
 					  "BusinessPartnerFullName" : oContext.getObject().BusinessPartnerFullName
@@ -765,6 +768,7 @@ sap.ui.define([
 			}
 			
 			var oData = JSON.parse(JSON.stringify(oViewModel.getProperty("/OTemplate")));
+			oData.ODHeaderId = (new Date()).getTime();                         
 			oViewModel.setProperty("/CNTemplate",oData);
 
 			this.getView().addDependent(this._onNewCN);
@@ -982,6 +986,7 @@ sap.ui.define([
 			var idx = oItem.sId.match(/\d+$/);
 			
 			oData.rows.splice(idx,1);
+			this._calcUnitSize(oData);
 			oViewModel.setProperty("/CNTemplate",oData);
 
 		},
@@ -1033,7 +1038,10 @@ sap.ui.define([
 				for (var idx = 0; idx < aSelectedIndices.length; idx++) {
 					
 					var oContext = oTreeTable.getContextByIndex(aSelectedIndices[idx]);
+				
 					var oDeleteItem = oContext.getProperty();
+				
+				
 					if (oDeleteItem.IsParent) {
 							
 							for(i = 0; i < oData.createCNTable.rows.length; i++){
@@ -1048,18 +1056,15 @@ sap.ui.define([
 						} else {
 							for(i = 0; i < oData.createCNTable.rows.length; i++){
 								oRow = oData.createCNTable.rows[i];
-								for(var j = 0; j < oRow.rows.length; j++ ) {{
-									if (oRow.rows[j].reobjnr === oDeleteItem.reobjnr ){
+								for(var j = 0; j < oRow.rows.length; j++ ) {
+									if (JSON.stringify(oRow.rows[j]) === JSON.stringify(oDeleteItem)){
 										oRow.rows.splice(j,1);
 										bDeleted = true;
 										this._genREText(oRow);
 									}
-								
-								}
-								
-							}	
+								}	
+							}
 						}
-					}	
 				}
 			
 			} else {
@@ -1069,36 +1074,33 @@ sap.ui.define([
 				});
 			}
 			if (bDeleted) {
-				this._calcUnitSize();
+				for(i = 0; i < oData.createCNTable.rows.length; i++){
+					oRow = oData.createCNTable.rows[i];
+					this._calcUnitSize(oRow);
+				}
 				oModel.refresh();
 				oTreeTable.clearSelection();
 			}
-			
-			
 		},
-		_calcUnitSize: function(){
-			var oTreeTable = this.getView().byId("createCNTable");
-			var oData = oTreeTable.getBinding("rows").getModel().getData();
+		_calcUnitSize: function(oData){
 			
-			for(var i = 0; i < 	oData.createCNTable.rows.length; i++){
-				var oRow1 = oData.createCNTable.rows[i];
+			var fTotalSize = 0.00;
+			var sUOM = "";
+			var fUnitSize = 0.00;
+			for(var i = 0; i < 	oData.rows.length; i++){
+				var oRow1 = oData.rows[i];
 				
-				var fTotalSize = 0.00;
-				var sUOM = "";
-				var fUnitSize = 0.00;
+				fUnitSize = parseFloat(oRow1.UnitSize);
+				if (fUnitSize > 0 ) {
+						fTotalSize = fTotalSize + fUnitSize;
+						sUOM = oRow1.UOM;
+				} 
 				
-				for(var j = 0; j < oRow1.rows.length; j++ ) {
 				
-					fUnitSize = parseFloat(oRow1.rows[j].UnitSize);
-					if (fUnitSize > 0 ) {
-						fTotalSize = fTotalSize + parseFloat(oRow1.rows[j].UnitSize);
-						sUOM = oRow1.rows[j].UOM;
-					} 
-					
-				}
-				oRow1.UnitSize = fTotalSize;
-				oRow1.UOM = sUOM;
+				
 			}
+			oData.UnitSize = fTotalSize;
+			oData.UOM = sUOM;
 		},
 		
 		_genREText: function(oData){

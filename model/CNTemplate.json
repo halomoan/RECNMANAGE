@@ -3,27 +3,27 @@
 			"ODHeaderId" : "",
 			"IsParent": true,
 			"RECNKey": "CN0001",
-			"UnitSize": 2239,
+			"UnitSize": 0,
 			"UOM": "SF",
 			"StartDate": "20191127",
 			"EndDate": "20201127",
 			"baserent": {
 				"CondType": "L101",
-				"UnitPrice": 1,
+				"UnitPrice": 0,
 				"Formula": "B",
 				"ValidFrom": "20191127",
 				"ValidTo": "20291127"
 			},
 			"svcrent": {
-				"CondType": "L101",
-				"UnitPrice": 1,
+				"CondType": "L102",
+				"UnitPrice": 0,
 				"Formula": "B",
 				"ValidFrom": "20191127",
 				"ValidTo": "20291127"
 			},
 			"anprent": {
-				"CondType": "L101",
-				"UnitPrice": 1,
+				"CondType": "L103",
+				"UnitPrice": 0,
 				"Formula": "B",
 				"ValidFrom": "20191127",
 				"ValidTo": "20291127"
@@ -50,13 +50,7 @@
 				"ZZINCVREM": ""
 			},
 			"bp": [],
-			"rows": [{
-				"IsParent": false,
-				"REIMKEY": "IM00100000434",
-				"REUnit": "#19-04 to 05",
-				"UnitSize": "2239.0000",
-				"UOM": "SF"
-			}],
+			"rows": [],
 			"REUnit": "",
 			"IndSector": "",
 			"Industry": ""

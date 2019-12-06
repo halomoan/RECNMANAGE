@@ -121,7 +121,10 @@
 										</customData>
 									</StandardListItem>
 								</List>
-								<Title text="Total Size:" level="sap.ui.core.TitleLevel.H1" textAlign="End" width="100%"></Title>
+								<Title text="Total Size: {
+												path: 'viewModel>/CNTemplate/UnitSize',
+												formatter: '.formatter.floatFormat'
+												} {viewModel>/CNTemplate/UOM}" titleStyle="sap.ui.core.TitleLevel.H4" textAlign="End" width="100%"></Title>
 							</WizardStep>	
 							
 					</Wizard>			
