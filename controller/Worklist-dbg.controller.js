@@ -20,6 +20,7 @@ sap.ui.define([
 		 * @public
 		 */
 		onInit: function() {
+		
 		},
 
 		onAfterRendering: function() {
@@ -31,6 +32,7 @@ sap.ui.define([
 				
 				var entity = metaModel.getODataEntitySet("ContractDataSet");
 				if (entity.hasOwnProperty("sap:searchable") && entity["sap:searchable"] === "true") {
+				
 					view.byId("smartFilterBarWithBasicSearch").setVisible(true);
 					view.byId("contractsWithBasicSearch").setVisible(true);
 					view.byId("smartFilterBarWithoutBasicSearch").setVisible(false);

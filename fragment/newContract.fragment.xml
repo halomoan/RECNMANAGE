@@ -17,7 +17,7 @@
 					<Wizard id="CreateCNWizard"
 								finishButtonText="{i18n>Common.Button.Done}"
 								complete="onNewCNClose">
-							<WizardStep id="duration"
+							<WizardStep id="setDuration"
 										title="{i18n>Lbl.Duration}"
 										validated="false"
 										activate="onNewCNDurationValidate">
@@ -30,6 +30,7 @@
 									<Label text="{i18n>Lbl.Duration}" required="false"/>
 									<HBox width="60%" alignItems="Start" justifyContent="Start">
 										<StepInput
+			                            id="duration"
 			                            value="{viewModel>/duration}"
 			                            displayValuePrecision="1"
 			                            min="1"
@@ -42,7 +43,7 @@
 			                            change="onNewCNDuration">
 									
 									</StepInput> 
-			                        <ComboBox id="durationUnit" items="{viewModel>/durationUnits}" selectedKey="{viewModel>/durationUnitKey}"  width="100%">
+			                        <ComboBox id="durationUnit" items="{viewModel>/durationUnits}" selectedKey="{viewModel>/durationUnitKey}"  width="100%"  change="onNewCNDuration">
 			                        	<core:Item key="{viewModel>key}" text="{viewModel>text}" />
 			                        
 			                        </ComboBox>  

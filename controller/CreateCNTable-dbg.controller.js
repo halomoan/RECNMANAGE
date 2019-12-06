@@ -454,6 +454,7 @@ sap.ui.define([
 					  "BusinessPartner" : oContext.getObject().BusinessPartner,
 					  "BusinessPartnerRole": oContext.getObject().BusinessPartnerRole,
 					  "Customer" : oContext.getObject().Customer,
+					  "HasCustomerRole" : (oContext.getObject().BusinessPartnerRole === oThis.getMainBPRole()) ? "X" : "",
 					  "BusinessPartnerFullName" : oContext.getObject().BusinessPartnerFullName
 					};
 					
@@ -652,7 +653,6 @@ sap.ui.define([
 		
 		onBSAChange: function(oEvent) {
 			var sId = oEvent.getSource().data("myId");
-				
 			
 			var sPath = oEvent.getSource().getBindingContext("CNModel").getPath();
 			var oModel = this.getView().getModel("CNModel");
@@ -787,21 +787,28 @@ sap.ui.define([
 			jQuery.sap.syncStyleClass("sapUiSizeCompact", this.getView(), this._onNewCN);
 			this._onNewCN.open();
 		},
-		onNewCNDuration: function(oEvent){
-			var iDuration =	oEvent.getParameter("value");
+		onNewCNDuration: function(){
+			// var iDuration =	oEvent.getParameter("value");
+			var iDuration = Fragment.byId("newContract", "duration").getValue();
+			
 			var oStartDate = Fragment.byId("newContract", "StartDate").getDateValue();
 			var oEndDate = new Date(oStartDate.getTime());
 			var oDurationUnit = Fragment.byId("newContract", "durationUnit");
 			
+			
 			switch(oDurationUnit.getSelectedKey()){
 				case "day":
-						oEndDate.setDate(oStartDate.getDate() + iDuration);
+						oEndDate.setDate(oStartDate.getDate() + (iDuration - 1));
 					break;
 				case "month":
 						oEndDate.setMonth(oStartDate.getMonth() + iDuration);
+						oEndDate.setDate(oStartDate.getDate() - 1);					
+					
 					break;
 				case "year":
 						oEndDate = new Date(oEndDate.setFullYear(oStartDate.getFullYear() + iDuration));
+						oEndDate.setDate(oStartDate.getDate() - 1);
+						
 					break;
 				default:
 			}
@@ -816,6 +823,8 @@ sap.ui.define([
 			var oDP = oEvent.oSource;
 			
 			Fragment.byId("newContract", "LeaseStart").setDateValue(oDP.getDateValue());
+			
+			this.onNewCNDuration();
 		},
 		onNewCNEndDate: function(oEvent){
 			var wizard = Fragment.byId("newContract", "CreateCNWizard");
@@ -984,12 +993,23 @@ sap.ui.define([
 					
 					if (oItem.IsParent) {
 						oTreeTable.clearSelection();
-						oItem.RECNKey = "CN" + oData.createCNTable.ROUnits.length;        
-						oData.createCNTable.ROUnits.push(JSON.parse(JSON.stringify(oItem)));
+						var oNew = JSON.parse(JSON.stringify(oItem));
+						
+						oNew.ODHeaderId = (new Date()).getTime();  
+						for(var i in oNew.BP){
+							oNew.BP[i].ODHeaderId = oNew.ODHeaderId;
+						}
+						
+						for(i in oItem.ROUnits){
+							oNew.ROUnits[i].ODHeaderId = oNew.ODHeaderId;
+						}
+
+						oData.createCNTable.ROUnits.push(oNew);
 						oModel.refresh();
 					}
 				}
 			}
+			console.log(oModel);
 		},
 		onUnitDelete: function(oEvent){
 			var oViewModel = this.getView().getModel("viewModel");

@@ -148,6 +148,11 @@
 			"routes": [
 				{
 					"pattern": "",
+					"name": "worklist",
+					"target": "worklist"
+				},
+				{
+					"pattern": "createcntable",
 					"name": "createcntable",
 					"target": "createcntable"
 				},
