@@ -53,7 +53,7 @@
 		                           		valueState="{= ${viewModel>/NewCN/error/EndDate} ? 'Error': 'None'}"
 		                           		change="onNewCNEndDate"/>
 									<Label text="{i18n>UF.LeaseStartDate}" required="true"/>
-									<DatePicker  id="LeaseStart" value="{viewModel>/CNTemplate/userfields/ZZHDATE}" valueFormat="yyyyMMdd" 
+									<DatePicker  id="LeaseStart" value="{viewModel>/CNTemplate/UserFields/ZZHDATE}" valueFormat="yyyyMMdd" 
 		                           		valueState="{= ${viewModel>/NewCN/error/LeaseStart} ? 'Error': 'None'}"
 		                           		change="onNewCNLeaseStart"/>
 								</form:SimpleForm>
@@ -75,7 +75,7 @@
 								</MenuButton>
 								</items>
 								</FlexBox>
-								<List id="listBP" mode="Delete" delete="onBPDelete" items="{viewModel>/CNTemplate/bp}" class="sapUiMediumMarginBottom">
+								<List id="listBP" mode="Delete" delete="onBPDelete" items="{viewModel>/CNTemplate/BP}" class="sapUiMediumMarginBottom">
 									<StandardListItem
 											title="{viewModel>BusinessPartnerFullName}"
 											description="{viewModel>BusinessPartner}"
@@ -104,7 +104,7 @@
 								<List
 								    id="listUnit"
 								    mode="Delete" delete="onUnitDelete"
-								    items="{viewModel>/CNTemplate/rows}"
+								    items="{viewModel>/CNTemplate/ROUnits}"
 								    class="sapUiMediumMarginBottom"
 								    >
 									<StandardListItem 

@@ -1,6 +1,6 @@
 {
 	"createCNTable": {
-		"rows": [{
+		"ROUnits": [{
 			"ODHeaderId" : "",
 			"IsParent": true,
 			"RECNKey": "CN0001",
@@ -8,28 +8,28 @@
 			"UOM": "SF",
 			"StartDate": "20191127",
 			"EndDate": "20201127",
-			"baserent": {
+			"BaseRent": {
 				"CondType": "L101",
 				"UnitPrice": 1,
 				"Formula": "B",
 				"ValidFrom": "20191127",
 				"ValidTo": "20291127"
 			},
-			"svcrent": {
+			"SVCRent": {
 				"CondType": "L101",
 				"UnitPrice": 1,
 				"Formula": "B",
 				"ValidFrom": "20191127",
 				"ValidTo": "20291127"
 			},
-			"anprent": {
+			"ANPRent": {
 				"CondType": "L101",
 				"UnitPrice": 1,
 				"Formula": "B",
 				"ValidFrom": "20191127",
 				"ValidTo": "20291127"
 			},
-			"userfields": {
+			"UserFields": {
 				"ZZHDATE": "20191231",
 				"ZZSTMDATE1": "00000000",
 				"ZZSTMDATE2": "00000000",
@@ -50,7 +50,7 @@
 				"ZZAGTCOMM": "",
 				"ZZINCVREM": ""
 			},
-			"bp": [{
+			"BP": [{
 				"BusinessPartner": "1000050620",
 				"BusinessPartnerRole": "BPR101",
 				"Customer": "1000025630",
@@ -63,7 +63,7 @@
 				"BusinessPartnerFullName": " Desmond Chin",
 				"HasCustomerRole" : ""
 			}],
-			"rows": [{
+			"ROUnits": [{
 				"IsParent": false,
 				"REIMKEY": "IM00100000434",
 				"REUnit": "#19-04 to 05",

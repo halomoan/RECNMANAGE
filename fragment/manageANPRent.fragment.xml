@@ -43,8 +43,8 @@
 							
 							<Label text="Unit Price" />
 							<Input type="Text" 
-								value="{path : 'viewModel>/anprent/UnitPrice' , type:'sap.ui.model.type.Float',formatOptions: {minFractionDigits: 2,maxFractionDigits: 2} }" 
-								valueState="{= ${viewModel>/anprent/error} ? 'Error': 'None'}"
+								value="{path : 'viewModel>/ANPRent/UnitPrice' , type:'sap.ui.model.type.Float',formatOptions: {minFractionDigits: 2,maxFractionDigits: 2} }" 
+								valueState="{= ${viewModel>/ANPRent/error} ? 'Error': 'None'}"
 								textAlign="Right"
 								change="onManageBSAChange">
 								 <layoutData>
@@ -55,12 +55,12 @@
     							</customData>
 							</Input>
 							<Label text="Valid From/To"/>
-							 <DatePicker value="{viewModel>/anprent/ValidFrom}" valueFormat="yyyyMMdd">
+							 <DatePicker value="{viewModel>/ANPRent/ValidFrom}" valueFormat="yyyyMMdd">
 							 <layoutData>
 								<l:GridData span="XL8 L1 M3 S6" />
 							</layoutData>
 							 </DatePicker>
-							 <DatePicker value="{viewModel>/anprent/ValidTo}" valueFormat="yyyyMMdd">
+							 <DatePicker value="{viewModel>/ANPRent/ValidTo}" valueFormat="yyyyMMdd">
 							 <layoutData>
 								<l:GridData span="XL8 L1 M3 S6" />
 							</layoutData>
@@ -72,7 +72,7 @@
 									path: 'CondFModel>/Formulas',
 									sorter: { path: 'key' }
 								}"
-								selectedKey="{viewModel>/anprent/Formula}">
+								selectedKey="{viewModel>/ANPRent/Formula}">
 								<core:ListItem key="{CondFModel>key}" text="{CondFModel>text}" additionalText = "{CondFModel>key}"/>
 							</ComboBox>
 		                        

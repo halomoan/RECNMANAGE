@@ -43,8 +43,8 @@
 							
 							<Label text="Unit Price" />
 							<Input type="Text" 
-								value="{path : 'viewModel>/baserent/UnitPrice' , type:'sap.ui.model.type.Float',formatOptions: {minFractionDigits: 2,maxFractionDigits: 2} }" 
-								valueState="{= ${viewModel>/baserent/error} ? 'Error': 'None'}"
+								value="{path : 'viewModel>/BaseRent/UnitPrice' , type:'sap.ui.model.type.Float',formatOptions: {minFractionDigits: 2,maxFractionDigits: 2} }" 
+								valueState="{= ${viewModel>/BaseRent/error} ? 'Error': 'None'}"
 								textAlign="Right"
 								change="onManageBSAChange">
 								 <layoutData>
@@ -55,12 +55,12 @@
     							</customData>
 							</Input>
 							<Label text="Valid From/To"/>
-							 <DatePicker value="{viewModel>/baserent/ValidFrom}" valueFormat="yyyyMMdd">
+							 <DatePicker value="{viewModel>/BaseRent/ValidFrom}" valueFormat="yyyyMMdd">
 							 <layoutData>
 								<l:GridData span="XL8 L1 M3 S6" />
 							</layoutData>
 							 </DatePicker>
-							 <DatePicker value="{viewModel>/baserent/ValidTo}" valueFormat="yyyyMMdd">
+							 <DatePicker value="{viewModel>/BaseRent/ValidTo}" valueFormat="yyyyMMdd">
 							 <layoutData>
 								<l:GridData span="XL8 L1 M3 S6" />
 							</layoutData>
@@ -72,7 +72,7 @@
 									path: 'CondFModel>/Formulas',
 									sorter: { path: 'key' }
 								}"
-								selectedKey="{viewModel>/baserent/Formula}">
+								selectedKey="{viewModel>/BaseRent/Formula}">
 								<core:ListItem key="{CondFModel>key}" text="{CondFModel>text}" additionalText = "{CondFModel>key}"/>
 							</ComboBox>
 		                        

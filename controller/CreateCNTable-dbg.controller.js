@@ -33,13 +33,12 @@ sap.ui.define([
 			});
 			this.setModel(oViewModel, "viewModel");
 			
-			var oModel = new JSONModel("/model/CNModel.json");
-			this.getView().setModel(oModel,"CNModel");
 			
-			var oCondFormModel = new JSONModel("/model/CondFModel.json");
-			this.getView().setModel(oCondFormModel,"CondFModel");
-
 			this.getOwnerComponent().getModel().metadataLoaded().then(this._onMetadataLoaded.bind(this));
+			
+		
+
+			
 			
 			// var oBindingModel = new sap.ui.model.Binding(oModel,"/catalog/createCNTable/rows",oModel.getContext("/CNModel"));
 			//  oBindingModel.attachChange(function() {
@@ -48,27 +47,40 @@ sap.ui.define([
 			
 		},
 		_onMetadataLoaded: function() {
-			var oViewModel = this.getView().getModel("viewModel");
+			 var oViewModel = this.getView().getModel("viewModel");
 			
 			
-			var oModel = new JSONModel("/model/CNTemplate.json");
+			// var oModel = new JSONModel("/model/CNTemplate.json");
 			
-			oModel.attachRequestCompleted(function() {
-				var oData = oModel.getData();
-				oViewModel.setProperty("/OTemplate",oData.template);
-			});
-			
-			// this.getView().bindElement({
-			// 	path: "/ZContractDataSet('1234')",
-			// 	events: {
-			// 		dataRequested: function(){
-			// 			oViewModel.setProperty("/busy", true);	
-			// 		},
-			// 		dataReceived: function(rData) {
-			// 			oViewModel.setProperty("/busy", false);
-			// 		}
-			// 	}
+			// oModel.attachRequestCompleted(function() {
+			// 	var oData = oModel.getData();
+			// 	oViewModel.setProperty("/OTemplate",oData.template);
 			// });
+			
+			
+			var oModel = new JSONModel("/model/CNModel.json");
+			this.getView().setModel(oModel,"CNModel");
+			
+			var oCondFormModel = new JSONModel("/model/CondFModel.json");
+			this.getView().setModel(oCondFormModel,"CondFModel");
+			
+		
+			 this.getView().bindElement({
+			 	path: "/ZContractDataSet('TMPL001')",
+				events: {
+			 		dataRequested: function(){
+			 			oViewModel.setProperty("/busy", true);	
+			 		},
+			 		dataReceived: function(rData) {
+			 			var oData = rData.getParameter("data");
+			 			oData.BP = [];
+			 			oData.ROUnits = [];
+			 			oViewModel.setProperty("/OTemplate",oData);
+			 				console.log(rData,oData);
+						oViewModel.setProperty("/busy", false);
+			 		}
+				}
+			 });
 
 		},
 
@@ -158,7 +170,7 @@ sap.ui.define([
 						"unitsize": "1,500.00 SF"
 						
 						};
-			oData.rows.push(oRow);
+			oData.ROUnits.push(oRow);
 			oModel.refresh();
 			oTreeTable.expand(rowIdx);*/
 				
@@ -198,9 +210,9 @@ sap.ui.define([
 					var oObject = oContext.getObject();
 					var bFound = false;
 					
-					for(var idx in oData.rows){
+					for(var idx in oData.ROUnits){
 					
-						if (oData.rows[idx].REIMKEY === oObject.ROKey){
+						if (oData.ROUnits[idx].REIMKEY === oObject.ROKey){
 							bFound = true; 
 							break;
 						}
@@ -221,21 +233,21 @@ sap.ui.define([
 							"UnitSize": oObject.ROSize,       
 							"UOM" : oObject.ROUnit 
 						};
-						oData.rows.push(oRow);
+						oData.ROUnits.push(oRow);
 					}
 				});
 				
 			/*	var retext = "";
-				for(var i in oData.rows) {
+				for(var i in oData.ROUnits) {
 					if (retext.length > 0) {
-						retext = retext + ", " + oData.rows[i].reunit;
+						retext = retext + ", " + oData.ROUnits[i].reunit;
 					}else{
-						retext = oData.rows[i].reunit;
+						retext = oData.ROUnits[i].reunit;
 					}
 				}
 				
-				if (oData.bp.length > 0) {
-					oData.reunit = retext + " " + oData.bp[0].bpname;
+				if (oData.BP.length > 0) {
+					oData.reunit = retext + " " + oData.BP[0].BPname;
 				} else {
 					oData.reunit = retext;
 				}*/
@@ -324,8 +336,8 @@ sap.ui.define([
 			oViewModel.setProperty("/addMainBP",true);
 			
 		
-			for(var item in oData.bp){
-				if(oData.bp[item].bprole === this.getMainBPRole()){
+			for(var item in oData.BP){
+				if(oData.BP[item].BusinessPartnerRole === this.getMainBPRole()){
 					oViewModel.setProperty("/addMainBP",false);
 				}
 			}
@@ -355,7 +367,7 @@ sap.ui.define([
 					})
 				]
 			});
-			oList.bindItems("CNModel>" + sPath + "/bp",oItemTemplate);
+			oList.bindItems("CNModel>" + sPath + "/BP",oItemTemplate);
 			this._oEventSource = oEvent.getSource();
 			this._oManageBP.openBy(this._oEventSource);
 		},
@@ -447,29 +459,29 @@ sap.ui.define([
 					
 					if (oContext.getObject().BusinessPartnerRole === oThis.getMainBPRole()){
 						
-						if (oData.bp.length > 0) {
-							if (oData.bp[0].BusinessPartnerRole === oThis.getMainBPRole()){
-								oData.bp.splice(0,1,bp);
+						if (oData.BP.length > 0) {
+							if (oData.BP[0].BusinessPartnerRole === oThis.getMainBPRole()){
+								oData.BP.splice(0,1,bp);
 							} else {
-								oData.bp.splice(0,0,bp);
+								oData.BP.splice(0,0,bp);
 							}
 						} else {
-							oData.bp.push(bp);
+							oData.BP.push(bp);
 						}
 						// var bHasMainBPRole = false;
-						// for(var idx in oData.bp) {
-						// 	if (oData.bp[idx].bprole === oThis.getMainBPRole()){
+						// for(var idx in oData.BP) {
+						// 	if (oData.BP[idx].BProle === oThis.getMainBPRole()){
 						// 		bHasMainBPRole = true;
 						// 	}
 						// }
 						// if (!bHasMainBPRole) {
-						// 	oThis._selectedODATA.bp.splice(0,0,bp);
+						// 	oThis._selectedODATA.BP.splice(0,0,bp);
 						// } else {
 						// 	console.log("Failed");
 						// }
 					} else {
-						//oThis._selectedODATA.bp.push(bp);
-						oData.bp.push(bp);
+						//oThis._selectedODATA.BP.push(bp);
+						oData.BP.push(bp);
 					}
 				});
 				
@@ -497,12 +509,12 @@ sap.ui.define([
 			if (this._useWizard) {
 				var oViewModel = this.getView().getModel("viewModel");
 				oData = oViewModel.getProperty("/CNTemplate");
-				oData.bp.splice(idx,1);
+				oData.BP.splice(idx,1);
 				oViewModel.setProperty("/CNTemplate",oData);
 			} else {
 				var oModel = this.getView().getModel("CNModel");
 				oData = this._selectedODATA;
-				oData.bp.splice(idx,1);
+				oData.BP.splice(idx,1);
 				oModel.refresh();
 			}
 			
@@ -543,7 +555,7 @@ sap.ui.define([
 			var oData = oTableCtx.getProperty();
 			this._selectedODATA = oData;
 		
-			oViewModel.setProperty("/baserent",oData.baserent);
+			oViewModel.setProperty("/BaseRent",oData.BaseRent);
 			
 			this._oEventSource = oEvent.getSource();
 			this._oManageBaseRent.openBy(this._oEventSource);
@@ -555,9 +567,9 @@ sap.ui.define([
 			var oTreeTable = this.getView().byId("createCNTable");
 			var oModel = oTreeTable.getBinding("rows").getModel();
 			
-			//oData.baserent = oViewModel.getProperty("/baserent");
-			if (oViewModel.getProperty("/baserent/error")) {
-				oViewModel.setProperty("/baserent/unitprice",0.00) ;
+			//oData.BaseRent = oViewModel.getProperty("/BaseRent");
+			if (oViewModel.getProperty("/BaseRent/error")) {
+				oViewModel.setProperty("/BaseRent/unitprice",0.00) ;
 			}
 			oModel.refresh();
 			
@@ -580,7 +592,7 @@ sap.ui.define([
 			var oData = oTableCtx.getProperty();
 			this._selectedODATA = oData;
 			
-			oViewModel.setProperty("/svcrent",oData.svcrent);
+			oViewModel.setProperty("/SVCRent",oData.SVCRent);
 			
 			this._oEventSource = oEvent.getSource();
 			this._oManageSVCRent.openBy(this._oEventSource);
@@ -593,8 +605,8 @@ sap.ui.define([
 			var oTreeTable = this.getView().byId("createCNTable");
 			var oModel = oTreeTable.getBinding("rows").getModel();
 			
-			if (oViewModel.getProperty("/svcrent/error")) {
-				oViewModel.setProperty("/svcrent/unitprice",0.00) ;
+			if (oViewModel.getProperty("/SVCRent/error")) {
+				oViewModel.setProperty("/SVCRent/unitprice",0.00) ;
 			}
 			oModel.refresh();
 			
@@ -618,7 +630,7 @@ sap.ui.define([
 			var oData = oTableCtx.getProperty();
 			this._selectedODATA = oData;
 			
-			oViewModel.setProperty("/anprent",oData.anprent);
+			oViewModel.setProperty("/ANPRent",oData.ANPRent);
 			
 			this._oEventSource = oEvent.getSource();
 			this._oManageANPRent.openBy(this._oEventSource);
@@ -629,8 +641,8 @@ sap.ui.define([
 			var oTreeTable = this.getView().byId("createCNTable");
 			var oModel = oTreeTable.getBinding("rows").getModel();
 			
-			if (oViewModel.getProperty("/anprent/error")) {
-				oViewModel.setProperty("/anprent/unitprice",0.00) ;
+			if (oViewModel.getProperty("/ANPRent/error")) {
+				oViewModel.setProperty("/ANPRent/unitprice",0.00) ;
 			}
 			oModel.refresh();
 			
@@ -738,7 +750,7 @@ sap.ui.define([
 			var oData = oTableCtx.getProperty();
 			this._selectedODATA = oData;
 			
-			oViewModel.setProperty("/userfields",oData.userfields);
+			oViewModel.setProperty("/UserFields",oData.UserFields);
 			
 			this._oEventSource = oEvent.getSource();
 			this._oUserFields.openBy(this._oEventSource);
@@ -865,7 +877,7 @@ sap.ui.define([
 			
 			if(oData.hasOwnProperty("createCNTable")){
 				this._genREText(oNewRow);
-				oData.createCNTable.rows.push(oNewRow);
+				oData.createCNTable.ROUnits.push(oNewRow);
 				oModel.refresh();
 			}
 			
@@ -912,12 +924,12 @@ sap.ui.define([
 					oContract.UnitSize = oItem.UnitSize;
 					oContract.UOM = oItem.UOM;
 					oContract.IsParent = oItem.IsParent;
-					oContract.UserFields = oItem.userfields;                         
-					oContract.BaseRent = oItem.baserent;
-					oContract.SVCRent = oItem.svcrent;
+					oContract.UserFields = oItem.UserFields;                         
+					oContract.BaseRent = oItem.BaseRent;
+					oContract.SVCRent = oItem.SVCRent;
 					oContract.ANPRent = oItem.anprent;
-					oContract.BP = oItem.bp;
-					oContract.ROUnits = oItem.rows;
+					oContract.BP = oItem.BP;
+					oContract.ROUnits = oItem.ROUnits;
 					oHeader.ZContractDataSet.push(oContract);
 				}
 				
@@ -972,8 +984,8 @@ sap.ui.define([
 					
 					if (oItem.IsParent) {
 						oTreeTable.clearSelection();
-						oItem.RECNKey = "CN" + oData.createCNTable.rows.length;        
-						oData.createCNTable.rows.push(JSON.parse(JSON.stringify(oItem)));
+						oItem.RECNKey = "CN" + oData.createCNTable.ROUnits.length;        
+						oData.createCNTable.ROUnits.push(JSON.parse(JSON.stringify(oItem)));
 						oModel.refresh();
 					}
 				}
@@ -985,7 +997,7 @@ sap.ui.define([
 			var oItem = oEvent.getParameter("listItem");
 			var idx = oItem.sId.match(/\d+$/);
 			
-			oData.rows.splice(idx,1);
+			oData.ROUnits.splice(idx,1);
 			this._calcUnitSize(oData);
 			oViewModel.setProperty("/CNTemplate",oData);
 
@@ -1044,21 +1056,21 @@ sap.ui.define([
 				
 					if (oDeleteItem.IsParent) {
 							
-							for(i = 0; i < oData.createCNTable.rows.length; i++){
-								oRow = oData.createCNTable.rows[i];
+							for(i = 0; i < oData.createCNTable.ROUnits.length; i++){
+								oRow = oData.createCNTable.ROUnits[i];
 								if (JSON.stringify(oDeleteItem) === JSON.stringify(oRow)){
-									oData.createCNTable.rows.splice(i,1);
+									oData.createCNTable.ROUnits.splice(i,1);
 									this._genREText(oRow);
 									bDeleted = true;
 								}
 							}
 							bDeleted = true;
 						} else {
-							for(i = 0; i < oData.createCNTable.rows.length; i++){
-								oRow = oData.createCNTable.rows[i];
-								for(var j = 0; j < oRow.rows.length; j++ ) {
-									if (JSON.stringify(oRow.rows[j]) === JSON.stringify(oDeleteItem)){
-										oRow.rows.splice(j,1);
+							for(i = 0; i < oData.createCNTable.ROUnits.length; i++){
+								oRow = oData.createCNTable.ROUnits[i];
+								for(var j = 0; j < oRow.ROUnits.length; j++ ) {
+									if (JSON.stringify(oRow.ROUnits[j]) === JSON.stringify(oDeleteItem)){
+										oRow.ROUnits.splice(j,1);
 										bDeleted = true;
 										this._genREText(oRow);
 									}
@@ -1074,8 +1086,8 @@ sap.ui.define([
 				});
 			}
 			if (bDeleted) {
-				for(i = 0; i < oData.createCNTable.rows.length; i++){
-					oRow = oData.createCNTable.rows[i];
+				for(i = 0; i < oData.createCNTable.ROUnits.length; i++){
+					oRow = oData.createCNTable.ROUnits[i];
 					this._calcUnitSize(oRow);
 				}
 				oModel.refresh();
@@ -1087,8 +1099,8 @@ sap.ui.define([
 			var fTotalSize = 0.00;
 			var sUOM = "";
 			var fUnitSize = 0.00;
-			for(var i = 0; i < 	oData.rows.length; i++){
-				var oRow1 = oData.rows[i];
+			for(var i = 0; i < 	oData.ROUnits.length; i++){
+				var oRow1 = oData.ROUnits[i];
 				
 				fUnitSize = parseFloat(oRow1.UnitSize);
 				if (fUnitSize > 0 ) {
@@ -1105,16 +1117,16 @@ sap.ui.define([
 		
 		_genREText: function(oData){
 			var retext = "";
-			for(var i in oData.rows) {
+			for(var i in oData.ROUnits) {
 				if (retext.length > 0) {
-					retext = retext + ", " + oData.rows[i].REUnit;
+					retext = retext + ", " + oData.ROUnits[i].REUnit;
 				}else{
-					retext = oData.rows[i].REUnit;
+					retext = oData.ROUnits[i].REUnit;
 				}
 			}
 			
-			if (oData.bp.length > 0) {
-				retext = retext + " " + oData.bp[0].BusinessPartnerFullName;
+			if (oData.BP.length > 0) {
+				retext = retext + " " + oData.BP[0].BusinessPartnerFullName;
 			}
 			oData.REUnit = retext.trim();
 		}
