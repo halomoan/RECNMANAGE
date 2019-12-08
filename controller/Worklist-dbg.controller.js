@@ -27,10 +27,9 @@ sap.ui.define([
 			var view = this.getView();
 			var model = view.getModel();
 			model.attachRequestCompleted(function() {
-				var metaModel = model.getMetaModel();
-				
-				
+				/*var metaModel = model.getMetaModel();
 				var entity = metaModel.getODataEntitySet("ContractDataSet");
+				
 				if (entity.hasOwnProperty("sap:searchable") && entity["sap:searchable"] === "true") {
 				
 					view.byId("smartFilterBarWithBasicSearch").setVisible(true);
@@ -42,7 +41,7 @@ sap.ui.define([
 					view.byId("contractsWithBasicSearch").setVisible(false);
 					view.byId("smartFilterBarWithoutBasicSearch").setVisible(true);
 					view.byId("contractsWithoutBasicSearch").setVisible(true);
-				}
+				}*/
 			});
 		},
 

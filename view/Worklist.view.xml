@@ -47,9 +47,12 @@
                                                    entityType="ContractData" persistencyKey=""
                                                    visible="true">
                         <smartFilterBar:controlConfiguration>
-                            <smartFilterBar:ControlConfiguration key="Bukrs" visibleInAdvancedArea="true"/>
+                            <!--<smartFilterBar:ControlConfiguration key="Bukrs" visibleInAdvancedArea="true"/>-->
                             <smartFilterBar:ControlConfiguration key="Recnnr" visibleInAdvancedArea="true"/>
-                            <smartFilterBar:ControlConfiguration key="Recntype" visibleInAdvancedArea="true"/>
+                            <smartFilterBar:ControlConfiguration key="Recntxt" visibleInAdvancedArea="true"/>
+                            <smartFilterBar:ControlConfiguration key="Recnbeg" conditionType="sap.ui.comp.config.condition.DateRangeType" visibleInAdvancedArea="true"/>
+                            <smartFilterBar:ControlConfiguration key="Recnendabs" conditionType="sap.ui.comp.config.condition.DateRangeType" visibleInAdvancedArea="true"/>
+                            <!--<smartFilterBar:ControlConfiguration key="Recntype" visibleInAdvancedArea="true"/>-->
                         </smartFilterBar:controlConfiguration>
                         <smartFilterBar:customData>
                             <core:CustomData key="dateFormatSettings" value='\{"UTC":true\}'/>
@@ -75,6 +78,7 @@
                         showRowCount="true"
                         useExportToExcel="true"
                         enableAutoBinding="true"
+                        initiallyVisibleFields="Recnnr"
                         visible="false">
                     <Table fixedLayout="false" growing="true" growingThreshold="100" >
                         <ColumnListItem
@@ -96,6 +100,7 @@
                         showRowCount="true"
                         useExportToExcel="true"
                         enableAutoBinding="true"
+                        initiallyVisibleFields="Recnnr,Recntxt,Recnbeg,Recnendabs,Recnend1st"
                         visible="true">
                     <Table fixedLayout="false" growing="true" growingThreshold="100" >
                         <ColumnListItem
