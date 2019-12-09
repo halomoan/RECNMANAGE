@@ -42,6 +42,10 @@ sap.ui.define([
 					view.byId("smartFilterBarWithoutBasicSearch").setVisible(true);
 					view.byId("contractsWithoutBasicSearch").setVisible(true);
 				}*/
+				
+				var smartFilterBar = view.byId("smartFilterBarWithoutBasicSearch"); 
+				var oRecnType = smartFilterBar.getControlByKey("Recntype");
+				oRecnType.setValue("L001");
 			});
 		},
 

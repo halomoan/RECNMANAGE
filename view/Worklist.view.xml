@@ -45,6 +45,7 @@
                     <smartFilterBar:SmartFilterBar id="smartFilterBarWithoutBasicSearch"
                                                    enableBasicSearch="false"
                                                    entityType="ContractData" persistencyKey=""
+                                                   liveMode="true"
                                                    visible="true">
                         <smartFilterBar:controlConfiguration>
                             <!--<smartFilterBar:ControlConfiguration key="Bukrs" visibleInAdvancedArea="true"/>-->
@@ -52,7 +53,7 @@
                             <smartFilterBar:ControlConfiguration key="Recntxt" visibleInAdvancedArea="true"/>
                             <smartFilterBar:ControlConfiguration key="Recnbeg" conditionType="sap.ui.comp.config.condition.DateRangeType" visibleInAdvancedArea="true"/>
                             <smartFilterBar:ControlConfiguration key="Recnendabs" conditionType="sap.ui.comp.config.condition.DateRangeType" visibleInAdvancedArea="true"/>
-                            <!--<smartFilterBar:ControlConfiguration key="Recntype" visibleInAdvancedArea="true"/>-->
+                            <smartFilterBar:ControlConfiguration key="Recntype" visibleInAdvancedArea="true"/>
                         </smartFilterBar:controlConfiguration>
                         <smartFilterBar:customData>
                             <core:CustomData key="dateFormatSettings" value='\{"UTC":true\}'/>
