@@ -53,7 +53,13 @@
                             <smartFilterBar:ControlConfiguration key="Recntxt" visibleInAdvancedArea="true"/>
                             <smartFilterBar:ControlConfiguration key="Recnbeg" conditionType="sap.ui.comp.config.condition.DateRangeType" visibleInAdvancedArea="true"/>
                             <smartFilterBar:ControlConfiguration key="Recnendabs" conditionType="sap.ui.comp.config.condition.DateRangeType" visibleInAdvancedArea="true"/>
-                            <smartFilterBar:ControlConfiguration key="Recntype" visibleInAdvancedArea="true"/>
+                            <!--<smartFilterBar:ControlConfiguration key="Recntype" visibleInAdvancedArea="true"/>-->
+                            <smartFilterBar:ControlConfiguration key="Recntype" visibleInAdvancedArea="true" visible="true">
+			                <smartFilterBar:defaultFilterValues>
+			                            <smartFilterBar:SelectOption low="L003">
+			                            </smartFilterBar:SelectOption>
+			                     </smartFilterBar:defaultFilterValues>
+			                </smartFilterBar:ControlConfiguration>
                         </smartFilterBar:controlConfiguration>
                         <smartFilterBar:customData>
                             <core:CustomData key="dateFormatSettings" value='\{"UTC":true\}'/>
@@ -101,7 +107,7 @@
                         showRowCount="true"
                         useExportToExcel="true"
                         enableAutoBinding="true"
-                        initiallyVisibleFields="Recnnr,Recntxt,Recnbeg,Recnendabs,Recnend1st"
+                        initiallyVisibleFields="Recntype,Recnnr,Recntxt,Recnbeg,Recnendabs,Recnend1st"
                         visible="true">
                     <Table fixedLayout="false" growing="true" growingThreshold="100" >
                         <ColumnListItem

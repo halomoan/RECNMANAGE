@@ -25,3 +25,6 @@
 .legend text {
     font-size: 12px !important;
 }
+.hidden {
+	display: none;
+}

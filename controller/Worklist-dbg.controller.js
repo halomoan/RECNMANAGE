@@ -25,7 +25,7 @@ sap.ui.define([
 
 		onAfterRendering: function() {
 			var view = this.getView();
-			var model = view.getModel();
+			/*var model = view.getModel();
 			model.attachRequestCompleted(function() {
 				/*var metaModel = model.getMetaModel();
 				var entity = metaModel.getODataEntitySet("ContractDataSet");
@@ -43,16 +43,42 @@ sap.ui.define([
 					view.byId("contractsWithoutBasicSearch").setVisible(true);
 				}*/
 				
-				var smartFilterBar = view.byId("smartFilterBarWithoutBasicSearch"); 
-				var oRecnType = smartFilterBar.getControlByKey("Recntype");
+			/*	var smartFilterBar = view.byId("smartFilterBarWithoutBasicSearch"); 
+				var oRecnType = smartFilterBar.getControlByKey("
+					Recntype");
 				oRecnType.setValue("L001");
-			});
+			});*/
+			var oSmartFilter = view.byId("smartFilterBarWithoutBasicSearch");
+			oSmartFilter.attachInitialized(this.onInitSmartFilter, this);
 		},
 
 		/* =========================================================== */
 		/* event handlers                                              */
 		/* =========================================================== */
-
+		onInitSmartFilter: function(oEvent) {
+			var oView = this.getView();
+			var oSmartFilter = oView.byId("smartFilterBarWithoutBasicSearch");
+			
+			var dateFormat = sap.ui.core.format.DateFormat.getDateInstance({
+					pattern: "MMM d, y"
+			});
+			
+			var oTodaysDate = new Date();
+			var sInputDate = dateFormat.parse(oTodaysDate);
+			var oJSONData = {
+					Recntype : "L002",
+					Recnbeg: { //DateRange field with filter-restriction="interval" // Property Name for Date Field
+						low: sInputDate ,
+						high: sInputDate 
+						},
+					Recnendabs: {
+						low : sInputDate
+					}
+						
+			};
+			oSmartFilter.setFilterData(oJSONData);
+			console.log(oTodaysDate,oEvent.getSource().getFilterData());
+		},
 		/**
 		 * Event handler when a table item gets pressed
 		 * @param {sap.ui.base.Event} oEvent the table selectionChange event
