@@ -44,7 +44,8 @@
 
                     <smartFilterBar:SmartFilterBar id="smartFilterBarWithoutBasicSearch"
                                                    enableBasicSearch="false"
-                                                   entityType="ContractData" persistencyKey=""
+                                                   persistencyKey="UniqueAndStablePersistencyKey"
+                                                   entityType="ContractData" 
                                                    liveMode="true"
                                                    visible="true">
                         <smartFilterBar:controlConfiguration>
@@ -52,11 +53,10 @@
                             <smartFilterBar:ControlConfiguration key="Recnnr" visibleInAdvancedArea="true"/>
                             <smartFilterBar:ControlConfiguration key="Recntxt" visibleInAdvancedArea="true"/>
                             <smartFilterBar:ControlConfiguration key="Recnbeg" conditionType="sap.ui.comp.config.condition.DateRangeType" visibleInAdvancedArea="true"/>
-                            <smartFilterBar:ControlConfiguration key="Recnendabs" conditionType="sap.ui.comp.config.condition.DateRangeType" visibleInAdvancedArea="true"/>
-                            <!--<smartFilterBar:ControlConfiguration key="Recntype" visibleInAdvancedArea="true"/>-->
-                            <smartFilterBar:ControlConfiguration key="Recntype" visibleInAdvancedArea="true" visible="true">
+                         	<smartFilterBar:ControlConfiguration key="Recnendabs" conditionType="sap.ui.comp.config.condition.DateRangeType" visibleInAdvancedArea="true"/>
+                            <smartFilterBar:ControlConfiguration key="Recntype" visibleInAdvancedArea="true" HiddenFilter="true">
 			                <smartFilterBar:defaultFilterValues>
-			                            <smartFilterBar:SelectOption low="L003">
+			                            <smartFilterBar:SelectOption low="{viewModel>/RecnType}">
 			                            </smartFilterBar:SelectOption>
 			                     </smartFilterBar:defaultFilterValues>
 			                </smartFilterBar:ControlConfiguration>
@@ -107,7 +107,7 @@
                         showRowCount="true"
                         useExportToExcel="true"
                         enableAutoBinding="true"
-                        initiallyVisibleFields="Recntype,Recnnr,Recntxt,Recnbeg,Recnendabs,Recnend1st"
+                        initiallyVisibleFields="Recntype,Recnnr,Recntxt,Recnbeg,Recnendabs"
                         visible="true">
                     <Table fixedLayout="false" growing="true" growingThreshold="100" >
                         <ColumnListItem

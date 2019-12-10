@@ -3,8 +3,9 @@
  */
 sap.ui.define([
 	"fin/re/conmgmts1/controller/BaseController",
+	"sap/ui/model/json/JSONModel",
 	"fin/re/conmgmts1/model/formatter"
-], function(BaseController, formatter) {
+], function(BaseController,JSONModel, formatter) {
 	"use strict";
 
 	return BaseController.extend("fin.re.conmgmts1.controller.Worklist", {
@@ -20,7 +21,10 @@ sap.ui.define([
 		 * @public
 		 */
 		onInit: function() {
-		
+			var oViewModel = new JSONModel({
+				RecnType : "L001"
+			});
+			this.setModel(oViewModel, "viewModel");
 		},
 
 		onAfterRendering: function() {
@@ -48,8 +52,8 @@ sap.ui.define([
 					Recntype");
 				oRecnType.setValue("L001");
 			});*/
-			var oSmartFilter = view.byId("smartFilterBarWithoutBasicSearch");
-			oSmartFilter.attachInitialized(this.onInitSmartFilter, this);
+			 var oSmartFilter = view.byId("smartFilterBarWithoutBasicSearch");
+			 oSmartFilter.attachInitialized(this.onInitSmartFilter, this);
 		},
 
 		/* =========================================================== */
@@ -59,25 +63,18 @@ sap.ui.define([
 			var oView = this.getView();
 			var oSmartFilter = oView.byId("smartFilterBarWithoutBasicSearch");
 			
-			var dateFormat = sap.ui.core.format.DateFormat.getDateInstance({
-					pattern: "MMM d, y"
-			});
+			// var dateFormat = sap.ui.core.format.DateFormat.getDateInstance({
+			// 		pattern: "MMM d, y"
+			// });
 			
 			var oTodaysDate = new Date();
-			var sInputDate = dateFormat.parse(oTodaysDate);
 			var oJSONData = {
-					Recntype : "L002",
-					Recnbeg: { //DateRange field with filter-restriction="interval" // Property Name for Date Field
-						low: sInputDate ,
-						high: sInputDate 
-						},
-					Recnendabs: {
-						low : sInputDate
-					}
+					Recnbeg: { key: "FROM" , value : oTodaysDate  },
+					Recnendabs: {  key: "FROM" , low : oTodaysDate }
 						
 			};
 			oSmartFilter.setFilterData(oJSONData);
-			console.log(oTodaysDate,oEvent.getSource().getFilterData());
+			
 		},
 		/**
 		 * Event handler when a table item gets pressed

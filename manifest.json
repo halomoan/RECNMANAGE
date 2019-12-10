@@ -20,14 +20,6 @@
 					"odataVersion": "2.0",
 					"localUri": "localService/metadata.xml"
 				}
-			},
-			"RE_CN_CONTRACT_ODATA_SRV": {
-				"uri": "/sap/opu/odata/sap/RE_CN_CONTRACT_ODATA_SRV/",
-				"type": "OData",
-				"settings": {
-					"odataVersion": "2.0",
-					"localUri": "localService/RE_CN_CONTRACT_ODATA_SRV/metadata.xml"
-				}
 			}
 		},
 		"sourceTemplate": {
