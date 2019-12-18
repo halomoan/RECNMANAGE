@@ -20,6 +20,7 @@
             entitySet="ContractRenewalDataSet"
             class=""
             useExportToExcel="false"
+            initiallyVisibleFields="Xrnauttype,Xrnruletype,Xterm,Rnnotdate,Rnendnext"
             enableAutoBinding="true">
         <smartTable:customToolbar>
             <OverflowToolbar>

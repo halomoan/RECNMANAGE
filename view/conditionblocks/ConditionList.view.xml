@@ -21,6 +21,7 @@
             showRowCount="true"
             entitySet="ContractConditionDataSet"
             useExportToExcel="false"
+            initiallyVisibleFields="Condtype,Xmcondpurposeext,Xcondition,Calcrule,Xmcalcrule,Objtxtcalc,Unitprice,Condvalidfrom,Condvalidto,Objidentcalc"
             enableAutoBinding="true">
         <smartTable:customToolbar>
             <OverflowToolbar>

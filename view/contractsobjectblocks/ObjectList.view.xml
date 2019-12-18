@@ -18,6 +18,7 @@
             entitySet="ContractObjectDataSet"
             class=""
             useExportToExcel="false"
+            initiallyVisibleFields="Xlobjtype,Objidcn,Text,Recnnr,Objvalidfromcn,Objvalidtocn,Assignonlyinfo"
             enableAutoBinding="true">
         <smartTable:customToolbar>
             <OverflowToolbar>
