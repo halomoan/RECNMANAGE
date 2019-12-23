@@ -16,6 +16,7 @@
                 editable="false"
                 entitySet="ContractCashflowDataSet"
                 useExportToExcel="false"
+                initiallyVisibleFields="Xcondition,Dfaell,Localcurr,Ccnetamount,Condcurr,Cctaxamount,BookXflowtype,Xcfstatus"
                 enableAutoBinding="true">
         </smartTable:SmartTable>
         <buttons>

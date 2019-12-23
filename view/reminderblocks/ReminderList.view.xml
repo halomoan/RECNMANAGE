@@ -20,6 +20,7 @@
             entitySet="ContractReminderDataSet"
             class=""
             useExportToExcel="false"
+            initiallyVisibleFields="Rsdate,Rsno,Rsrule,Rsreason,Rsdone"
             enableAutoBinding="true">
         <smartTable:customToolbar>
             <OverflowToolbar design="Transparent">

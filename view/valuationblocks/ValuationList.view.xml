@@ -19,6 +19,7 @@
             entitySet="ContractValuationDataSet"
             class=""
             useExportToExcel="false"
+            initiallyVisibleFields="Cerule,Consbeg,Postbeg,Assetobjnr,Cesltype,Interestrate"
             enableAutoBinding="true">
         <smartTable:customToolbar>
             <OverflowToolbar design="Auto">

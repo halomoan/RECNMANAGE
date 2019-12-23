@@ -20,6 +20,7 @@
             entitySet="ContractPartnerDataSet"
             class=""
             useExportToExcel="false"
+            initiallyVisibleFields="Role,Rltxt,Partner,Xname,Street,Country,SmtpAddr"
             enableAutoBinding="true">
         <smartTable:customToolbar>
             <OverflowToolbar>

@@ -18,6 +18,7 @@
             entitySet="ContractDocumentDataSet"
             class=""
             useExportToExcel="false"
+            initiallyVisibleFields="Filename,Filesize,Mimetype,Createdat,Createdby"
             enableAutoBinding="true">
         <Table fixedLayout="false" growing="true" growingThreshold="100" >
             <ColumnListItem id="documentListItem"

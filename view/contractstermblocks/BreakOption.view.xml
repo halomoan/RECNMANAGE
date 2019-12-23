@@ -20,6 +20,7 @@
             entitySet="ContractNoticeDataSet"
             class=""
             useExportToExcel="false"
+            initiallyVisibleFields="Termno,Ntrule,Xntrule,Ntruletype,Xntruletype,Ntreceiptfrom,Ntreceiptto"
             enableAutoBinding="true">
         <smartTable:customToolbar>
             <OverflowToolbar>
@@ -35,4 +36,3 @@
         </smartTable:customToolbar>
     </smartTable:SmartTable>
 </l:VerticalLayout>
-
