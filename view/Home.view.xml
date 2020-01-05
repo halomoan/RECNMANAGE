@@ -1,0 +1,20 @@
+<mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" controllerName="fin.re.conmgmts1.controller.Home"
+	xmlns:html="http://www.w3.org/1999/xhtml">
+	<Page
+		showHeader="false"
+		enableScrolling="false" >
+		<TileContainer
+			id="container"
+			tileDelete="handleTileDelete"
+			tiles="{/ZTileInfoSet}">
+			<StandardTile
+				icon="{icon}"
+				type="{type}"
+				number="{number}"
+				numberUnit="{numberUnit}"
+				title="{title}"
+				info="{info}"
+				infoState="{infoState}" />
+		</TileContainer>
+	</Page>
+</mvc:View>

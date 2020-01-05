@@ -140,6 +140,11 @@
 			"routes": [
 				{
 					"pattern": "",
+					"name": "home",
+					"target": "home"
+				},
+				{
+					"pattern": "worklist",
 					"name": "worklist",
 					"target": "worklist"
 				},
@@ -160,6 +165,11 @@
 				}
 			],
 			"targets": {
+				"home": {
+					"viewName": "Home",
+					"viewId": "home",
+					"viewLevel": 1
+				},
 				"createcntable": {
 					"viewName": "CreateCNTable",
 					"viewId": "createcntable",

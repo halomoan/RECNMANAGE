@@ -48,7 +48,7 @@
 		                    <t:Column width="20rem">
 		                        <Label text="{i18n>TreeTable.Column.Unit}"/>
 		                          <t:template>
-			                    	<Input value="{CNModel>REUnit}" editable="{CNModel>IsParent}" valueState="{= ${CNModel>error/reunit} ? 'Error': 'None'}"/>
+			                    	<Label text="{CNModel>REUnit}" design="Bold" valueState="{= ${CNModel>error/reunit} ? 'Error': 'None'}"/>
 								  </t:template>
 		                        <!--<t:template>-->
 		                        
