@@ -8,13 +8,20 @@
 			tileDelete="handleTileDelete"
 			tiles="{/ZTileInfoSet}">
 			<StandardTile
+				press="onTilePress"
 				icon="{icon}"
 				type="{type}"
 				number="{number}"
 				numberUnit="{numberUnit}"
 				title="{title}"
 				info="{info}"
-				infoState="{infoState}" />
+				infoState="{infoState}">
+				<customData>
+    				<core:CustomData key="bukrs" value="{bukrs}" writeToDom="false"/>
+    				<core:CustomData key="swenr" value="{swenr}" writeToDom="false"/>
+    				<core:CustomData key="recntype" value="{recntype}" writeToDom="false"/>
+    			</customData>
+			</StandardTile>
 		</TileContainer>
 	</Page>
 </mvc:View>

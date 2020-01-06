@@ -1,0 +1,25 @@
+<core:FragmentDefinition
+	xmlns="sap.m"
+	xmlns:core="sap.ui.core">
+	<SelectDialog
+		id = "selectTemplate"
+		noDataText="No Template Found"
+		title="Select a Template"
+		search="onTemplateSearch"
+		confirm="onTemplateConfirm"
+		cancel="onTemplateClose"
+		contentHeight="auto"
+		contentWidth="250px"
+		items="{
+			path: '/ZTemplateSet'
+		}" >
+		<StandardListItem
+			title="{TmpltText}"
+			description="Reference To: {TmpltRecn}"
+			icon="sap-icon://activity-items"
+			iconDensityAware="false"
+			iconInset="false"
+			type="Active">
+		</StandardListItem>	
+	</SelectDialog>
+</core:FragmentDefinition>

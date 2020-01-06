@@ -6,8 +6,11 @@ sap.ui.define([
 	'sap/ui/model/Sorter',
 	'sap/ui/model/Filter',
 	'sap/ui/model/FilterOperator',
-	"fin/re/conmgmts1/model/formatter"
-], function(BaseController,MessageBox,JSONModel,Fragment,Sorter,Filter,FilterOperator,formatter) {
+	"fin/re/conmgmts1/model/formatter",
+	"sap/m/Dialog",
+	"sap/m/Button",
+	"sap/m/Text"
+], function(BaseController,MessageBox,JSONModel,Fragment,Sorter,Filter,FilterOperator,formatter,Dialog,Button,Text) {
 	"use strict";
 
 	return BaseController.extend("fin.re.conmgmts1.controller.CreateCNTable", {
@@ -29,14 +32,16 @@ sap.ui.define([
 				today: oDateFormat.format(new Date()),
 				durationUnits : [{"key": "day","text": "Day(s)"},{"key": "month","text": "Month(s)"},{"key": "year","text": "Year(s)"}],
 				durationUnitKey: "month",
-				collapseIcon: "collapse"
+				collapseIcon: "collapse",
+				Title: ""
 			});
 			this.setModel(oViewModel, "viewModel");
 			
 			
 			this.getOwnerComponent().getModel().metadataLoaded().then(this._onMetadataLoaded.bind(this));
 			
-		
+			var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
+			oRouter.getRoute("createcntable").attachPatternMatched(this._onObjectMatched, this);
 
 			
 			
@@ -76,15 +81,26 @@ sap.ui.define([
 			 			oData.BP = [];
 			 			oData.ROUnits = [];
 			 			oViewModel.setProperty("/OTemplate",oData);
-			 				console.log(rData,oData);
 						oViewModel.setProperty("/busy", false);
 			 		}
 				}
 			 });
 
 		},
-
-
+		_onObjectMatched: function (oEvent) {
+			this.bukrs = oEvent.getParameter("arguments").companyCode;
+			this.swenr = oEvent.getParameter("arguments").busEntity;
+			this.recntype = oEvent.getParameter("arguments").recntype;
+			
+			var oViewModel = this.getView().getModel("viewModel");
+			
+			if (this.recntype === "L001") {
+				oViewModel.setProperty("/Title",this.getResourceBundle().getText("CreateCNTable.Title.Office"));
+			}else if(this.recntype === "L002"){
+				oViewModel.setProperty("/Title",this.getResourceBundle().getText("CreateCNTable.Title.Retail"));
+			}
+			
+		},
 		onDelete: function() {
 			var bCompact = !!this.getView().$().closest(".sapUiSizeCompact").length;
 			MessageBox.confirm(
@@ -105,7 +121,100 @@ sap.ui.define([
 			);
 		},
 		
+		onCreate: function(){
+			var oTreeTable = this.getView().byId("createCNTable");
+			var aSelectedIndices = oTreeTable.getSelectedIndices();
+			
+			if (aSelectedIndices.length > 0) {
+				for (var idx = 0; idx < aSelectedIndices.length; idx++) {
+					var oContext = oTreeTable.getContextByIndex(aSelectedIndices[idx]);
+					var oItem = oContext.getProperty();
+					var bValid = this._validateSelect(oItem);
+					
+					if (!bValid) {
+						break;
+					}
+					
+				}
+				
+				
+				
+				if (!this._oSelectTemplate) {
+					this._oSelectTemplate = sap.ui.xmlfragment("selectTemplate","fin.re.conmgmts1.fragment.selectTemplate", this);
+					this._oSelectTemplate.setModel(this.getView().getModel());
+				}
+				var oSorter = new sap.ui.model.Sorter("TmpltID", false);
+				var aFilters = [];
+				aFilters.push(new Filter("Bukrs", FilterOperator.EQ, this.bukrs));
+				aFilters.push(new Filter("Swenr", FilterOperator.EQ, this.swenr));
+				aFilters.push(new Filter("RecnType", FilterOperator.EQ, this.recntype));
+				
+				var oSelect = Fragment.byId("selectTemplate", "selectTemplate");
+				var oTemplate = oSelect.getBindingInfo("items").template;
+				var oBindingInfo = {
+					path: "/ZTemplateSet",
+					template: oTemplate,
+					sorter : oSorter,
+					filters: aFilters
+				};
+				oSelect.bindAggregation("items", oBindingInfo);
+				this.getView().addDependent(this._oSelectTemplate);
+				jQuery.sap.syncStyleClass("sapUiSizeCompact", this.getView(), this._oSelectTemplate);
+				this._oSelectTemplate.open();
+					
+			
+			
+			} else{
+				MessageBox.warning(this.getResourceBundle().getText("Msg.PickContract"), {
+					title: "Warning",                                      
+				    initialFocus: null                                   
+				});
+			}
+		},
 		
+		onTemplateSearch: function(oEvent){
+			var sValue = oEvent.getParameter("value");
+			var oFilter1 = new Filter("TmpltText", sap.ui.model.FilterOperator.Contains, sValue.toUpperCase());
+			var oBinding = oEvent.getSource().getBinding("items");
+			oBinding.filter([oFilter1]);
+		},
+		
+		onTemplateConfirm: function(oEvent){
+			var aContexts = oEvent.getParameter("selectedContexts");
+			if (aContexts && aContexts.length) {
+				var oThis = this;
+				
+				var oDialog = new Dialog({
+					title: "Confirm",
+					type: "Message",
+					content: new Text({ text: 'Are You Sure To Create Contract For The Selected Items?' }),
+					beginButton: new Button({
+						text: "Submit",
+						press: function () {
+							oThis._createContract();
+							oDialog.close();
+						}
+					}),
+					endButton: new Button({
+						type: sap.m.ButtonType.Emphasized,
+						text: "Cancel",
+						press: function () {
+							oDialog.close();
+						}
+					}),
+					afterClose: function () {
+						oDialog.destroy();
+					}
+				});
+			
+				this.tmpltID = aContexts.map(function(oContext) {
+					return oContext.getObject().TmpltID;
+				})[0];
+				
+				oDialog.open();
+			}
+			
+		},
 		onToggleCollapse: function(){
 			
 			var oTreeTable = this.byId("createCNTable");
@@ -136,8 +245,8 @@ sap.ui.define([
 			var oSorter = new sap.ui.model.Sorter("Xmetxt", false);
 			
 			var aFilters = [];
-			aFilters.push(new Filter("Bukrs", FilterOperator.EQ, "1001"));
-			aFilters.push(new Filter("Swenr", FilterOperator.EQ, "00001001"));
+			aFilters.push(new Filter("Bukrs", FilterOperator.EQ, this.bukrs));
+			aFilters.push(new Filter("Swenr", FilterOperator.EQ, this.swenr));
 			aFilters.push(new Filter("Rotype", FilterOperator.EQ, "RU"));
 			
 			var oTable = Fragment.byId("selectRO", "selectRO-table");
@@ -985,7 +1094,7 @@ sap.ui.define([
 					var oContext = oTreeTable.getContextByIndex(aSelectedIndices[idx]);
 					var oItem = oContext.getProperty();
 					
-					var bValid = this._validateCopy(oItem);
+					var bValid = this._validateSelect(oItem);
 					
 					if (!bValid) {
 						break;
@@ -1009,7 +1118,6 @@ sap.ui.define([
 					}
 				}
 			}
-			console.log(oModel);
 		},
 		onUnitDelete: function(oEvent){
 			var oViewModel = this.getView().getModel("viewModel");
@@ -1039,7 +1147,7 @@ sap.ui.define([
 			}
 			return bValid;
 		},
-		_validateCopy: function(oItem){
+		_validateSelect: function(oItem){
 			var sMsg = "";
 			var bValid = true;
 			
@@ -1149,6 +1257,10 @@ sap.ui.define([
 				retext = retext + " " + oData.BP[0].BusinessPartnerFullName;
 			}
 			oData.REUnit = retext.trim();
+		},
+		
+		_createContract: function(){
+			console.log(this.bukrs,this.swenr,this.tmpltID);
 		}
 		
 
