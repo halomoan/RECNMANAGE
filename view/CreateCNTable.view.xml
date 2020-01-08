@@ -93,7 +93,7 @@
 		                    <t:Column width="10rem" resizable="false">
 		                        <Label text="{i18n>TreeTable.Column.StartDate}"/>
 		                        <t:template>
-		                           	<DatePicker value="{CNModel>StartDate}" valueFormat="yyyyMMdd" 
+		                           	<DatePicker value="{CNModel>StartDate}" valueFormat="yyyy-MM-ddT00:00:00" 
 		                           		valueState="{= ${CNModel>error/StartDate} ? 'Error': 'None'}"
 		                           		visible="{CNModel>IsParent}" 
 		                           		change="onSDateChange"/>
@@ -103,7 +103,7 @@
 		                    <t:Column width="10rem" resizable="false">
 		                        <Label text="{i18n>TreeTable.Column.EndDate}"/>
 		                        <t:template>
-		                           <DatePicker value="{CNModel>EndDate}" valueFormat="yyyyMMdd" 
+		                           <DatePicker value="{CNModel>EndDate}" valueFormat="yyyy-MM-ddT00:00:00" 
 		                           valueState="{= ${CNModel>error/EndDate} ? 'Error': 'None'}"
 		                           visible="{CNModel>IsParent}" change="onEDateChange"/>
 		                        </t:template>
