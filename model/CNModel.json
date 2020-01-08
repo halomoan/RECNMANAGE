@@ -16,14 +16,14 @@
 				"ValidTo": "20291127"
 			},
 			"SVCRent": {
-				"CondType": "L101",
+				"CondType": "L102",
 				"UnitPrice": 1,
 				"Formula": "B",
 				"ValidFrom": "20191127",
 				"ValidTo": "20291127"
 			},
 			"ANPRent": {
-				"CondType": "L101",
+				"CondType": "L103",
 				"UnitPrice": 1,
 				"Formula": "B",
 				"ValidFrom": "20191127",

@@ -1019,7 +1019,11 @@ sap.ui.define([
 				var oHeader = {};
 				var bValid = true;
 				
-				oHeader.HeaderId = "1";
+				oHeader.ODHeaderId = "1";
+				oHeader.Bukrs = this.bukrs;
+				oHeader.Swenr = this.swenr;
+				oHeader.RecnType = this.recntype;
+				
 				oHeader.ZContractDataSet = [];
 				
 				for (var idx = 0; idx < aSelectedIndices.length; idx++) {
@@ -1032,10 +1036,9 @@ sap.ui.define([
 						break;
 					}
 					var oContract = {};
-					oContract.HeaderId = "1";
 					oContract.ODHeaderId = oItem.ODHeaderId;                         
-					oContract.RECNKEY = oItem.RECNKey;
-					oContract.RECNText = oItem.REUnit;
+					//oContract.RecnKey = oItem.RECNKey;
+					oContract.RecnText = oItem.REUnit;
 					oContract.StartDate = oItem.StartDate;
 					oContract.EndDate = oItem.EndDate;
 					oContract.IndSector = oItem.IndSector;
@@ -1045,7 +1048,7 @@ sap.ui.define([
 					oContract.UserFields = oItem.UserFields;                         
 					oContract.BaseRent = oItem.BaseRent;
 					oContract.SVCRent = oItem.SVCRent;
-					oContract.ANPRent = oItem.anprent;
+					oContract.ANPRent = oItem.ANPRent;
 					oContract.BP = oItem.BP;
 					oContract.ROUnits = oItem.ROUnits;
 					oHeader.ZContractDataSet.push(oContract);
