@@ -112,7 +112,6 @@ sap.ui.define([
 				    },
 				    filters: aFilters,
 				    success: function(rData) {
-				    	
 				    	console.log(rData);
 				    	sap.ui.core.BusyIndicator.hide();
 				    },
