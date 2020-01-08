@@ -55,12 +55,12 @@
     							</customData>
 							</Input>
 							<Label text="Valid From/To"/>
-							 <DatePicker value="{viewModel>/SVCRent/ValidFrom}" valueFormat="yyyyMMdd">
+							 <DatePicker value="{viewModel>/SVCRent/ValidFrom}" valueFormat="yyyy-MM-ddT00:00:00">
 							 <layoutData>
 								<l:GridData span="XL8 L1 M3 S6" />
 							</layoutData>
 							 </DatePicker>
-							 <DatePicker value="{viewModel>/SVCRent/ValidTo}" valueFormat="yyyyMMdd">
+							 <DatePicker value="{viewModel>/SVCRent/ValidTo}" valueFormat="yyyy-MM-ddT00:00:00">
 							 <layoutData>
 								<l:GridData span="XL8 L1 M3 S6" />
 							</layoutData>

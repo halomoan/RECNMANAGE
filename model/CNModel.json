@@ -6,31 +6,31 @@
 			"RECNKey": "CN0001",
 			"UnitSize": 2239,
 			"UOM": "SF",
-			"StartDate": "20191127",
-			"EndDate": "20201127",
+			"StartDate": "2019-11-27T00:00:00",
+			"EndDate": "2020-11-27T00:00:00",
 			"BaseRent": {
 				"CondType": "L101",
-				"UnitPrice": 1,
+				"UnitPrice": "1.00",
 				"Formula": "B",
-				"ValidFrom": "20191127",
-				"ValidTo": "20291127"
+				"ValidFrom": "2019-11-27T00:00:00",
+				"ValidTo": "2029-11-27T00:00:00"
 			},
 			"SVCRent": {
 				"CondType": "L102",
-				"UnitPrice": 1,
+				"UnitPrice": "2.00",
 				"Formula": "B",
-				"ValidFrom": "20191127",
-				"ValidTo": "20291127"
+				"ValidFrom": "2019-11-27T00:00:00",
+				"ValidTo": "2029-11-27T00:00:00"
 			},
 			"ANPRent": {
 				"CondType": "L103",
-				"UnitPrice": 1,
+				"UnitPrice": "3.00",
 				"Formula": "B",
-				"ValidFrom": "20191127",
-				"ValidTo": "20291127"
+				"ValidFrom": "2019-11-27T00:00:00",
+				"ValidTo": "2029-11-27T00:00:00"
 			},
 			"UserFields": {
-				"ZZHDATE": "20191231",
+				"ZZHDATE": "00000000",
 				"ZZSTMDATE1": "00000000",
 				"ZZSTMDATE2": "00000000",
 				"ZZSTMDATE3": "00000000",

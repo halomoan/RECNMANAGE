@@ -1016,6 +1016,7 @@ sap.ui.define([
 			
 			if (aSelectedIndices.length > 0) {
 				
+				
 				var oHeader = {};
 				var bValid = true;
 				
@@ -1024,7 +1025,7 @@ sap.ui.define([
 				oHeader.Swenr = this.swenr;
 				oHeader.RecnType = this.recntype;
 				
-				oHeader.ZContractDataSet = [];
+				oHeader.NavDetail = [];
 				
 				for (var idx = 0; idx < aSelectedIndices.length; idx++) {
 					var oContext = oTreeTable.getContextByIndex(aSelectedIndices[idx]);
@@ -1035,6 +1036,8 @@ sap.ui.define([
 					if (!bValid) {
 						break;
 					}
+					
+					
 					var oContract = {};
 					oContract.ODHeaderId = oItem.ODHeaderId;                         
 					//oContract.RecnKey = oItem.RECNKey;
@@ -1051,7 +1054,8 @@ sap.ui.define([
 					oContract.ANPRent = oItem.ANPRent;
 					oContract.BP = oItem.BP;
 					oContract.ROUnits = oItem.ROUnits;
-					oHeader.ZContractDataSet.push(oContract);
+					oHeader.NavDetail.push(oContract);
+					console.log(oContract);
 				}
 				
 				if(bValid) {
