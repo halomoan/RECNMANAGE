@@ -100,6 +100,27 @@ sap.ui.define([
 				oViewModel.setProperty("/Title",this.getResourceBundle().getText("CreateCNTable.Title.Retail"));
 			}
 			
+			var aFilters = [];
+				aFilters.push(new Filter("Bukrs", FilterOperator.EQ, this.bukrs));
+				aFilters.push(new Filter("Swenr", FilterOperator.EQ, this.swenr));
+				aFilters.push(new Filter("RecnType", FilterOperator.EQ, this.recntype));
+			var oModel = this.getOwnerComponent().getModel();
+			sap.ui.core.BusyIndicator.show();
+			oModel.read("/ZContractListSet", {
+				    urlParameters: {
+				        "$expand": "NavDetail/ROUnits,NavDetail/BP"
+				    },
+				    filters: aFilters,
+				    success: function(rData) {
+				    	
+				    	console.log(rData);
+				    	sap.ui.core.BusyIndicator.hide();
+				    },
+				    error: function(oError) {
+			            sap.ui.core.BusyIndicator.hide();
+			        }
+			});
+			
 		},
 		onDelete: function() {
 			var bCompact = !!this.getView().$().closest(".sapUiSizeCompact").length;
