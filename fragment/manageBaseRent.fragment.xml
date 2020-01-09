@@ -55,12 +55,12 @@
     							</customData>
 							</Input>
 							<Label text="Valid From/To"/>
-							 <DatePicker value="{viewModel>/BaseRent/ValidFrom}" valueFormat="yyyy-MM-ddT00:00:00">
+							 <DatePicker value="{ path: 'viewModel>/BaseRent/ValidFrom', type : 'sap.ui.model.type.Date'}">
 							 <layoutData>
 								<l:GridData span="XL8 L1 M3 S6" />
 							</layoutData>
 							 </DatePicker>
-							 <DatePicker value="{viewModel>/BaseRent/ValidTo}" valueFormat="yyyy-MM-ddT00:00:00">
+							 <DatePicker value="{ path: 'viewModel>/BaseRent/ValidTo', type : 'sap.ui.model.type.Date'}">
 							 <layoutData>
 								<l:GridData span="XL8 L1 M3 S6" />
 							</layoutData>

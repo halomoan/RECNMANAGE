@@ -63,8 +63,9 @@ sap.ui.define([
 			// });
 			
 			
-			var oModel = new JSONModel("/model/CNModel.json");
-			this.getView().setModel(oModel,"CNModel");
+			//var oModel = new JSONModel("/model/CNModel.json");
+			
+			//this.getView().setModel(oModel,"CNModel");
 			
 			var oCondFormModel = new JSONModel("/model/CondFModel.json");
 			this.getView().setModel(oCondFormModel,"CondFModel");
@@ -88,6 +89,8 @@ sap.ui.define([
 
 		},
 		_onObjectMatched: function (oEvent) {
+			
+		
 			this.bukrs = oEvent.getParameter("arguments").companyCode;
 			this.swenr = oEvent.getParameter("arguments").busEntity;
 			this.recntype = oEvent.getParameter("arguments").recntype;
@@ -104,6 +107,9 @@ sap.ui.define([
 				aFilters.push(new Filter("Bukrs", FilterOperator.EQ, this.bukrs));
 				aFilters.push(new Filter("Swenr", FilterOperator.EQ, this.swenr));
 				aFilters.push(new Filter("RecnType", FilterOperator.EQ, this.recntype));
+			
+			var oThis = this;
+			
 			var oModel = this.getOwnerComponent().getModel();
 			sap.ui.core.BusyIndicator.show();
 			oModel.read("/ZContractListSet", {
@@ -112,7 +118,26 @@ sap.ui.define([
 				    },
 				    filters: aFilters,
 				    success: function(rData) {
-				    	console.log(rData);
+				    	var oModelJson = new JSONModel();
+				    	var oCreateCNTable = {};
+				    	oCreateCNTable.ROUnits = [];	
+				    	for(var idx = 0; idx < rData.results.length; idx++) {
+				    	
+				    		
+				    		var oData = rData.results[idx].NavDetail.results[0];
+				    		oData.BP = oData.BP.results;
+					    	oData.ROUnits = oData.ROUnits.results;
+				    	/*	for(var i = 0; i < arrData.length; i++){
+					    		 arrData[i].BP = arrData[i].BP.results;
+					    		 arrData[i].ROUnits = arrData[i].ROUnits.results;
+					    	}*/
+					    	oCreateCNTable.ROUnits.push(oData);
+				    	}
+				    	
+				    	console.log(oCreateCNTable);
+				    
+				    	oModelJson.setData({ createCNTable : oCreateCNTable } );
+				    	oThis.getView().setModel(oModelJson,"CNModel");
 				    	sap.ui.core.BusyIndicator.hide();
 				    },
 				    error: function(oError) {
@@ -358,7 +383,7 @@ sap.ui.define([
 						var oRow = {"IsParent": false,
 							"ODHeaderId" : oData.ODHeaderId,
 							"REIMKEY" : oObject.ROKey,
-							"REUnit"  : oObject.Xmetxt,
+							"RecnText"  : oObject.Xmetxt,
 							"UnitSize": oObject.ROSize,       
 							"UOM" : oObject.ROUnit 
 						};
@@ -1061,7 +1086,7 @@ sap.ui.define([
 					var oContract = {};
 					oContract.ODHeaderId = oItem.ODHeaderId;                         
 					//oContract.RecnKey = oItem.RECNKey;
-					oContract.RecnText = oItem.REUnit;
+					oContract.RecnText = oItem.RecnText;
 					oContract.StartDate = oItem.StartDate;
 					oContract.EndDate = oItem.EndDate;
 					oContract.IndSector = oItem.IndSector;
@@ -1069,13 +1094,19 @@ sap.ui.define([
 					oContract.UOM = oItem.UOM;
 					oContract.IsParent = oItem.IsParent;
 					oContract.UserFields = oItem.UserFields;                         
+					oItem.BaseRent.UnitPrice = oItem.BaseRent.UnitPrice.toString();
+					delete oItem.BaseRent.error;
 					oContract.BaseRent = oItem.BaseRent;
+					oItem.SVCRent.UnitPrice = oItem.SVCRent.UnitPrice.toString();
+					delete oItem.SVCRent.error;
 					oContract.SVCRent = oItem.SVCRent;
+					oItem.ANPRent.UnitPrice = oItem.ANPRent.UnitPrice.toString();
+					delete oItem.ANPRent.error;
 					oContract.ANPRent = oItem.ANPRent;
 					oContract.BP = oItem.BP;
 					oContract.ROUnits = oItem.ROUnits;
 					oHeader.NavDetail.push(oContract);
-					console.log(oContract);
+					//console.log(oContract);
 				}
 				
 				if(bValid) {
@@ -1129,9 +1160,19 @@ sap.ui.define([
 					
 					if (oItem.IsParent) {
 						oTreeTable.clearSelection();
-						var oNew = JSON.parse(JSON.stringify(oItem));
 						
-						oNew.ODHeaderId = (new Date()).getTime();  
+						var oNew =  JSON.parse(JSON.stringify(oItem));
+						
+						oNew.ODHeaderId = (new Date()).getTime().toString();  
+						oNew.StartDate = new Date(oNew.StartDate);
+						oNew.EndDate = new Date(oNew.EndDate);
+						oNew.BaseRent.ValidFrom = new Date(oNew.BaseRent.ValidFrom);
+						oNew.BaseRent.ValidTo = new Date(oNew.BaseRent.ValidTo);
+						oNew.SVCRent.ValidFrom = new Date(oNew.SVCRent.ValidFrom);
+						oNew.SVCRent.ValidTo = new Date(oNew.SVCRent.ValidTo);
+						oNew.ANPRent.ValidFrom = new Date(oNew.ANPRent.ValidFrom);
+						oNew.ANPRent.ValidTo = new Date(oNew.ANPRent.ValidTo);
+						
 						for(var i in oNew.BP){
 							oNew.BP[i].ODHeaderId = oNew.ODHeaderId;
 						}
@@ -1141,6 +1182,8 @@ sap.ui.define([
 						}
 
 						oData.createCNTable.ROUnits.push(oNew);
+						
+						console.log(oData);
 						oModel.refresh();
 					}
 				}
@@ -1262,28 +1305,27 @@ sap.ui.define([
 						fTotalSize = fTotalSize + fUnitSize;
 						sUOM = oRow1.UOM;
 				} 
-				
-				
-				
+
 			}
 			oData.UnitSize = fTotalSize;
 			oData.UOM = sUOM;
 		},
 		
 		_genREText: function(oData){
+			
 			var retext = "";
 			for(var i in oData.ROUnits) {
 				if (retext.length > 0) {
-					retext = retext + ", " + oData.ROUnits[i].REUnit;
+					retext = retext + ", " + oData.ROUnits[i].RecnText;
 				}else{
-					retext = oData.ROUnits[i].REUnit;
+					retext = oData.ROUnits[i].RecnText;
 				}
 			}
 			
 			if (oData.BP.length > 0) {
 				retext = retext + " " + oData.BP[0].BusinessPartnerFullName;
 			}
-			oData.REUnit = retext.trim();
+			oData.RecnText = retext.trim();
 		},
 		
 		_createContract: function(){

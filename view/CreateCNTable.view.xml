@@ -48,7 +48,7 @@
 		                    <t:Column width="20rem">
 		                        <Label text="{i18n>TreeTable.Column.Unit}"/>
 		                          <t:template>
-			                    	<Label text="{CNModel>REUnit}" design="Bold" valueState="{= ${CNModel>error/reunit} ? 'Error': 'None'}"/>
+			                    	<Label text="{CNModel>RecnText}" design="Bold" valueState="{= ${CNModel>error/reunit} ? 'Error': 'None'}"/>
 								  </t:template>
 		                        <!--<t:template>-->
 		                        
@@ -93,7 +93,7 @@
 		                    <t:Column width="10rem" resizable="false">
 		                        <Label text="{i18n>TreeTable.Column.StartDate}"/>
 		                        <t:template>
-		                           	<DatePicker value="{CNModel>StartDate}" valueFormat="yyyy-MM-ddT00:00:00" 
+		                           	<DatePicker value="{ path: 'CNModel>StartDate', type:'sap.ui.model.type.Date'}"
 		                           		valueState="{= ${CNModel>error/StartDate} ? 'Error': 'None'}"
 		                           		visible="{CNModel>IsParent}" 
 		                           		change="onSDateChange"/>
@@ -103,7 +103,7 @@
 		                    <t:Column width="10rem" resizable="false">
 		                        <Label text="{i18n>TreeTable.Column.EndDate}"/>
 		                        <t:template>
-		                           <DatePicker value="{CNModel>EndDate}" valueFormat="yyyy-MM-ddT00:00:00" 
+		                           <DatePicker value="{ path: 'CNModel>EndDate', type:'sap.ui.model.type.Date'}"
 		                           valueState="{= ${CNModel>error/EndDate} ? 'Error': 'None'}"
 		                           visible="{CNModel>IsParent}" change="onEDateChange"/>
 		                        </t:template>
