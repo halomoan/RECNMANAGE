@@ -24,7 +24,7 @@
 								<form:SimpleForm
 								editable="true">
 									<Label text="{i18n>TreeTable.Column.StartDate}" required="true"/>
-									<DatePicker id="StartDate" value="{viewModel>/CNTemplate/StartDate}" valueFormat="yyyyMMdd" 
+									<DatePicker id="StartDate" value="{ path: 'viewModel>/CNTemplate/StartDate', type:'sap.ui.model.type.Date'}"
 		                           		valueState="{= ${viewModel>/NewCN/error/StartDate} ? 'Error': 'None'}"
 		                           		change="onNewCNStartDate"/>
 									<Label text="{i18n>Lbl.Duration}" required="false"/>
@@ -50,7 +50,7 @@
 			                        </HBox>
 			                        
 			                        <Label text="{i18n>TreeTable.Column.EndDate}" required="true"/>
-									<DatePicker  id="EndDate" value="{viewModel>/CNTemplate/EndDate}" valueFormat="yyyyMMdd" 
+									<DatePicker  id="EndDate" value="{ path: 'viewModel>/CNTemplate/EndDate', type:'sap.ui.model.type.Date'}"
 		                           		valueState="{= ${viewModel>/NewCN/error/EndDate} ? 'Error': 'None'}"
 		                           		change="onNewCNEndDate"/>
 									<Label text="{i18n>UF.LeaseStartDate}" required="true"/>
@@ -109,7 +109,7 @@
 								    class="sapUiMediumMarginBottom"
 								    >
 									<StandardListItem 
-										title="{viewModel>REUnit}"
+										title="{viewModel>RecnText}"
 										icon="sap-icon://building"
 										iconDensityAware="false"
 										iconInset="false"

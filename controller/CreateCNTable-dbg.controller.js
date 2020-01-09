@@ -127,15 +127,9 @@ sap.ui.define([
 				    		var oData = rData.results[idx].NavDetail.results[0];
 				    		oData.BP = oData.BP.results;
 					    	oData.ROUnits = oData.ROUnits.results;
-				    	/*	for(var i = 0; i < arrData.length; i++){
-					    		 arrData[i].BP = arrData[i].BP.results;
-					    		 arrData[i].ROUnits = arrData[i].ROUnits.results;
-					    	}*/
 					    	oCreateCNTable.ROUnits.push(oData);
 				    	}
-				    	
-				    	console.log(oCreateCNTable);
-				    
+				 
 				    	oModelJson.setData({ createCNTable : oCreateCNTable } );
 				    	oThis.getView().setModel(oModelJson,"CNModel");
 				    	sap.ui.core.BusyIndicator.hide();
@@ -388,6 +382,7 @@ sap.ui.define([
 							"UOM" : oObject.ROUnit 
 						};
 						oData.ROUnits.push(oRow);
+						oData.changed = true;
 					}
 				});
 				
@@ -408,6 +403,7 @@ sap.ui.define([
 				
 				oThis._genREText(oData);
 				oThis._calcUnitSize(oData);
+				
 				
 				if (this._useWizard ) {
 					oViewModel.setProperty("/CNTemplate",oData);
@@ -623,21 +619,12 @@ sap.ui.define([
 						} else {
 							oData.BP.push(bp);
 						}
-						// var bHasMainBPRole = false;
-						// for(var idx in oData.BP) {
-						// 	if (oData.BP[idx].BProle === oThis.getMainBPRole()){
-						// 		bHasMainBPRole = true;
-						// 	}
-						// }
-						// if (!bHasMainBPRole) {
-						// 	oThis._selectedODATA.BP.splice(0,0,bp);
-						// } else {
-						// 	console.log("Failed");
-						// }
+						
 					} else {
-						//oThis._selectedODATA.BP.push(bp);
 						oData.BP.push(bp);
 					}
+					
+					oData.changed = true;
 				});
 				
 				
@@ -716,8 +703,7 @@ sap.ui.define([
 			this._oManageBaseRent.openBy(this._oEventSource);
 		},
 		onBaseRentClose: function(){
-			//var oData = this._selectedODATA;
-			//var oView = this.getView();
+			
 			var oViewModel = this.getView().getModel("viewModel");
 			var oTreeTable = this.getView().byId("createCNTable");
 			var oModel = oTreeTable.getBinding("rows").getModel();
@@ -828,7 +814,7 @@ sap.ui.define([
 			} else {
 				oBSARent[sId].error = false;
 			}
-			
+			oBSARent.changed = true;
 			oModel.refresh();
 			
 		},
@@ -836,14 +822,12 @@ sap.ui.define([
 		onManageBSAChange: function(oEvent){
 			var sId = oEvent.getSource().data("myId");
 			
-			
 		    var oViewModel = oEvent.getSource().getModel("viewModel");
 		    var amount = oEvent.getParameters().value;
 		  
 		    var regex = /^\d+([,|\.]\d{3})*([,|\.]\d{2})?$/;
 		    if (!regex.test(amount)) {
 		    	oViewModel.setProperty("/"+sId+"/error",true); 
-		    	
 		    } else{
 		    	oViewModel.setProperty("/"+sId+ "/error",false); 
 		    }
@@ -856,7 +840,11 @@ sap.ui.define([
 			var oData = oBinding.getModel().getProperty(sPath);
 			var sValue = oEvent.getParameter("value");
 			var bValid = oEvent.getParameter("valid");
+		
 			if (bValid){
+				if (!oData.hasOwnProperty("error")) {
+					oData.error = {};
+				}
 				if (Date.parse(oData.enddate) < Date.parse(sValue)){
 					var sMsg = this.getResourceBundle().getText("Error.StartDateIsHigherThanEndDate");
 					sap.m.MessageBox.error(sMsg, {
@@ -868,6 +856,7 @@ sap.ui.define([
 					oData.error.startdate = false;       
 				}
 			}
+			oData.changed = true;
 		},
 		onEDateChange: function(oEvent){
 			var oBinding = oEvent.oSource.getBindingContext("CNModel");
@@ -876,6 +865,9 @@ sap.ui.define([
 			var sValue = oEvent.getParameter("value");
 			var bValid = oEvent.getParameter("valid");
 			if (bValid){
+				if (!oData.hasOwnProperty("error")) {
+					oData.error = {};
+				}
 				if (Date.parse(oData.startdate) > Date.parse(sValue)){
 					var sMsg = this.getResourceBundle().getText("Error.EndDateIsLowerThanStartDate");
 					sap.m.MessageBox.error(sMsg, {
@@ -887,6 +879,7 @@ sap.ui.define([
 					oData.error.enddate = false; 
 				}
 			}
+			oData.changed = true;
 		},
 		onUserFields: function(oEvent){
 			if (!this._oUserFields) {
@@ -934,7 +927,17 @@ sap.ui.define([
 			}
 			
 			var oData = JSON.parse(JSON.stringify(oViewModel.getProperty("/OTemplate")));
-			oData.ODHeaderId = (new Date()).getTime();                         
+			oData.ODHeaderId = (new Date()).getTime().toString();
+			oData.changed = true;
+			
+			oData.StartDate = new Date(oData.StartDate);
+			oData.EndDate = new Date(oData.EndDate);
+			oData.BaseRent.ValidFrom = new Date(oData.BaseRent.ValidFrom);
+			oData.BaseRent.ValidTo = new Date(oData.BaseRent.ValidTo);
+			oData.SVCRent.ValidFrom = new Date(oData.SVCRent.ValidFrom);
+			oData.SVCRent.ValidTo = new Date(oData.SVCRent.ValidTo);
+			oData.ANPRent.ValidFrom = new Date(oData.ANPRent.ValidFrom);
+			oData.ANPRent.ValidTo = new Date(oData.ANPRent.ValidTo);
 			oViewModel.setProperty("/CNTemplate",oData);
 
 			this.getView().addDependent(this._onNewCN);
@@ -1055,6 +1058,7 @@ sap.ui.define([
 			
 			var oThis = this;
 			var oTreeTable = this.byId("createCNTable");
+			var oModel = oTreeTable.getBinding("rows").getModel();
 			var aSelectedIndices = oTreeTable.getSelectedIndices();
 		
 			
@@ -1106,19 +1110,22 @@ sap.ui.define([
 					oContract.BP = oItem.BP;
 					oContract.ROUnits = oItem.ROUnits;
 					oHeader.NavDetail.push(oContract);
-					//console.log(oContract);
 				}
 				
 				if(bValid) {
-					var oModel = this.getModel();
-					oModel.create("/ZContractListSet", oHeader, {
+					var oServer = this.getModel();
+					oServer.create("/ZContractListSet", oHeader, {
 				    	method: "POST",
 					    success: function(data) {
+					    	
+					    	oItem.changed = false;
+					    	oModel.refresh();
 					    	sap.ui.core.BusyIndicator.hide();
 					    	sap.m.MessageBox.success(oThis.getResourceBundle().getText("Msg.SuccessSave"), {
 					            title: "Success",                                      
 					            initialFocus: null                                   
 					        });
+					        
 					    },
 					     error: function(e) {
 					    	sap.ui.core.BusyIndicator.hide();
@@ -1163,6 +1170,7 @@ sap.ui.define([
 						
 						var oNew =  JSON.parse(JSON.stringify(oItem));
 						
+						oNew.changed = true;
 						oNew.ODHeaderId = (new Date()).getTime().toString();  
 						oNew.StartDate = new Date(oNew.StartDate);
 						oNew.EndDate = new Date(oNew.EndDate);
@@ -1183,7 +1191,6 @@ sap.ui.define([
 
 						oData.createCNTable.ROUnits.push(oNew);
 						
-						console.log(oData);
 						oModel.refresh();
 					}
 				}
@@ -1260,6 +1267,24 @@ sap.ui.define([
 									oData.createCNTable.ROUnits.splice(i,1);
 									this._genREText(oRow);
 									bDeleted = true;
+									
+										var oServer = this.getModel();
+										oServer.callFunction("/delUnit", {
+									          method: "POST",
+									          urlParameters:  {"ODHeaderId" : sId, "REIMKEY" : sREIMKEY  }, 
+											success: function(oData, oResponse) {
+											
+											},
+											error: function(error) {
+												sap.m.MessageBox.error(oData.Message, {
+											           title: "Response",                                      
+											           initialFocus: null
+											       });
+											     return;
+											},
+											async: false
+											
+									    });
 								}
 							}
 							bDeleted = true;
@@ -1269,6 +1294,7 @@ sap.ui.define([
 								for(var j = 0; j < oRow.ROUnits.length; j++ ) {
 									if (JSON.stringify(oRow.ROUnits[j]) === JSON.stringify(oDeleteItem)){
 										oRow.ROUnits.splice(j,1);
+										oRow.changed = true;
 										bDeleted = true;
 										this._genREText(oRow);
 									}
