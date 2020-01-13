@@ -108,36 +108,7 @@ sap.ui.define([
 				aFilters.push(new Filter("Swenr", FilterOperator.EQ, this.swenr));
 				aFilters.push(new Filter("RecnType", FilterOperator.EQ, this.recntype));
 			
-			var oThis = this;
-			
-			var oModel = this.getOwnerComponent().getModel();
-			sap.ui.core.BusyIndicator.show();
-			oModel.read("/ZContractListSet", {
-				    urlParameters: {
-				        "$expand": "NavDetail/ROUnits,NavDetail/BP"
-				    },
-				    filters: aFilters,
-				    success: function(rData) {
-				    	var oModelJson = new JSONModel();
-				    	var oCreateCNTable = {};
-				    	oCreateCNTable.ROUnits = [];	
-				    	for(var idx = 0; idx < rData.results.length; idx++) {
-				    	
-				    		
-				    		var oData = rData.results[idx].NavDetail.results[0];
-				    		oData.BP = oData.BP.results;
-					    	oData.ROUnits = oData.ROUnits.results;
-					    	oCreateCNTable.ROUnits.push(oData);
-				    	}
-				 
-				    	oModelJson.setData({ createCNTable : oCreateCNTable } );
-				    	oThis.getView().setModel(oModelJson,"CNModel");
-				    	sap.ui.core.BusyIndicator.hide();
-				    },
-				    error: function(oError) {
-			            sap.ui.core.BusyIndicator.hide();
-			        }
-			});
+			this._refreshTable();
 			
 		},
 		onDelete: function() {
@@ -460,6 +431,7 @@ sap.ui.define([
 				aContexts.map(function(oContext) { 
 					oData.IndSector = oContext.getObject().Ind_Sector;
 					oData.Industry = oContext.getObject().Text;
+					oData.changed = true;
 				});
 				
 				oModel.refresh();
@@ -1118,8 +1090,9 @@ sap.ui.define([
 				    	method: "POST",
 					    success: function(data) {
 					    	
+					    	oTreeTable.clearSelection();
 					    	oItem.changed = false;
-					    	oModel.refresh();
+					    	oThis._refreshTable();
 					    	sap.ui.core.BusyIndicator.hide();
 					    	sap.m.MessageBox.success(oThis.getResourceBundle().getText("Msg.SuccessSave"), {
 					            title: "Success",                                      
@@ -1246,9 +1219,10 @@ sap.ui.define([
 			var aSelectedIndices = oTreeTable.getSelectedIndices();
 			var oModel =  oTreeTable.getBinding("rows").getModel();
 			var oData = oModel.getData();
-			var bDeleted = false;
 			var i = 0;
+			var bLocalDelete = false;
 			var oRow = null;
+			var oThis = this;
 			
 			
 			if (aSelectedIndices.length > 0) {
@@ -1257,48 +1231,86 @@ sap.ui.define([
 					var oContext = oTreeTable.getContextByIndex(aSelectedIndices[idx]);
 				
 					var oDeleteItem = oContext.getProperty();
+					var oServer = this.getModel();
+					
 				
-				
+					oServer.setUseBatch(true);
+					oServer.setDeferredGroups(["XRECN"]);
 					if (oDeleteItem.IsParent) {
-							
 							for(i = 0; i < oData.createCNTable.ROUnits.length; i++){
 								oRow = oData.createCNTable.ROUnits[i];
 								if (JSON.stringify(oDeleteItem) === JSON.stringify(oRow)){
-									oData.createCNTable.ROUnits.splice(i,1);
-									this._genREText(oRow);
-									bDeleted = true;
-									
-										var oServer = this.getModel();
-										oServer.callFunction("/delUnit", {
-									          method: "POST",
-									          urlParameters:  {"ODHeaderId" : sId, "REIMKEY" : sREIMKEY  }, 
-											success: function(oData, oResponse) {
-											
-											},
-											error: function(error) {
-												sap.m.MessageBox.error(oData.Message, {
-											           title: "Response",                                      
-											           initialFocus: null
-											       });
-											     return;
-											},
-											async: false
-											
-									    });
+									if (oDeleteItem.ODHeaderId.length === 13) {
+										oData.createCNTable.ROUnits.splice(i,1);
+										this._genREText(oRow);
+										bLocalDelete = true;
+									} else {
+										bLocalDelete = false;
+										oServer.remove("/ZContractDataSet('" + oDeleteItem.ODHeaderId + "')", 
+										{
+											groupId:"XRECN"
+										});
+									}
 								}
 							}
-							bDeleted = true;
+							if (!bLocalDelete) {
+								oServer.submitChanges({
+								    groupId: "XRECN",
+								    success: function(odata,resp){
+								    	oThis._refreshTable();
+								    },
+								    error: function(oError){
+									    var oResponse = JSON.parse(oError.response.body);
+										sap.m.MessageToast.show("Fehler: " + oResponse.error.message.value);
+								    }
+								});
+							} else {
+								oModel.refresh();
+								oTreeTable.clearSelection();
+							}
 						} else {
+							
 							for(i = 0; i < oData.createCNTable.ROUnits.length; i++){
 								oRow = oData.createCNTable.ROUnits[i];
 								for(var j = 0; j < oRow.ROUnits.length; j++ ) {
 									if (JSON.stringify(oRow.ROUnits[j]) === JSON.stringify(oDeleteItem)){
-										oRow.ROUnits.splice(j,1);
-										oRow.changed = true;
-										bDeleted = true;
-										this._genREText(oRow);
+										
+										if (oDeleteItem.ODHeaderId.length === 13) {
+											oRow.ROUnits.splice(j,1);
+											oRow.changed = true;
+											bLocalDelete = true;
+											this._genREText(oRow);
+										} else {
+											bLocalDelete = false;
+											oServer.remove("/RentalObjectSet(ODHeaderId='" + oDeleteItem.ODHeaderId + "',REIMKEY='" + oDeleteItem.REIMKEY + "')", 
+											{
+												groupId:"XRECN"
+											});
+										}
+										
 									}
-								}	
+								}
+								if (!bLocalDelete) {
+									oServer.submitChanges({
+									    groupId: "XRECN",
+									    success: function(odata,resp){
+									    	oThis._refreshTable();
+									    },
+									    error: function(oError){
+										    var oResponse = JSON.parse(oError.response.body);
+											sap.m.MessageToast.show("Fehler: " + oResponse.error.message.value);
+									    }
+									});
+								} else{
+									
+										for(i = 0; i < oData.createCNTable.ROUnits.length; i++){
+											oRow = oData.createCNTable.ROUnits[i];
+											this._calcUnitSize(oRow);
+										}
+										oModel.refresh();
+										oTreeTable.clearSelection();
+									
+								}
 							}
 						}
 				}
@@ -1309,14 +1321,7 @@ sap.ui.define([
 					initialFocus: null                                   
 				});
 			}
-			if (bDeleted) {
-				for(i = 0; i < oData.createCNTable.ROUnits.length; i++){
-					oRow = oData.createCNTable.ROUnits[i];
-					this._calcUnitSize(oRow);
-				}
-				oModel.refresh();
-				oTreeTable.clearSelection();
-			}
+		
 		},
 		_calcUnitSize: function(oData){
 			
@@ -1354,6 +1359,43 @@ sap.ui.define([
 			oData.RecnText = retext.trim();
 		},
 		
+		_refreshTable: function(){
+			var aFilters = [];
+				aFilters.push(new Filter("Bukrs", FilterOperator.EQ, this.bukrs));
+				aFilters.push(new Filter("Swenr", FilterOperator.EQ, this.swenr));
+				aFilters.push(new Filter("RecnType", FilterOperator.EQ, this.recntype));
+			
+			var oThis = this;
+			
+			var oModel = this.getOwnerComponent().getModel();
+			sap.ui.core.BusyIndicator.show();
+			oModel.read("/ZContractListSet", {
+				    urlParameters: {
+				        "$expand": "NavDetail/ROUnits,NavDetail/BP"
+				    },
+				    filters: aFilters,
+				    success: function(rData) {
+				    	var oModelJson = new JSONModel();
+				    	var oCreateCNTable = {};
+				    	oCreateCNTable.ROUnits = [];	
+				    	for(var idx = 0; idx < rData.results.length; idx++) {
+				    	
+				    		
+				    		var oData = rData.results[idx].NavDetail.results[0];
+				    		oData.BP = oData.BP.results;
+					    	oData.ROUnits = oData.ROUnits.results;
+					    	oCreateCNTable.ROUnits.push(oData);
+				    	}
+				 
+				    	oModelJson.setData({ createCNTable : oCreateCNTable } );
+				    	oThis.getView().setModel(oModelJson,"CNModel");
+				    	sap.ui.core.BusyIndicator.hide();
+				    },
+				    error: function(oError) {
+			            sap.ui.core.BusyIndicator.hide();
+			        }
+			});	
+		},
 		_createContract: function(){
 			console.log(this.bukrs,this.swenr,this.tmpltID);
 		}
