@@ -1030,7 +1030,7 @@ sap.ui.define([
 			
 			var oThis = this;
 			var oTreeTable = this.byId("createCNTable");
-			var oModel = oTreeTable.getBinding("rows").getModel();
+			//var oModel = oTreeTable.getBinding("rows").getModel();
 			var aSelectedIndices = oTreeTable.getSelectedIndices();
 		
 			
@@ -1045,6 +1045,7 @@ sap.ui.define([
 				oHeader.Bukrs = this.bukrs;
 				oHeader.Swenr = this.swenr;
 				oHeader.RecnType = this.recntype;
+				oHeader.Mode = "SAVE";
 				
 				oHeader.NavDetail = [];
 				
@@ -1398,6 +1399,55 @@ sap.ui.define([
 		},
 		_createContract: function(){
 			console.log(this.bukrs,this.swenr,this.tmpltID);
+			var oThis = this;
+			var oTreeTable = this.byId("createCNTable");
+			var aSelectedIndices = oTreeTable.getSelectedIndices();
+			
+			if (aSelectedIndices.length > 0) {
+				
+				var oServer = this.getModel();
+				var oHeader = {};
+				
+				
+				
+				for (var idx = 0; idx < aSelectedIndices.length; idx++) {
+					var oContext = oTreeTable.getContextByIndex(aSelectedIndices[idx]);
+					var oItem = oContext.getProperty();
+					oHeader.ODHeaderId = oItem.ODHeaderId;
+					oHeader.Bukrs = this.bukrs;
+					oHeader.Swenr = this.swenr;
+					oHeader.RecnType = this.recntype;
+					oHeader.Mode = "CREATE";
+					oHeader.TemplateID = this.tmpltID;
+					
+					oServer.create("/ZContractListSet", oHeader, {
+						method: "POST",
+					    success: function(data) {
+					    	
+					    	oTreeTable.clearSelection();
+					    	oItem.changed = false;
+					    	//oThis._refreshTable();
+					    	sap.ui.core.BusyIndicator.hide();
+					    	sap.m.MessageBox.success(oThis.getResourceBundle().getText("Msg.SuccessSave"), {
+					            title: "Success",                                      
+					            initialFocus: null                                   
+					        });
+					        
+					    },
+					     error: function(e) {
+					    	sap.ui.core.BusyIndicator.hide();
+					    	sap.m.MessageBox.Error(oThis.getResourceBundle().getText("Error.FailToSave"), {
+					            title: "Error",                                      
+					            initialFocus: null                                   
+					        });
+					    }
+					});
+				}
+			}
+			
+				
+		
+
 		}
 		
 
