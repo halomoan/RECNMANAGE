@@ -247,6 +247,12 @@ sap.ui.define([
 				this._useWizard = true;
 			}
 			
+			
+			var oTreeTable = this.byId("createCNTable");
+			var oTableCtx = oTreeTable.getContextByIndex(this._selectedIdx);
+			var oData = oTableCtx.getProperty();
+			
+			
 			if (!this._oSelectUnit) {
 				this._oSelectUnit = sap.ui.xmlfragment("selectRO","fin.re.conmgmts1.fragment.selectUnit", this);
 				this._oSelectUnit.setModel(this.getView().getModel());
@@ -257,6 +263,7 @@ sap.ui.define([
 			var aFilters = [];
 			aFilters.push(new Filter("Bukrs", FilterOperator.EQ, this.bukrs));
 			aFilters.push(new Filter("Swenr", FilterOperator.EQ, this.swenr));
+			aFilters.push(new Filter("Dbezu", FilterOperator.EQ, oData.StartDate));
 			aFilters.push(new Filter("Rotype", FilterOperator.EQ, "RU"));
 			
 			var oTable = Fragment.byId("selectRO", "selectRO-table");
@@ -302,7 +309,7 @@ sap.ui.define([
 			var sValue = oEvent.getParameter("value");
 		
 			var oFilter1 = new Filter("Xmetxt", sap.ui.model.FilterOperator.Contains, sValue);
-			//var oFilter2 = new Filter("Smenr", sap.ui.model.FilterOperator.Contains, sValue);
+			//var oFilter2 = new Filter("Dbezu", sap.ui.model.FilterOperator.EQ, sValue);
 			var oBinding = oEvent.getSource().getBinding("items");
 			//oBinding.filter(new Filter([oFilter1,oFilter2],false));
 			oBinding.filter([oFilter1]);
@@ -1398,7 +1405,7 @@ sap.ui.define([
 			});	
 		},
 		_createContract: function(){
-			console.log(this.bukrs,this.swenr,this.tmpltID);
+			//console.log(this.bukrs,this.swenr,this.tmpltID);
 			var oThis = this;
 			var oTreeTable = this.byId("createCNTable");
 			var aSelectedIndices = oTreeTable.getSelectedIndices();
@@ -1417,21 +1424,28 @@ sap.ui.define([
 					oHeader.Bukrs = this.bukrs;
 					oHeader.Swenr = this.swenr;
 					oHeader.RecnType = this.recntype;
-					oHeader.Mode = "CREATE";
 					oHeader.TemplateID = this.tmpltID;
 					
 					oServer.create("/ZContractListSet", oHeader, {
 						method: "POST",
 					    success: function(data) {
 					    	
-					    	oTreeTable.clearSelection();
-					    	oItem.changed = false;
-					    	//oThis._refreshTable();
-					    	sap.ui.core.BusyIndicator.hide();
-					    	sap.m.MessageBox.success(oThis.getResourceBundle().getText("Msg.SuccessSave"), {
-					            title: "Success",                                      
-					            initialFocus: null                                   
-					        });
+					    	console.log(data,data.Status);
+					    	if (data.Status === "ERROR") {
+					    		sap.m.MessageBox.error(data.Msg, {
+						            title: "Error",                                      
+						            initialFocus: null                                   
+						        });
+					    	} else {
+						    	oTreeTable.clearSelection();
+						    	oItem.changed = false;
+						    	//oThis._refreshTable();
+						    	sap.ui.core.BusyIndicator.hide();
+						    	sap.m.MessageBox.success(oThis.getResourceBundle().getText("Msg.SuccessSave"), {
+						            title: "Success",                                      
+						            initialFocus: null                                   
+						        });
+					    	}
 					        
 					    },
 					     error: function(e) {
