@@ -631,16 +631,15 @@ sap.ui.define([
 				var oViewModel = this.getView().getModel("viewModel");
 				oData = oViewModel.getProperty("/CNTemplate");
 				oData.BP.splice(idx,1);
+				oData.changed = true;
 				oViewModel.setProperty("/CNTemplate",oData);
 			} else {
 				var oModel = this.getView().getModel("CNModel");
 				oData = this._selectedODATA;
 				oData.BP.splice(idx,1);
+				oData.changed = true;
 				oModel.refresh();
 			}
-			
-		
-			
 
 		},
 		onBPNavBack: function(){
@@ -1052,7 +1051,6 @@ sap.ui.define([
 				oHeader.Bukrs = this.bukrs;
 				oHeader.Swenr = this.swenr;
 				oHeader.RecnType = this.recntype;
-				oHeader.Mode = "SAVE";
 				
 				oHeader.NavDetail = [];
 				
@@ -1212,6 +1210,32 @@ sap.ui.define([
 			if(!oItem.IsParent){
 				bValid = false;
 				sMsg = this.getResourceBundle().getText("Msg.PickContract");
+			}
+			
+			if(!bValid){
+				MessageBox.error(sMsg, {
+					title: "Error",                                      
+					initialFocus: null                                   
+				});
+			}
+			return bValid;
+		},
+		_validateCreate: function(oItem){
+			var sMsg = "";
+			var bValid = true;
+			
+			if(!oItem.IsParent){
+				bValid = false;
+				sMsg = this.getResourceBundle().getText("Msg.PickContract");
+			}
+			
+			if (parseFloat(oItem.BaseRent.UnitPrice) === 0.00) {
+				bValid = false;
+				sMsg = "Base Rent Cannot Be Zero";
+			}
+			if (parseFloat(oItem.SVCRent.UnitPrice) === 0.00) {
+				bValid = false;
+				sMsg = "Service Charges Cannot Be Zero";
 			}
 			
 			if(!bValid){
@@ -1407,6 +1431,7 @@ sap.ui.define([
 		_createContract: function(){
 			//console.log(this.bukrs,this.swenr,this.tmpltID);
 			var oThis = this;
+			var bValid = true;
 			var oTreeTable = this.byId("createCNTable");
 			var aSelectedIndices = oTreeTable.getSelectedIndices();
 			
@@ -1416,47 +1441,86 @@ sap.ui.define([
 				var oHeader = {};
 				
 				
-				
 				for (var idx = 0; idx < aSelectedIndices.length; idx++) {
 					var oContext = oTreeTable.getContextByIndex(aSelectedIndices[idx]);
 					var oItem = oContext.getProperty();
+					
+					bValid = this._validateCreate(oItem);
+					
+					if (!bValid) {
+						break;
+					}
+				}
+				
+				if (!bValid) {
+					return;
+				}
+				
+				oServer.setUseBatch(true);
+				oServer.setDeferredGroups(["XRECN"]);
+				
+				for (idx = 0; idx < aSelectedIndices.length; idx++) {
+					oContext = oTreeTable.getContextByIndex(aSelectedIndices[idx]);
+					
+					console.log(oItem);
+					oItem = oContext.getProperty();
+					oHeader = {};
 					oHeader.ODHeaderId = oItem.ODHeaderId;
 					oHeader.Bukrs = this.bukrs;
 					oHeader.Swenr = this.swenr;
 					oHeader.RecnType = this.recntype;
 					oHeader.TemplateID = this.tmpltID;
 					
+					
+					//console.log(oServer);
+		
+/*					$.ajax({
+						type: "POST",
+						url : oServer.sServiceUrl + "/ZContractListSet",
+						dataType: "json",
+						data: JSON.stringify(oHeader),
+						contentType: "application/json",
+						async: false,
+						success: function(data){
+							console.log(data);
+						},
+						error: function(e){
+							console.log(e);
+						}
+					});*/
+					
 					oServer.create("/ZContractListSet", oHeader, {
-						method: "POST",
-					    success: function(data) {
-					    	
-					    	console.log(data,data.Status);
-					    	if (data.Status === "ERROR") {
+						groupId:"XRECN"
+					});
+				}
+				
+				oServer.submitChanges({
+					    groupId: "XRECN",
+					    success: function(oResp){
+					    	for(var i = 0; i < oResp.__batchResponses[0].__changeResponses.length; i++){
+					    		var data = oResp.__batchResponses[0].__changeResponses[i].data;
+					    		if (data.Status === "ERROR") {
 					    		sap.m.MessageBox.error(data.Msg, {
 						            title: "Error",                                      
 						            initialFocus: null                                   
 						        });
-					    	} else {
-						    	oTreeTable.clearSelection();
-						    	oItem.changed = false;
-						    	//oThis._refreshTable();
-						    	sap.ui.core.BusyIndicator.hide();
-						    	sap.m.MessageBox.success(oThis.getResourceBundle().getText("Msg.SuccessSave"), {
-						            title: "Success",                                      
-						            initialFocus: null                                   
-						        });
+						    	} else {
+							    	oTreeTable.clearSelection();
+							    	oItem.changed = false;
+							    	//oThis._refreshTable();
+							    	sap.ui.core.BusyIndicator.hide();
+							    	sap.m.MessageBox.success(oThis.getResourceBundle().getText("Msg.SuccessSave"), {
+							            title: "Success",                                      
+							            initialFocus: null                                   
+							        });
+						    	}
 					    	}
-					        
 					    },
-					     error: function(e) {
-					    	sap.ui.core.BusyIndicator.hide();
-					    	sap.m.MessageBox.Error(oThis.getResourceBundle().getText("Error.FailToSave"), {
-					            title: "Error",                                      
-					            initialFocus: null                                   
-					        });
+					    error: function(oError){
+						    var oResponse = JSON.parse(oError.response.body);
+							sap.m.MessageToast.show("Fehler: " + oResponse.error.message.value);
 					    }
-					});
-				}
+				});
 			}
 			
 				
