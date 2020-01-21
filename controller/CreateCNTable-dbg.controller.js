@@ -1497,20 +1497,21 @@ sap.ui.define([
 				oServer.submitChanges({
 					    groupId: "XRECN",
 					    success: function(oResp){
+					    	//console.log(oResp);
 					    	for(var i = 0; i < oResp.__batchResponses[0].__changeResponses.length; i++){
 					    		var data = oResp.__batchResponses[0].__changeResponses[i].data;
 					    		if (data.Status === "ERROR") {
-					    		sap.m.MessageBox.error(data.Msg, {
-						            title: "Error",                                      
-						            initialFocus: null                                   
-						        });
+						    		sap.m.MessageBox.error(data.Msg, {
+							            title: "Error",                                      
+							            initialFocus: null                                   
+							        });
 						    	} else {
 							    	oTreeTable.clearSelection();
 							    	oItem.changed = false;
 							    	//oThis._refreshTable();
 							    	sap.ui.core.BusyIndicator.hide();
-							    	sap.m.MessageBox.success(oThis.getResourceBundle().getText("Msg.SuccessSave"), {
-							            title: "Success",                                      
+							    	sap.m.MessageBox.success(data.Msg + ":\n Contract ID:" + data.Recnnr, {
+							            title: oThis.getResourceBundle().getText("Msg.SuccessCreated"),                                      
 							            initialFocus: null                                   
 							        });
 						    	}

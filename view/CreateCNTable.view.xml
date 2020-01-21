@@ -21,6 +21,7 @@
             </f:DynamicPageHeader>
         </f:header>
         <f:content>
+        	<VBox>
               	 <t:TreeTable 
                 		id="createCNTable"
 	                    rows="{path: 'CNModel>/createCNTable', parameters: { arrayNames: ['ROUnits']  }}"
@@ -176,7 +177,9 @@
 							</t:template>
 							</t:Column>
 		                </t:columns>
-                	 </t:TreeTable>	    
+                	 </t:TreeTable>
+                	 <DatePicker></DatePicker>
+               </VBox> 	 
         </f:content>
 	</f:DynamicPage>
 </mvc:View>
