@@ -20,6 +20,8 @@
     				<core:CustomData key="bukrs" value="{bukrs}" writeToDom="false"/>
     				<core:CustomData key="swenr" value="{swenr}" writeToDom="false"/>
     				<core:CustomData key="recntype" value="{recntype}" writeToDom="false"/>
+    				<core:CustomData key="title" value="{title}" writeToDom="false"/>
+    				<core:CustomData key="info" value="{info}" writeToDom="false"/>
     			</customData>
 			</StandardTile>
 		</TileContainer>

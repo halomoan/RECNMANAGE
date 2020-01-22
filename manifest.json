@@ -149,7 +149,7 @@
 					"target": "worklist"
 				},
 				{
-					"pattern": "createcntable/{companyCode}/{busEntity}/{recntype}",
+					"pattern": "createcntable/{companyCode}/{busEntity}/{recntype}/{title}/{subtitle}",
 					"name": "createcntable",
 					"target": "createcntable"
 				},

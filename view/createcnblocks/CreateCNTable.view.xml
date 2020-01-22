@@ -27,6 +27,7 @@
 	                <Button icon="sap-icon://save" text="{i18n>Common.Button.Save}" press="onSave"/>
 	                <Button icon="sap-icon://delete" text="{i18n>Common.Button.Delete}" press="onDelete"/>
 	                <ToolbarSpacer/>
+	                <Button icon="sap-icon://refresh" text="{i18n>Common.Button.Refresh}" press="onRefresh"/>
 	                <Button icon="sap-icon://create" text="{i18n>Common.Button.CreateContract}" press="onCreate"/>
 	            </Toolbar>
 	        </t:toolbar>

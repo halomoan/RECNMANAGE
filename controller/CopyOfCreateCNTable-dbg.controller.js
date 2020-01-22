@@ -13,7 +13,7 @@ sap.ui.define([
 ], function(BaseController,MessageBox,JSONModel,Fragment,Sorter,Filter,FilterOperator,formatter,Dialog,Button,Text) {
 	"use strict";
 
-	return BaseController.extend("fin.re.conmgmts1.controller.createcnblocks.CreateCNTable", {
+	return BaseController.extend("fin.re.conmgmts1.controller.CreateCNTable", {
 		formatter: formatter,
 		/**
 		 * Called when a controller is instantiated and its View controls (if available) are already created.
@@ -32,7 +32,8 @@ sap.ui.define([
 				today: oDateFormat.format(new Date()),
 				durationUnits : [{"key": "day","text": "Day(s)"},{"key": "month","text": "Month(s)"},{"key": "year","text": "Year(s)"}],
 				durationUnitKey: "month",
-				collapseIcon: "collapse"
+				collapseIcon: "collapse",
+				Title: ""
 			});
 			this.setModel(oViewModel, "viewModel");
 			
@@ -54,6 +55,17 @@ sap.ui.define([
 			 var oViewModel = this.getView().getModel("viewModel");
 			
 			
+			// var oModel = new JSONModel("/model/CNTemplate.json");
+			
+			// oModel.attachRequestCompleted(function() {
+			// 	var oData = oModel.getData();
+			// 	oViewModel.setProperty("/OTemplate",oData.template);
+			// });
+			
+			
+			//var oModel = new JSONModel("/model/CNModel.json");
+			
+			//this.getView().setModel(oModel,"CNModel");
 			
 			var oCondFormModel = new JSONModel("/model/CondFModel.json");
 			this.getView().setModel(oCondFormModel,"CondFModel");
@@ -75,16 +87,28 @@ sap.ui.define([
 				}
 			 });
 
-			
 		},
 		_onObjectMatched: function (oEvent) {
 			
+		
 			this.bukrs = oEvent.getParameter("arguments").companyCode;
 			this.swenr = oEvent.getParameter("arguments").busEntity;
 			this.recntype = oEvent.getParameter("arguments").recntype;
 			
+			var oViewModel = this.getView().getModel("viewModel");
 			
-			this._refreshLog(new Date());
+			if (this.recntype === "L001") {
+				oViewModel.setProperty("/Title",this.getResourceBundle().getText("CreateCNTable.Title.Office"));
+			}else if(this.recntype === "L002"){
+				oViewModel.setProperty("/Title",this.getResourceBundle().getText("CreateCNTable.Title.Retail"));
+			}
+			
+			var aFilters = [];
+				aFilters.push(new Filter("Bukrs", FilterOperator.EQ, this.bukrs));
+				aFilters.push(new Filter("Swenr", FilterOperator.EQ, this.swenr));
+				aFilters.push(new Filter("RecnType", FilterOperator.EQ, this.recntype));
+			
+			this._refreshTable();
 			
 		},
 		onDelete: function() {
@@ -122,6 +146,8 @@ sap.ui.define([
 					}
 					
 				}
+				
+				
 				
 				if (!this._oSelectTemplate) {
 					this._oSelectTemplate = sap.ui.xmlfragment("selectTemplate","fin.re.conmgmts1.fragment.selectTemplate", this);
@@ -366,6 +392,11 @@ sap.ui.define([
 			}
 			
 		},
+		
+		onUnitCancel: function(oEvent){
+			//oEvent.getSource().getBinding("items").filter([]);
+		},
+		
 		onSelectInd: function(oEvent){
 			this._selectedIdx = oEvent.getSource().getParent().getIndex();
 			
@@ -1155,36 +1186,6 @@ sap.ui.define([
 			oViewModel.setProperty("/CNTemplate",oData);
 
 		},
-		onRefresh: function(){
-			this._refreshTable();	
-		},
-		onTodayLog: function(){
-			var oCalendar = this.byId("logCalendar");
-			oCalendar.removeAllSelectedDates();
-			oCalendar.setStartDate(new Date());
-			this._refreshLog(new Date());
-		}, 
-		onCalLogSelect: function(oEvent){
-				var oCalendar = oEvent.getSource(),
-				oSelectedDate = oCalendar.getSelectedDates()[0],
-				oStartDate = oSelectedDate.getStartDate();
-				this._refreshLog(oStartDate);
-		},
-		_refreshLog: function(oDate){
-			var oDateFormat = sap.ui.core.format.DateFormat.getInstance({
-				pattern: "yyyy-MM-dd"
-			});
-			var aFilters = [];
-			aFilters.push(new Filter("Bukrs", FilterOperator.EQ, this.bukrs));
-			aFilters.push(new Filter("Swenr", FilterOperator.EQ, this.swenr));
-			aFilters.push(new Filter("RecnType", FilterOperator.EQ, this.recntype));
-			aFilters.push(new Filter("CreatedDate", FilterOperator.EQ, oDateFormat.format(oDate)));
-			
-			if (this.getView().byId("LogTable")) {
-				this.getView().byId("LogTable").getBinding("items").filter(aFilters);
-			}
-			
-		},
 		_validateSave: function(oItem){
 			var sMsg = "";
 			var bValid = true;
@@ -1226,24 +1227,15 @@ sap.ui.define([
 			if(!oItem.IsParent){
 				bValid = false;
 				sMsg = this.getResourceBundle().getText("Msg.PickContract");
-				
 			}
 			
-			if(oItem.changed) {
-				bValid = false;
-				sMsg = this.getResourceBundle().getText("Msg.ContractChanged");
-			
-				
-			}
-			if (oItem.BaseRent && parseFloat(oItem.BaseRent.UnitPrice) === 0.00) {
+			if (parseFloat(oItem.BaseRent.UnitPrice) === 0.00) {
 				bValid = false;
 				sMsg = "Base Rent Cannot Be Zero";
-			
 			}
-			if (oItem.SVCRent && parseFloat(oItem.SVCRent.UnitPrice) === 0.00) {
+			if (parseFloat(oItem.SVCRent.UnitPrice) === 0.00) {
 				bValid = false;
 				sMsg = "Service Charges Cannot Be Zero";
-			
 			}
 			
 			if(!bValid){
@@ -1470,6 +1462,7 @@ sap.ui.define([
 				for (idx = 0; idx < aSelectedIndices.length; idx++) {
 					oContext = oTreeTable.getContextByIndex(aSelectedIndices[idx]);
 					
+					console.log(oItem);
 					oItem = oContext.getProperty();
 					oHeader = {};
 					oHeader.ODHeaderId = oItem.ODHeaderId;
@@ -1530,7 +1523,13 @@ sap.ui.define([
 					    }
 				});
 			}
+			
+				
+		
+
 		}
+		
+
 	});
 
 });

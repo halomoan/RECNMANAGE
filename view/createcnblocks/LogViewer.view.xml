@@ -1,0 +1,79 @@
+<mvc:View 
+	xmlns:core="sap.ui.core" 
+	xmlns:mvc="sap.ui.core.mvc" 
+	xmlns:l="sap.ui.layout"
+	xmlns="sap.m"
+	xmlns:u="sap.ui.unified"
+	controllerName="fin.re.conmgmts1.controller.createcnblocks.CreateCNTable"
+	xmlns:html="http://www.w3.org/1999/xhtml"
+	height="100%">
+	<Button
+		press="onTodayLog"
+		text="Select Today"/>			
+	<u:CalendarDateInterval
+		id="logCalendar"
+		width="100%"
+		select="onCalLogSelect"/>
+
+	<Table id="LogTable"
+		inset="false"
+		items="{
+			path: '/ZCreationLogSet',
+		sorter: {
+			path: 'Recnnr'
+		}
+	}">
+		
+		
+		<columns>
+			<Column
+				width="12em">
+				<Text text="Contract No." />
+			</Column>
+			<Column
+				minScreenWidth="Tablet"
+				demandPopin="true">
+				<Text text="Description" />
+			</Column>
+			<Column
+				minScreenWidth="Tablet"
+				demandPopin="true"
+				hAlign="Right">
+				<Text text="StartDate" />
+			</Column>
+			<Column
+				minScreenWidth="Tablet"
+				demandPopin="true"
+				hAlign="Right">
+				<Text text="EndDate" />
+			</Column>
+			<Column
+				minScreenWidth="Tablet"
+				hAlign="Right">
+				<Text text="Created By" />
+			</Column>
+				<Column
+				minScreenWidth="Tablet"
+				hAlign="Right">
+				<Text text="Created On" />
+			</Column>
+			<Column
+				hAlign="Right">
+			</Column>
+		</columns>
+		<items>
+			<ColumnListItem>
+				<cells>
+					<Text text="{Recnnr}" />
+					<Text text="{RecnText}" />
+					<Text text="{ path: 'StartDate', type:'sap.ui.model.type.Date'}" />
+					<Text text="{ path: 'EndDate', type:'sap.ui.model.type.Date'}" />
+					<Text text="{CreatedBy}" />
+					<Text text="{ path: 'CreatedDate', type:'sap.ui.model.type.Date'}" />
+					<Button icon="sap-icon://edit" press="onPress" ariaLabelledBy="actionButtonLabel"/>	
+				</cells>	
+			</ColumnListItem>
+		</items>
+		
+	</Table>
+</mvc:View>

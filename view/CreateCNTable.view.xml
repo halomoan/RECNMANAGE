@@ -17,18 +17,27 @@
 	  <m:content>	
 		<ObjectPageLayout id="ObjectPageLayout">
 			<headerTitle>
-				<ObjectPageHeader objectTitle="{viewModel>/Title}" objectSubtitle="{i18n>TreeTable.Title}">
+				<ObjectPageHeader objectTitle="{viewModel>/Title}" objectSubtitle="{viewModel>/SubTitle}">
 				</ObjectPageHeader>
 			</headerTitle>
 			<sections>
 				 <ObjectPageSection id="createSection" title="{i18n>TreeTable.Title}">
-                <subSections>
-                    <ObjectPageSubSection id="createSubSection" title="" mode="Collapsed">
-                        <blocks>
-                          <createcnblock:CreateCNTable id="createcnblock"/>
-                        </blocks>
-                    </ObjectPageSubSection>
-                </subSections>
+                	<subSections>
+	                    <ObjectPageSubSection id="createSubSection" title="" mode="Collapsed">
+	                        <blocks>
+	                          <createcnblock:CreateCNTable id="createcnblock"/>
+	                        </blocks>
+	                    </ObjectPageSubSection>
+                	</subSections>
+                </ObjectPageSection>
+                <ObjectPageSection id="creationLog" title="Log">
+                	<subSections>
+	                    <ObjectPageSubSection id="logSubSection" title="" mode="Collapsed">
+	                        <blocks>
+	                          <createcnblock:LogViewer id="logviewerblock"/>
+	                        </blocks>
+	                    </ObjectPageSubSection>
+                	</subSections>
                 </ObjectPageSection>
 			</sections>
 		</ObjectPageLayout>
