@@ -5,7 +5,8 @@ sap.ui.define([
 	"sap/ui/core/mvc/Controller"
 ], function(Controller) {
 	"use strict";
-
+	jQuery.sap.require("jquery.sap.storage");
+	
 	return Controller.extend("fin.re.conmgmts1.controller.BaseController", {
 		/**
 		 * Convenience method for accessing the router.
@@ -45,7 +46,18 @@ sap.ui.define([
 		getResourceBundle: function() {
 			return this.getOwnerComponent().getModel("i18n").getResourceBundle();
 		},
-		
+		setParams:  function(oParams){
+			var oStorage = jQuery.sap.storage(jQuery.sap.storage.Type.local);
+			oStorage.put("localParams", oParams);
+		},
+		getParams:  function(){
+			var oStorage = jQuery.sap.storage(jQuery.sap.storage.Type.local);
+			if(oStorage.get("localParams")) {
+				return oStorage.get("localParams");
+			} else {
+				return {};
+			}
+		},
 		getMainBPRole : function() {
 			return "BPR101";
 		},

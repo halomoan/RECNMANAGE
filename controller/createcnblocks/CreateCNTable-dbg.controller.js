@@ -39,8 +39,8 @@ sap.ui.define([
 			
 			this.getOwnerComponent().getModel().metadataLoaded().then(this._onMetadataLoaded.bind(this));
 			
-			var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
-			oRouter.getRoute("createcntable").attachPatternMatched(this._onObjectMatched, this);
+			 var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
+			 oRouter.getRoute("createcntable").attachPatternMatched(this._onObjectMatched, this);
 
 			
 			
@@ -74,17 +74,17 @@ sap.ui.define([
 			 		}
 				}
 			 });
-
+		
+			
 			
 		},
 		_onObjectMatched: function (oEvent) {
 			
-			this.bukrs = oEvent.getParameter("arguments").companyCode;
+		/*	this.bukrs = oEvent.getParameter("arguments").companyCode;
 			this.swenr = oEvent.getParameter("arguments").busEntity;
-			this.recntype = oEvent.getParameter("arguments").recntype;
+			this.recntype = oEvent.getParameter("arguments").recntype;*/
 			
-			
-			this._refreshLog(new Date());
+			this.onTodayLog();
 			
 		},
 		onDelete: function() {
@@ -108,6 +108,7 @@ sap.ui.define([
 		},
 		
 		onCreate: function(){
+			var oParams = this.getParams();
 			var oTreeTable = this.getView().byId("createCNTable");
 			var aSelectedIndices = oTreeTable.getSelectedIndices();
 			
@@ -129,9 +130,9 @@ sap.ui.define([
 				}
 				var oSorter = new sap.ui.model.Sorter("TmpltID", false);
 				var aFilters = [];
-				aFilters.push(new Filter("Bukrs", FilterOperator.EQ, this.bukrs));
-				aFilters.push(new Filter("Swenr", FilterOperator.EQ, this.swenr));
-				aFilters.push(new Filter("RecnType", FilterOperator.EQ, this.recntype));
+				aFilters.push(new Filter("Bukrs", FilterOperator.EQ, oParams.bukrs));
+				aFilters.push(new Filter("Swenr", FilterOperator.EQ, oParams.swenr));
+				aFilters.push(new Filter("RecnType", FilterOperator.EQ, oParams.recntype));
 				
 				var oSelect = Fragment.byId("selectTemplate", "selectTemplate");
 				var oTemplate = oSelect.getBindingInfo("items").template;
@@ -212,7 +213,7 @@ sap.ui.define([
 			}	
 		},
 		onAddUnit: function(oEvent){
-
+			var oParams = this.getParams();
 			
 			if(oEvent.getSource().getParent().sParentAggregationName === "rows") {
 				this._selectedIdx = oEvent.getSource().getParent().getIndex();
@@ -235,8 +236,8 @@ sap.ui.define([
 			var oSorter = new sap.ui.model.Sorter("Xmetxt", false);
 			
 			var aFilters = [];
-			aFilters.push(new Filter("Bukrs", FilterOperator.EQ, this.bukrs));
-			aFilters.push(new Filter("Swenr", FilterOperator.EQ, this.swenr));
+			aFilters.push(new Filter("Bukrs", FilterOperator.EQ, oParams.bukrs));
+			aFilters.push(new Filter("Swenr", FilterOperator.EQ, oParams.swenr));
 			aFilters.push(new Filter("Dbezu", FilterOperator.EQ, oData.StartDate));
 			aFilters.push(new Filter("Rotype", FilterOperator.EQ, "RU"));
 			
@@ -1002,7 +1003,7 @@ sap.ui.define([
 				this._onNewCN.close();
 		},
 		onSave: function(){
-			
+			var oParams = this.getParams();
 			var oThis = this;
 			var oTreeTable = this.byId("createCNTable");
 			//var oModel = oTreeTable.getBinding("rows").getModel();
@@ -1017,9 +1018,9 @@ sap.ui.define([
 				var bValid = true;
 				
 				oHeader.ODHeaderId = "1";
-				oHeader.Bukrs = this.bukrs;
-				oHeader.Swenr = this.swenr;
-				oHeader.RecnType = this.recntype;
+				oHeader.Bukrs = oParams.bukrs;
+				oHeader.Swenr = oParams.swenr;
+				oHeader.RecnType = oParams.recntype;
 				
 				oHeader.NavDetail = [];
 				
@@ -1160,25 +1161,39 @@ sap.ui.define([
 		},
 		onTodayLog: function(){
 			var oCalendar = this.byId("logCalendar");
-			oCalendar.removeAllSelectedDates();
-			oCalendar.setStartDate(new Date());
-			this._refreshLog(new Date());
+			
+			if(oCalendar) {
+				oCalendar.removeAllSelectedDates();
+				var oStartDate = new Date();
+				var oEndDate = new Date();
+				oEndDate.setDate(oStartDate.getDate() + oCalendar.getDays() - 1);
+				oCalendar.setStartDate(oStartDate);
+				
+				this._refreshLog(oStartDate, oEndDate);
+			}
 		}, 
-		onCalLogSelect: function(oEvent){
-				var oCalendar = oEvent.getSource(),
-				oSelectedDate = oCalendar.getSelectedDates()[0],
-				oStartDate = oSelectedDate.getStartDate();
-				this._refreshLog(oStartDate);
+
+		onCalChange: function(oEvent){
+			var oCalendar = oEvent.getSource();
+			var oStartDate = oCalendar.getStartDate();
+			var oEndDate = new Date();
+				
+			oEndDate.setDate(oStartDate.getDate() + oCalendar.getDays() - 1);
+			this._refreshLog(oStartDate,oEndDate);
+
+		
 		},
-		_refreshLog: function(oDate){
+		_refreshLog: function(oSDate,oEDate){
 			var oDateFormat = sap.ui.core.format.DateFormat.getInstance({
 				pattern: "yyyy-MM-dd"
 			});
+			var oParams = this.getParams();
+			
 			var aFilters = [];
-			aFilters.push(new Filter("Bukrs", FilterOperator.EQ, this.bukrs));
-			aFilters.push(new Filter("Swenr", FilterOperator.EQ, this.swenr));
-			aFilters.push(new Filter("RecnType", FilterOperator.EQ, this.recntype));
-			aFilters.push(new Filter("CreatedDate", FilterOperator.EQ, oDateFormat.format(oDate)));
+			aFilters.push(new Filter("Bukrs", FilterOperator.EQ, oParams.bukrs));
+			aFilters.push(new Filter("Swenr", FilterOperator.EQ, oParams.swenr));
+			aFilters.push(new Filter("RecnType", FilterOperator.EQ, oParams.recntype));
+			aFilters.push(new Filter("CreatedDate", FilterOperator.BT, oDateFormat.format(oSDate),oDateFormat.format(oEDate)));
 			
 			if (this.getView().byId("LogTable")) {
 				this.getView().byId("LogTable").getBinding("items").filter(aFilters);
@@ -1400,10 +1415,14 @@ sap.ui.define([
 		},
 		
 		_refreshTable: function(){
+			
+			var oParams = this.getParams();
+			
+			
 			var aFilters = [];
-				aFilters.push(new Filter("Bukrs", FilterOperator.EQ, this.bukrs));
-				aFilters.push(new Filter("Swenr", FilterOperator.EQ, this.swenr));
-				aFilters.push(new Filter("RecnType", FilterOperator.EQ, this.recntype));
+				aFilters.push(new Filter("Bukrs", FilterOperator.EQ, oParams.bukrs));
+				aFilters.push(new Filter("Swenr", FilterOperator.EQ, oParams.swenr));
+				aFilters.push(new Filter("RecnType", FilterOperator.EQ, oParams.recntype));
 			
 			var oThis = this;
 			
@@ -1437,7 +1456,7 @@ sap.ui.define([
 			});	
 		},
 		_createContract: function(){
-			//console.log(this.bukrs,this.swenr,this.tmpltID);
+			var oParams = this.getParams();
 			var oThis = this;
 			var bValid = true;
 			var oTreeTable = this.byId("createCNTable");
@@ -1473,9 +1492,9 @@ sap.ui.define([
 					oItem = oContext.getProperty();
 					oHeader = {};
 					oHeader.ODHeaderId = oItem.ODHeaderId;
-					oHeader.Bukrs = this.bukrs;
-					oHeader.Swenr = this.swenr;
-					oHeader.RecnType = this.recntype;
+					oHeader.Bukrs = oParams.bukrs;
+					oHeader.Swenr = oParams.swenr;
+					oHeader.RecnType = oParams.recntype;
 					oHeader.TemplateID = this.tmpltID;
 					
 					

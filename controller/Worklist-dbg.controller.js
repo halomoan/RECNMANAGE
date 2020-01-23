@@ -22,6 +22,8 @@ sap.ui.define([
 		 */
 		onInit: function() {
 			var oViewModel = new JSONModel({
+				Bukrs : "1001",
+				Swenr : "00001001",
 				RecnType : "L001"
 			});
 			this.setModel(oViewModel, "viewModel");
@@ -67,13 +69,11 @@ sap.ui.define([
 			// 		pattern: "MMM d, y"
 			// });
 			
-			var oTodaysDate = new Date();
-			var oJSONData = {
-					Recnbeg: { key: "FROM" , value : oTodaysDate  },
-					Recnendabs: {  key: "FROM" , low : oTodaysDate }
-						
-			};
-			oSmartFilter.setFilterData(oJSONData);
+			//var oTodaysDate = new Date();
+			// var oJSONData = {
+			// 	"Swenr" :   "0001001"
+			// };
+			// oSmartFilter.setFilterData(oJSONData);
 			
 		},
 		/**
@@ -157,10 +157,13 @@ sap.ui.define([
 
 			var rawKey = keyPart.substring(0, keyEnd);
 			var key;
+			
 			if (rawKey === "SAP__Origin") {
 				key = "systemId";
 			} else if (rawKey === "Bukrs") {
 				key = "companyCode";
+			} else if (rawKey === "Swenr") {
+				key = "busEntity";
 			} else if (rawKey === "Recnnr") {
 				key = "contractId";
 			} else {

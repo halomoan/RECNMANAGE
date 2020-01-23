@@ -13,7 +13,7 @@
 	<u:CalendarDateInterval
 		id="logCalendar"
 		width="100%"
-		select="onCalLogSelect"/>
+		startDateChange="onCalChange"/>
 
 	<Table id="LogTable"
 		inset="false"

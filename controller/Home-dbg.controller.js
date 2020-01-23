@@ -19,18 +19,30 @@ sap.ui.define([
 			var bukrs = oEvent.getSource().data("bukrs");
 			var swenr = oEvent.getSource().data("swenr");
 			var recntype = oEvent.getSource().data("recntype");
+			
+			this.setParams({
+				"bukrs": oEvent.getSource().data("bukrs"),
+				"swenr" : oEvent.getSource().data("swenr"),
+				"recntype" : oEvent.getSource().data("recntype")
+			});
+			
+			
 			var title = oEvent.getSource().data("title");
 			var info = oEvent.getSource().data("info");
 			
 			
 			if (recntype === "L001" || recntype === "L002") {
 				var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
-				oRouter.navTo("createcntable", {
+			/*	oRouter.navTo("createcntable", {
 					companyCode: bukrs,
 					busEntity: swenr,
 					recntype : recntype,
 					title: info,
 					subtitle: title
+					
+				});*/
+				oRouter.navTo("worklist", {
+					
 					
 				});
 			}

@@ -35,11 +35,11 @@ sap.ui.define([
 		},
 		_onObjectMatched: function (oEvent) {
 			
-		
-			this.bukrs = oEvent.getParameter("arguments").companyCode;
-			this.swenr = oEvent.getParameter("arguments").busEntity;
-			this.recntype = oEvent.getParameter("arguments").recntype;
-			
+/*			this.setParams({
+				"bukrs": oEvent.getParameter("arguments").companyCode,
+				"swenr" : oEvent.getParameter("arguments").busEntity,
+				"recntype" : oEvent.getParameter("arguments").recntype
+			});*/
 			
 			var oViewModel = this.getView().getModel("viewModel");
 			
@@ -47,13 +47,13 @@ sap.ui.define([
 			oViewModel.setProperty("/SubTitle",oEvent.getParameter("arguments").subtitle);
 			
 			this._refreshTable();
-			
 		},
 		_refreshTable: function(){
+			var oParams = this.getParams();
 			var aFilters = [];
-				aFilters.push(new Filter("Bukrs", FilterOperator.EQ, this.bukrs));
-				aFilters.push(new Filter("Swenr", FilterOperator.EQ, this.swenr));
-				aFilters.push(new Filter("RecnType", FilterOperator.EQ, this.recntype));
+				aFilters.push(new Filter("Bukrs", FilterOperator.EQ, oParams.bukrs));
+				aFilters.push(new Filter("Swenr", FilterOperator.EQ, oParams.swenr));
+				aFilters.push(new Filter("RecnType", FilterOperator.EQ, oParams.recntype));
 			
 			var oThis = this;
 			
@@ -85,7 +85,7 @@ sap.ui.define([
 			            sap.ui.core.BusyIndicator.hide();
 			        }
 			});	
-		},
+		}
 
 	});
 

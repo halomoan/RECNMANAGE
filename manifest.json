@@ -154,7 +154,7 @@
 					"target": "createcntable"
 				},
 				{
-					"pattern": "contract/{companyCode}/{contractId}",
+					"pattern": "contract/{companyCode}/{busEntity}/{contractId}",
 					"name": "contract",
 					"target": "contract"
 				},

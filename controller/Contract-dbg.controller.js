@@ -317,6 +317,7 @@ sap.ui.define([
 		_getKeyObjectFromRouting: function(navTarget, args) {
 			var keyObject = {
 				Bukrs: decodeURIComponent(args.companyCode),
+				Swenr: decodeURIComponent(args.busEntity),
 				Recnnr: decodeURIComponent(args.contractId)
 			};
 

@@ -49,7 +49,18 @@
                                                    liveMode="true"
                                                    visible="true">
                         <smartFilterBar:controlConfiguration>
-                            <!--<smartFilterBar:ControlConfiguration key="Bukrs" visibleInAdvancedArea="true"/>-->
+                            <smartFilterBar:ControlConfiguration key="Bukrs" visibleInAdvancedArea="true">
+                            <smartFilterBar:defaultFilterValues>
+			                            <smartFilterBar:SelectOption low="{viewModel>/Bukrs}">
+			                            </smartFilterBar:SelectOption>
+			                     </smartFilterBar:defaultFilterValues>
+			                </smartFilterBar:ControlConfiguration>
+                            <smartFilterBar:ControlConfiguration key="Swenr" visibleInAdvancedArea="true">
+                            <smartFilterBar:defaultFilterValues>
+			                            <smartFilterBar:SelectOption low="{viewModel>/Swenr}">
+			                            </smartFilterBar:SelectOption>
+			                     </smartFilterBar:defaultFilterValues>
+			                </smartFilterBar:ControlConfiguration>
                             <smartFilterBar:ControlConfiguration key="Recnnr" visibleInAdvancedArea="true"/>
                             <smartFilterBar:ControlConfiguration key="Recntxt" visibleInAdvancedArea="true"/>
                             <smartFilterBar:ControlConfiguration key="Recnbeg" conditionType="sap.ui.comp.config.condition.DateRangeType" visibleInAdvancedArea="true"/>
